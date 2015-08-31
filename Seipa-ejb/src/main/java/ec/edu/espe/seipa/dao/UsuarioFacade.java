@@ -8,7 +8,9 @@ package ec.edu.espe.seipa.dao;
 import ec.edu.espe.seipa.model.Usuario;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -26,6 +28,17 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
 
     public UsuarioFacade() {
         super(Usuario.class);
+    }
+    
+    public Usuario findByName(String nombreUsuario) {
+        try {
+            String sql = "SELECT obj FROM Usuario obj WHERE obj.usuario=?1";
+            Query qry = this.getEntityManager().createQuery(sql);
+            qry.setParameter(1, nombreUsuario);
+            return (Usuario) qry.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
     
 }
