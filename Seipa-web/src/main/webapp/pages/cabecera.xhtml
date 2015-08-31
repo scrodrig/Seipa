@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form>
+        <p:menubar  style="width: 1024px; font-size: 15pt"> 
+            <p:menuitem value="Inicio" url="menu.jsf" icon="ui-icon-home"/>    
+            <p:submenu label="#{inicioBean.nombreUsuario}" style="float: right">  
+                <p:menuitem value="Cambiar Contraseña" url="cambiarclave.jsf" icon="ui-icon-locked"/>   
+                <p:menuitem id="userOptionsMenu" value="Cerrar Sesión" action="#{cabeceraBean.logout()}" icon="ui-icon-close" />
+            </p:submenu>  
+        </p:menubar> 
+    </h:form>
+</ui:composition>
+
