@@ -43,7 +43,7 @@ public class InicioBean implements Serializable{
     
     
      public String validarUsuario() {
-        this.nombreUsuario = nombreUsuario.toLowerCase();
+        this.nombreUsuario = nombreUsuario;
          System.out.println(nombreUsuario);
         Usuario usuario = this.autentificacionServicio.usuarioAutentificar(nombreUsuario, clave);
         if (usuario != null) {
