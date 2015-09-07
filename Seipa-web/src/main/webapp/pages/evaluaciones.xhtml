@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" 
+                xmlns:ui="http://java.sun.com/jsf/facelets" 
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/templateMantenimiento.xhtml">
+    <ui:define name="titulo">Evaluaciones</ui:define> 
+    <ui:define name="cuerpo">
+        <p:layout style="min-width:400px;min-height:200px;">
+            <p:layoutUnit position="west" resizable="true" size="100" minSize="40" maxSize="200">
+                <p:growl autoUpdate="true"/>
+                    <p:panelMenu style="width:300px">
+                        <p:submenu label="Navigations" >
+                            <p:submenu label="Links" icon="ui-icon-extlink">
+                                <p:submenu label="PrimeFaces" icon="ui-icon-heart">
+                                    <p:menuitem value="Home" url="http://www.primefaces.org" icon="ui-icon-home" />
+                                    <p:menuitem value="Docs" url="http://www.primefaces.org/documentation" icon="ui-icon-document" />
+                                    <p:menuitem value="Download" url="http://www.primefaces.org/downloads" icon="ui-icon-arrowthick-1-s" />
+                                    <p:menuitem value="Support" url="http://www.primefaces.org/support" icon="ui-icon-wrench" />
+                                </p:submenu>
+                            </p:submenu>
+                        </p:submenu>
+                    </p:panelMenu>
+            </p:layoutUnit>
+            <p:layoutUnit position="center">
+            </p:layoutUnit>
+        </p:layout>
+    </ui:define>
+</ui:composition>

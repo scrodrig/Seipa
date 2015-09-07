@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" 
+                xmlns:ui="http://java.sun.com/jsf/facelets" 
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/templateMantenimiento.xhtml">
+    <ui:define name="titulo">Bienvenido</ui:define>    
+    <ui:define name="welcome"> 
+        <div align="right" style="font-size: 8pt;font-weight: bold">
+            Bienvenido #{menuBean.usuario.usuario}
+        </div>
+    </ui:define>
+    <ui:define name="cuerpo">
+
+        <br/>
+        <p:panel header="Sistema de Evaluacion Integral del Personal Academico(SEIPA)"  style="width: 1024px">  
+            <h:outputText value="SEIPA es concedido con el afan de facilitar la evaluacion del personal academico de la Universidad de las Fuerzas Armadas ESPE." />  
+        </p:panel> 
+        <br/>  
+        <table align="center" border="0" width="1000px">
+            <tr align="center">
+                <td align="center">
+                    <p:graphicImage  value="/images/home.png" />
+                </td>
+            </tr>
+        </table>
+        <br/>
+        <br/>
+        <p:panel header="SEIPA" footer="Actualmente SEIPA es desarrollado en Quito, en la Av. Colon y Amazonas Edificio España" style="width: 1000px">  
+            <h:outputText value="SEIPA, se basa en lo indicado tanto en el reglamento academico de la Universidad de las Fuerzas Armadas, como lo expuesto en la normativa vigente para la aplicacion de las reglas de negocio, necesarias para la evaluacion integral del desempeño del personal academico" />  
+        </p:panel> 
+        <br/>
+        <br/>
+    </ui:define>
+</ui:composition>
+

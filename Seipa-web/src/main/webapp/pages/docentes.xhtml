@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" 
+                xmlns:ui="http://java.sun.com/jsf/facelets" 
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/templateMantenimiento.xhtml">
+
+    <ui:define name="titulo">Docentes</ui:define> 
+
+    <ui:define name="cuerpo">
+        <p:dataTable id="docentes"  value="#{docentesBean.docentes}" var="docente" selection="#{docentesBean.docenteSeleccionado}" selectionMode="single" scrollable="true" 
+                     rowKey="#{docente.id}" style="width: 800px" 
+                     paginator="true" rows="10"  scrollWidth="false" paginatorPosition="bottom"
+                     paginatorTemplate="  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                     emptyMessage="No se ha registrado ningún Docente" rendered="#{not (docentesBean.enRegistro or docentesBean.enEdicion or docentesBean.enAuditoria)}" >
+
+            <p:ajax event="rowSelect" listener="#{docentesBean.filaSeleccionada(evento)}" update="docentes"/>
+            <p:ajax event="rowUnselect" listener="#{docentesBean.filaSeleccionada(evento)}" update="docentes"/>
+
+            <f:facet name="header">
+                Docentes
+            </f:facet>
+            <p:column headerText="Cédula" style="width: 80px">
+                #{docente.id}
+            </p:column>
+            <p:column headerText="Nombres" style="width: 120px">
+                #{docente.nombre}
+            </p:column>
+            <p:column headerText="Apellidos" style="width: 120px">
+                #{docente.apellido}
+            </p:column>
+            <p:column headerText="Email" style="width: 150px">
+                #{docente.correo}
+            </p:column>
+            <p:column headerText="Direccion" style="width: 75px">
+                #{docente.direccion}
+            </p:column>
+            <p:column headerText="Teléfono" style="width: 75px">
+                #{docente.telefono}
+            </p:column>
+            <f:facet name="footer">  
+                <p:commandButton  value="Nuevo" update="@form" actionListener="#{docentesBean.nuevo(evento)}" disabled="#{docentesBean.disabledNuevo}" icon="ui-icon-document"/>  
+                <p:commandButton value="Modificar" update="@form" actionListener="#{docentesBean.modificar(evento)}" disabled="#{docentesBean.disabledModificar}" icon="ui-icon-pencil"/>
+                <p:commandButton value="Eliminar" onclick="confirmation.show();" disabled="#{docentesBean.disabledEliminar}" icon="ui-icon-close"/>
+                <p:commandButton  value="Auditoría" update=":form:mensaje" onsuccess="dlg.show()" actionListener="#{docentesBean.verAuditoria(evento)}" disabled="#{docentesBean.disableAuditoria}" icon="ui-icon-document"/>  
+            </f:facet>
+        </p:dataTable>
+
+
+
+
+        <p:confirmDialog id="confirmDialog" message="¿Seguro desea eliminar?"  
+                         header="Eliminación" severity="alert" widgetVar="confirmation">  
+            <p:commandButton id="confirm" value="Si, seguro" update="@form " oncomplete="confirmation.hide()"  
+                             actionListener="#{docentesBean.eliminar(evento)}"  />  
+            <p:commandButton id="decline" value="No" onclick="confirmation.hide();" type="button" />   
+
+        </p:confirmDialog> 
+
+
+        <p:dialog id="picture" widgetVar="dlg"  
+                  resizable="false" header="Auditoría de Docentes" modal="true" closable="false" showEffect="clip" hideEffect="clip" style="width: 600px">  
+            <p:panelGrid id="mensaje"  columns="2">  
+                <p:graphicImage value="/images/footer.png"/>                    
+                
+                   <!--<p:panelGrid columns="2" rendered="#{docentesBean.enAuditoria}">
+
+                    <p:outputLabel for="a_codigo" value="Código:"/>
+                    <p:outputLabel id="a_codigo" value="#{docentesBean.docente.id}"/>
+
+                    <p:outputLabel for="a_docente" value="Nombre de Empleado:"/>                
+                    <p:outputLabel id="a_docente" value="#{docentesBean.docente.nombre}"/>   
+                   
+                </p:panelGrid> -->
+            </p:panelGrid>
+            <p:separator/>
+            <f:facet name="footer"> 
+                <p:commandButton actionListener="#{docentesBean.cancelar()}" value="Volver" update="@form" icon="ui-icon-back"/>
+            </f:facet>
+        </p:dialog>
+
+        <p:panel id="nuevoUsr" header="Registro de Docentes" rendered="#{docentesBean.enRegistro}" style="width: 800px">
+            <p:panelGrid columns="3">
+                <p:outputLabel for="codigo" value="Cédula"/>
+                <p:inputText id="codigo" value="#{docentesBean.docente.id}" label="CédulaDocente" required="true">
+                    <f:validateLength minimum="10" maximum="10" />                  
+                </p:inputText> 
+                <p:message for="codigo" />
+
+                <p:outputLabel for="nombre" value="Nombres:"/>                
+                <p:inputText id="nombre" value="#{docentesBean.docente.nombre}" label="NombreDocente" required="true">
+                </p:inputText>
+                <p:message for="nombre" />
+                
+                <p:outputLabel for="apellido" value="Apellidos:"/>                
+                <p:inputText id="apellido" value="#{docentesBean.docente.apellido}" label="ApellidoDocente" required="true">
+                </p:inputText>
+                <p:message for="apellido" />
+
+                <p:outputLabel for="direccion" value="Direccion:"/>                
+                <p:inputText id="direccion" value="#{docentesBean.docente.direccion}" label="DireccionDocente" required="true">
+                </p:inputText>
+                <p:message for="direccion" />
+                
+                <p:outputLabel for="telef" value="Telefono" />
+                <p:inputMask id="telef" mask="9999999999" value="#{docentesBean.docente.telefono}" label="Telefono" required="true"/> 
+                <p:message for="telef" />
+
+                <p:outputLabel for="email" value="Email" />
+                <p:inputText id="email" value="#{docentesBean.docente.correo}" label="Email" required="true" validatorMessage="Dirección de correo inválida">
+                    <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                </p:inputText> 
+                <p:message for="email" />
+
+            </p:panelGrid>
+            <f:facet name="footer"> 
+                <p:commandButton actionListener="#{docentesBean.guardar(evento)}" value="Guardar" update="@form" icon="ui-icon-disk"/>
+                <p:commandButton actionListener="#{docentesBean.cancelar()}"  value="Cancelar" immediate="true" update="@form" icon="ui-icon-cancel"/>
+            </f:facet>
+        </p:panel>
+
+        <p:panel id="modificarUsr" header="Modificación de Docente" rendered="#{docentesBean.enEdicion}" style="width: 800px">
+           <!-- <p:panelGrid columns="3">
+                <p:outputLabel for="m_codigo" value="Usuario"/>
+                  <p:inputText id="m_codigo" value="#{docentesBean.docente.id}" readonly="true" label="NombreEmpleado" required="true">
+                </p:inputText>
+                <p:message for="m_codigo" />
+
+                <p:outputLabel for="m_docente" value="Nombre Empleado:"/>                
+                <p:inputText id="m_docente" value="#{docentesBean.docente.nombre}" label="NombreEmpleado" required="true">
+                </p:inputText>
+                <p:message for="m_docente" />
+
+                <p:outputLabel for="m_telef" value="Telefono" />
+                <p:inputMask id="m_telef" mask="9999999999" value="#{docentesBean.docente.telefono}" label="Telefono" required="true"/> 
+                <p:message for="m_telef" />
+
+                <p:outputLabel for="m_email" value="Email" />
+                <p:inputText id="m_email" value="#{docentesBean.docente.correo}" label="Email" required="true" validatorMessage="Dirección de correo inválida">
+                    <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                </p:inputText> 
+                <p:message for="m_email" />
+
+            </p:panelGrid>-->
+
+            <f:facet name="footer"> 
+                <p:commandButton actionListener="#{docentesBean.guardar(evento)}" value="Guardar" update="@form" icon="ui-icon-disk"/>
+                <p:commandButton actionListener="#{docentesBean.cancelar()}" immediate="true" value="Cancelar" update="@form" icon="ui-icon-cancel"/>
+            </f:facet>
+        </p:panel>
+    </ui:define>
+
+</ui:composition>

@@ -7,7 +7,9 @@
 
     <h:form>
         <p:menubar  style="width: 1024px; font-size: 15pt"> 
-            <p:menuitem value="Inicio" url="menu.jsf" icon="ui-icon-home"/>    
+            <p:menuitem value="Inicio" url="menu.jsf" icon="ui-icon-home"/> 
+            <p:menuitem value="Docentes" url="docentes.jsf" icon="ui-icon-person"/>
+            <p:menuitem value="Evaluaciones" url ="evaluaciones.jsf" icon="ui-icon-note"/>
             <p:submenu label="#{inicioBean.nombreUsuario}" style="float: right">  
                 <p:menuitem value="Cambiar Contraseña" url="cambiarclave.jsf" icon="ui-icon-locked"/>   
                 <p:menuitem id="userOptionsMenu" value="Cerrar Sesión" action="#{cabeceraBean.logout()}" icon="ui-icon-close" />
