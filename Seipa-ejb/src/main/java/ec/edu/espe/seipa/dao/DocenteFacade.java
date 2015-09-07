@@ -8,7 +8,9 @@ package ec.edu.espe.seipa.dao;
 import ec.edu.espe.seipa.model.Docente;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -26,6 +28,18 @@ public class DocenteFacade extends AbstractFacade<Docente> {
 
     public DocenteFacade() {
         super(Docente.class);
+    }
+    
+    public Docente findByID(String idDocente){
+        try{
+            String sql = "SELECT obj FROM DOCENTE obj WHERE obj.id=?1";
+            Query qry = this.getEntityManager().createQuery(sql);
+            qry.setParameter(1, idDocente);
+            return (Docente) qry.getSingleResult();
+        }catch(NoResultException e){
+            return null;
+        }
+            
     }
     
 }
