@@ -11,42 +11,63 @@
             <br>       
             </br>
             <p:fieldset legend="Perfil Docente" style="margin-bottom:15px">
-                <h:panelGrid columns="2" cellpadding="5">
-
-                    <h:outputLabel for="idUsuario" value="Id Usuario:" style=""/>
+                <h:panelGrid columns="4" columnClasses="column" border="1" cellpadding="0" cellspacing="7" >
+                    <h:outputLabel for="idUsuario" value="Id Usuario:" style="font-weight: bold"/>
+                    <br/>
                     <p:inplace id="idUsuario" editor="true">
                         <p:inputText value="#{perfilBean.text}" required="true" label="text" />
                     </p:inplace>
-                        
-                    <h:outputLabel for="cedula" value="Cedula:" />
+                    <br/> 
+
+                    <h:outputLabel for="cedula" value="Cedula:" style="font-weight: bold" />
+                    <br/>
                     <p:inplace id="cedula" editor="true">
                         <p:inputText value="#{perfilBean.text}" required="true" label="text" />
                     </p:inplace>
+                    <br/>
                     
-                    <h:outputLabel for="nombre" value="Nombres:" />
+                    <h:outputLabel for="nombre" value="Nombres:" style="font-weight: bold" />
+                    <br/>
                     <p:inplace id="nombre" editor="true">
                         <p:inputText value="#{perfilBean.text}" required="true" label="text" />
                     </p:inplace>
+                    <br/>
                     
-                    <h:outputLabel for="apellido" value="Apellidos:" />
+                    <h:outputLabel for="apellido" value="Apellidos:" style="font-weight: bold" />
+                    <br/>
                     <p:inplace id="apellido" editor="true">
                         <p:inputText value="#{perfilBean.text}" required="true" label="text" />
                     </p:inplace>
+                    <br/>
                     
-                    <h:outputLabel for="direccion" value="Direccion:" />          
+                    <h:outputLabel for="direccion" value="Direccion:" style="font-weight: bold" />          
+                    <br/>
                     <p:inplace id="direccion" editor="true">
                         <p:inputText value="#{perfilBean.text}" required="true" label="text" />
                     </p:inplace>
-
-                    <h:outputLabel for="telefono" value="Telefono:" />                             
+                    <br/>
+                    
+                    <h:outputLabel for="telefono" value="Telefono:" style="font-weight: bold" />                             
+                    <br/>
                     <p:inplace id="telefono" editor="true">
                         <p:inputText value="#{perfilBean.text}" required="true" label="text" />
                     </p:inplace>
+                    <br/>
                     
-                    <h:outputLabel for="correo" value="Correo:" />
+                    <h:outputLabel for="correo" value="Correo:" style="font-weight: bold" />
+                    <br/>
                     <p:inplace id="correo" editor="true">
                         <p:inputText value="#{perfilBean.text}" required="true" label="text" />
                     </p:inplace>
+                    <br/>
+                    
+                </h:panelGrid>
+            </p:fieldset>
+            <br/>
+            <br/>
+            <p:fieldset legend="Fotografia Docente" style="margin-bottom:15px">
+                <h:panelGrid columns="2" columnClasses="column" border="1" cellpadding="0" cellspacing="7">
+                    
                 </h:panelGrid>
             </p:fieldset>
     </ui:define>

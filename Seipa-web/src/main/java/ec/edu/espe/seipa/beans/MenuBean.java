@@ -5,6 +5,7 @@
  */
 package ec.edu.espe.seipa.beans;
 
+import ec.edu.espe.seipa.model.Docente;
 import ec.edu.espe.seipa.model.Usuario;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
@@ -22,11 +23,13 @@ public class MenuBean implements Serializable {
 
     
      private Usuario usuario;
+     private Docente docente;
     
 
     @PostConstruct
     public void postConstructor() {
-        this.usuario= (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Usuario");
+        //this.usuario= (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Usuario");
+        this.setDocente((Docente) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Docente"));
     }
     
     /**
@@ -41,6 +44,20 @@ public class MenuBean implements Serializable {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    /**
+     * @return the docente
+     */
+    public Docente getDocente() {
+        return docente;
+    }
+
+    /**
+     * @param docente the docente to set
+     */
+    public void setDocente(Docente docente) {
+        this.docente = docente;
     }
     
     

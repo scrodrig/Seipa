@@ -5,8 +5,10 @@
  */
 package ec.edu.espe.seipa.beans;
 
+import ec.edu.espe.seipa.model.Docente;
 import ec.edu.espe.seipa.model.Usuario;
 import ec.edu.espe.seipa.service.AutentificacionServicio;
+import ec.edu.espe.seipa.service.DocenteServicio;
 import ec.edu.espe.seipa.service.UsuarioService;
 import java.io.Serializable;
 import javax.ejb.EJB;
@@ -31,42 +33,62 @@ public class InicioBean implements Serializable{
     private AutentificacionServicio autentificacionServicio;
     @EJB
     private UsuarioService usuarioServicio;
+    @EJB
+    private DocenteServicio docenteServicio;
+    
     
     private String nombreUsuario;
+    private String idUsuario;
+    private String nombreDocente;
     private String clave;
 
     public String getNombreUsuario() {
         return nombreUsuario;
     }
 
-    
-    
-    
-     public String validarUsuario() {
+        
+    public String validarUsuario(){
         this.nombreUsuario = nombreUsuario;
-         System.out.println(nombreUsuario);
-        Usuario usuario = this.autentificacionServicio.usuarioAutentificar(nombreUsuario, clave);
-        if (usuario != null) {
-            //Empleado empleado = this.empleadoServicio.findByID(usuario.getCodigo());
-            //if (empleado != null) {
-                //if (empleado.getCodigo().equals(usuario.getCodigo())) {
-                    //usuario.setFechaUltAcceso(new Date());
-                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Usuario", usuario);
-                    //FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Empleado", empleado);
-                    //nombreEmpleado = empleado.getNombre();
-                    //usuario.setFechaUltAcceso(new Date());
-                    //usuarioServicio.actualizar(usuario);
-                    //return "seleccionrol";
-                //} else {
-                    return "home";
-                //}
-               //return "inicio";
-            
-        } else {
+        System.out.println(nombreUsuario);
+        try{
+            Usuario usuario = this.autentificacionServicio.usuarioAutentificar(nombreUsuario, clave);
+            System.out.println(usuario.getId());
+            if (usuario != null){
+                Docente docente = this.docenteServicio.findByIdUsuario(usuario.getId());
+                System.out.println(usuario.getId());
+                if (docente != null){
+                    if (docente.getId().equals(usuario.getId())){
+                        //usuario.setFechaUltAcceso(new Date());
+                        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Usuario", usuario);
+                        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Docente", docente);
+                        nombreDocente = docente.getNombre().concat(" ").concat(docente.getApellido());
+                        //nombreEmpleado = empleado.getNombre();
+                        //usuario.setFechaUltAcceso(new Date());
+                        //usuarioServicio.actualizar(usuario);
+                        //return "seleccionrol";
+                    } else {
+                        return "home";
+                    }
+                    return "index";
+
+                } else {
+                FacesContext.getCurrentInstance().addMessage(
+                null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Login Incorrecto", "No coincide la información"));
+                return "index";
+                }
+            }else{
             FacesContext.getCurrentInstance().addMessage(
-                    null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Login Incorrecto", "No coincide la información"));
-            return "index";
+            null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Login Incorrecto", "No coincide la información"));
+            return "index";            
+            }
+        }catch(Exception e)
+        {
+                System.out.println(e);
+                FacesContext.getCurrentInstance().addMessage(
+                null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Login Incorrecto", "No coincide la información"));
+                return "index";
         }
+        
     }
     
     public InicioBean() {
@@ -82,5 +104,33 @@ public class InicioBean implements Serializable{
 
     public void setClave(String clave) {
         this.clave = clave;
+    }
+
+    /**
+     * @return the nombreDocente
+     */
+    public String getNombreDocente() {
+        return nombreDocente;
+    }
+
+    /**
+     * @param nombreDocente the nombreDocente to set
+     */
+    public void setNombreDocente(String nombreDocente) {
+        this.nombreDocente = nombreDocente;
+    }
+
+    /**
+     * @return the idUsuario
+     */
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+
+    /**
+     * @param idUsuario the idUsuario to set
+     */
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
     }
 }

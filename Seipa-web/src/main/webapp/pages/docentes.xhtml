@@ -11,7 +11,7 @@
 
     <ui:define name="cuerpo">
         <p:dataTable id="docentes"  value="#{docentesBean.docentes}" var="docente" selection="#{docentesBean.docenteSeleccionado}" selectionMode="single" scrollable="true" 
-                     rowKey="#{docente.id}" style="width: 800px" 
+                     rowKey="#{docente.id}" style="width: 1000px" 
                      paginator="true" rows="10"  scrollWidth="false" paginatorPosition="bottom"
                      paginatorTemplate="  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                      emptyMessage="No se ha registrado ningún Docente" rendered="#{not (docentesBean.enRegistro or docentesBean.enEdicion or docentesBean.enAuditoria)}" >
@@ -22,19 +22,19 @@
             <f:facet name="header">
                 Docentes
             </f:facet>
-            <p:column headerText="Cédula" style="width: 80px">
+            <p:column headerText="Cédula" style="width: 55px">
                 #{docente.id}
             </p:column>
-            <p:column headerText="Nombres" style="width: 120px">
+            <p:column headerText="Nombres" style="width: 100px">
                 #{docente.nombre}
             </p:column>
-            <p:column headerText="Apellidos" style="width: 120px">
+            <p:column headerText="Apellidos" style="width: 100px">
                 #{docente.apellido}
             </p:column>
-            <p:column headerText="Email" style="width: 150px">
+            <p:column headerText="Email" style="width: 140px">
                 #{docente.correo}
             </p:column>
-            <p:column headerText="Direccion" style="width: 75px">
+            <p:column headerText="Direccion" style="width: 100px">
                 #{docente.direccion}
             </p:column>
             <p:column headerText="Teléfono" style="width: 75px">
