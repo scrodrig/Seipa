@@ -13,7 +13,9 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -32,8 +34,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Pregunta.findAll", query = "SELECT p FROM Pregunta p"),
     @NamedQuery(name = "Pregunta.findByIdpregunta", query = "SELECT p FROM Pregunta p WHERE p.idpregunta = :idpregunta"),
-    @NamedQuery(name = "Pregunta.findByIdtipopregunta", query = "SELECT p FROM Pregunta p WHERE p.idtipopregunta = :idtipopregunta"),
-    @NamedQuery(name = "Pregunta.findByTextopregunta", query = "SELECT p FROM Pregunta p WHERE p.textopregunta = :textopregunta")})
+    @NamedQuery(name = "Pregunta.findByTextopregunta", query = "SELECT p FROM Pregunta p WHERE p.textopregunta = :textopregunta"),
+    @NamedQuery(name = "Pregunta.findByOrdernumber", query = "SELECT p FROM Pregunta p WHERE p.ordernumber = :ordernumber")})
 public class Pregunta implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -42,15 +44,18 @@ public class Pregunta implements Serializable {
     @NotNull
     @Column(name = "IDPREGUNTA", nullable = false, precision = 38, scale = 0)
     private BigDecimal idpregunta;
-    @Column(name = "IDTIPOPREGUNTA")
-    private BigInteger idtipopregunta;
     @Size(max = 255)
     @Column(name = "TEXTOPREGUNTA", length = 255)
     private String textopregunta;
+    @Column(name = "ORDERNUMBER")
+    private BigInteger ordernumber;
     @ManyToMany(mappedBy = "preguntaList")
     private List<Evaluacion> evaluacionList;
     @ManyToMany(mappedBy = "preguntaList")
     private List<Opcion> opcionList;
+    @JoinColumn(name = "IDTIPOPREGUNTA", referencedColumnName = "IDTIPOPREGUNTA")
+    @ManyToOne
+    private TipoPregunta idtipopregunta;
 
     public Pregunta() {
     }
@@ -67,20 +72,20 @@ public class Pregunta implements Serializable {
         this.idpregunta = idpregunta;
     }
 
-    public BigInteger getIdtipopregunta() {
-        return idtipopregunta;
-    }
-
-    public void setIdtipopregunta(BigInteger idtipopregunta) {
-        this.idtipopregunta = idtipopregunta;
-    }
-
     public String getTextopregunta() {
         return textopregunta;
     }
 
     public void setTextopregunta(String textopregunta) {
         this.textopregunta = textopregunta;
+    }
+
+    public BigInteger getOrdernumber() {
+        return ordernumber;
+    }
+
+    public void setOrdernumber(BigInteger ordernumber) {
+        this.ordernumber = ordernumber;
     }
 
     @XmlTransient
@@ -99,6 +104,14 @@ public class Pregunta implements Serializable {
 
     public void setOpcionList(List<Opcion> opcionList) {
         this.opcionList = opcionList;
+    }
+
+    public TipoPregunta getIdtipopregunta() {
+        return idtipopregunta;
+    }
+
+    public void setIdtipopregunta(TipoPregunta idtipopregunta) {
+        this.idtipopregunta = idtipopregunta;
     }
 
     @Override
