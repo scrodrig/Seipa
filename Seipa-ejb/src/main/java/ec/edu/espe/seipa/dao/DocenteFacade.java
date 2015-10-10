@@ -33,7 +33,7 @@ public class DocenteFacade extends AbstractFacade<Docente> {
 
     public Docente findByIdUsuario(String idUsuario) {
         try {
-            String sql = "SELECT obj FROM Docente obj join Usuario u WHERE u.idUsuario=?1";
+            String sql = "SELECT obj FROM Docente obj WHERE obj.idUsuario.id=?1";
             Query qry = this.getEntityManager().createQuery(sql);
             qry.setParameter(1, idUsuario);
             return (Docente) qry.getSingleResult();
