@@ -5,7 +5,7 @@
  */
 package ec.edu.espe.seipa.dao;
 
-import ec.edu.espe.seipa.model.Preguntas;
+import ec.edu.espe.seipa.model.TipoEvaluacion;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author ronny
  */
 @Stateless
-public class PreguntasFacade extends AbstractFacade<Preguntas> {
+public class TipoEvaluacionFacade extends AbstractFacade<TipoEvaluacion> {
     @PersistenceContext(unitName = "ec.edu.espe.seipa_Seipa-ejb_ejb_1PU")
     private EntityManager em;
 
@@ -24,8 +24,8 @@ public class PreguntasFacade extends AbstractFacade<Preguntas> {
         return em;
     }
 
-    public PreguntasFacade() {
-        super(Preguntas.class);
+    public TipoEvaluacionFacade() {
+        super(TipoEvaluacion.class);
     }
     
 }

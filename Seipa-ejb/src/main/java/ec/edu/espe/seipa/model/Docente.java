@@ -60,17 +60,14 @@ public class Docente implements Serializable {
     @Size(max = 100)
     @Column(name = "CORREO", length = 100)
     private String correo;
+    @OneToMany(mappedBy = "id")
+    private List<Sumario> sumarioList;
     @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID")
     @ManyToOne
     private Usuario idUsuario;
-    @JoinColumn(name = "ID_PUNTAJE", referencedColumnName = "ID")
-    @ManyToOne
-    private PuntajeDocente idPuntaje;
     @JoinColumn(name = "ID_DEPARTAMENTO", referencedColumnName = "ID")
     @ManyToOne
     private Departamento idDepartamento;
-    @OneToMany(mappedBy = "idDocente")
-    private List<Archivos> archivosList;
 
     public Docente() {
     }
@@ -127,6 +124,15 @@ public class Docente implements Serializable {
         this.correo = correo;
     }
 
+    @XmlTransient
+    public List<Sumario> getSumarioList() {
+        return sumarioList;
+    }
+
+    public void setSumarioList(List<Sumario> sumarioList) {
+        this.sumarioList = sumarioList;
+    }
+
     public Usuario getIdUsuario() {
         return idUsuario;
     }
@@ -135,29 +141,12 @@ public class Docente implements Serializable {
         this.idUsuario = idUsuario;
     }
 
-    public PuntajeDocente getIdPuntaje() {
-        return idPuntaje;
-    }
-
-    public void setIdPuntaje(PuntajeDocente idPuntaje) {
-        this.idPuntaje = idPuntaje;
-    }
-
     public Departamento getIdDepartamento() {
         return idDepartamento;
     }
 
     public void setIdDepartamento(Departamento idDepartamento) {
         this.idDepartamento = idDepartamento;
-    }
-
-    @XmlTransient
-    public List<Archivos> getArchivosList() {
-        return archivosList;
-    }
-
-    public void setArchivosList(List<Archivos> archivosList) {
-        this.archivosList = archivosList;
     }
 
     @Override

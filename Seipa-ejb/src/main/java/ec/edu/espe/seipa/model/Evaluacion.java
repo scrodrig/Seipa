@@ -7,7 +7,6 @@ package ec.edu.espe.seipa.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -15,6 +14,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -36,125 +37,95 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Evaluacion.findAll", query = "SELECT e FROM Evaluacion e"),
-    @NamedQuery(name = "Evaluacion.findById", query = "SELECT e FROM Evaluacion e WHERE e.id = :id"),
-    @NamedQuery(name = "Evaluacion.findByRespuesta", query = "SELECT e FROM Evaluacion e WHERE e.respuesta = :respuesta"),
-    @NamedQuery(name = "Evaluacion.findByPuntaje", query = "SELECT e FROM Evaluacion e WHERE e.puntaje = :puntaje"),
-    @NamedQuery(name = "Evaluacion.findByFechaevaluacion", query = "SELECT e FROM Evaluacion e WHERE e.fechaevaluacion = :fechaevaluacion"),
-    @NamedQuery(name = "Evaluacion.findByNumEvaluacion", query = "SELECT e FROM Evaluacion e WHERE e.numEvaluacion = :numEvaluacion")})
+    @NamedQuery(name = "Evaluacion.findByIdevaluacion", query = "SELECT e FROM Evaluacion e WHERE e.idevaluacion = :idevaluacion"),
+    @NamedQuery(name = "Evaluacion.findByDescripcion", query = "SELECT e FROM Evaluacion e WHERE e.descripcion = :descripcion"),
+    @NamedQuery(name = "Evaluacion.findByFechaCreacion", query = "SELECT e FROM Evaluacion e WHERE e.fechaCreacion = :fechaCreacion")})
 public class Evaluacion implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ID", nullable = false, precision = 38, scale = 0)
-    private BigDecimal id;
-    @Size(max = 600)
-    @Column(name = "RESPUESTA", length = 600)
-    private String respuesta;
-    @Column(name = "PUNTAJE", precision = 126)
-    private Double puntaje;
-    @Column(name = "FECHAEVALUACION")
+    @Column(name = "IDEVALUACION", nullable = false, precision = 38, scale = 0)
+    private BigDecimal idevaluacion;
+    @Size(max = 100)
+    @Column(name = "DESCRIPCION", length = 100)
+    private String descripcion;
+    @Column(name = "FECHA_CREACION")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaevaluacion;
-    @Column(name = "NUM_EVALUACION")
-    private BigInteger numEvaluacion;
-    @JoinColumn(name = "ID_PREGUNTA", referencedColumnName = "ID")
+    private Date fechaCreacion;
+    @JoinTable(name = "PREGUNTAEVALUACION", joinColumns = {
+        @JoinColumn(name = "IDEVALUACION", referencedColumnName = "IDEVALUACION")}, inverseJoinColumns = {
+        @JoinColumn(name = "IDPREGUNTA", referencedColumnName = "IDPREGUNTA")})
+    @ManyToMany
+    private List<Pregunta> preguntaList;
+    @JoinColumn(name = "IDTIPOEVALUACION", referencedColumnName = "IDTIPOEVALUACION")
     @ManyToOne
-    private Preguntas idPregunta;
-    @OneToMany(mappedBy = "idEvaluacion")
-    private List<Parametros> parametrosList;
-    @OneToMany(mappedBy = "idEvaluacion")
-    private List<PuntajeDocente> puntajeDocenteList;
-    @OneToMany(mappedBy = "idEvaluacionDocente")
-    private List<ResultadosHeterogeneas> resultadosHeterogeneasList;
+    private TipoEvaluacion idtipoevaluacion;
+    @OneToMany(mappedBy = "idevaluacion")
+    private List<Sumario> sumarioList;
 
     public Evaluacion() {
     }
 
-    public Evaluacion(BigDecimal id) {
-        this.id = id;
+    public Evaluacion(BigDecimal idevaluacion) {
+        this.idevaluacion = idevaluacion;
     }
 
-    public BigDecimal getId() {
-        return id;
+    public BigDecimal getIdevaluacion() {
+        return idevaluacion;
     }
 
-    public void setId(BigDecimal id) {
-        this.id = id;
+    public void setIdevaluacion(BigDecimal idevaluacion) {
+        this.idevaluacion = idevaluacion;
     }
 
-    public String getRespuesta() {
-        return respuesta;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setRespuesta(String respuesta) {
-        this.respuesta = respuesta;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
-    public Double getPuntaje() {
-        return puntaje;
+    public Date getFechaCreacion() {
+        return fechaCreacion;
     }
 
-    public void setPuntaje(Double puntaje) {
-        this.puntaje = puntaje;
-    }
-
-    public Date getFechaevaluacion() {
-        return fechaevaluacion;
-    }
-
-    public void setFechaevaluacion(Date fechaevaluacion) {
-        this.fechaevaluacion = fechaevaluacion;
-    }
-
-    public BigInteger getNumEvaluacion() {
-        return numEvaluacion;
-    }
-
-    public void setNumEvaluacion(BigInteger numEvaluacion) {
-        this.numEvaluacion = numEvaluacion;
-    }
-
-    public Preguntas getIdPregunta() {
-        return idPregunta;
-    }
-
-    public void setIdPregunta(Preguntas idPregunta) {
-        this.idPregunta = idPregunta;
+    public void setFechaCreacion(Date fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
     }
 
     @XmlTransient
-    public List<Parametros> getParametrosList() {
-        return parametrosList;
+    public List<Pregunta> getPreguntaList() {
+        return preguntaList;
     }
 
-    public void setParametrosList(List<Parametros> parametrosList) {
-        this.parametrosList = parametrosList;
+    public void setPreguntaList(List<Pregunta> preguntaList) {
+        this.preguntaList = preguntaList;
+    }
+
+    public TipoEvaluacion getIdtipoevaluacion() {
+        return idtipoevaluacion;
+    }
+
+    public void setIdtipoevaluacion(TipoEvaluacion idtipoevaluacion) {
+        this.idtipoevaluacion = idtipoevaluacion;
     }
 
     @XmlTransient
-    public List<PuntajeDocente> getPuntajeDocenteList() {
-        return puntajeDocenteList;
+    public List<Sumario> getSumarioList() {
+        return sumarioList;
     }
 
-    public void setPuntajeDocenteList(List<PuntajeDocente> puntajeDocenteList) {
-        this.puntajeDocenteList = puntajeDocenteList;
-    }
-
-    @XmlTransient
-    public List<ResultadosHeterogeneas> getResultadosHeterogeneasList() {
-        return resultadosHeterogeneasList;
-    }
-
-    public void setResultadosHeterogeneasList(List<ResultadosHeterogeneas> resultadosHeterogeneasList) {
-        this.resultadosHeterogeneasList = resultadosHeterogeneasList;
+    public void setSumarioList(List<Sumario> sumarioList) {
+        this.sumarioList = sumarioList;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idevaluacion != null ? idevaluacion.hashCode() : 0);
         return hash;
     }
 
@@ -165,7 +136,7 @@ public class Evaluacion implements Serializable {
             return false;
         }
         Evaluacion other = (Evaluacion) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idevaluacion == null && other.idevaluacion != null) || (this.idevaluacion != null && !this.idevaluacion.equals(other.idevaluacion))) {
             return false;
         }
         return true;
@@ -173,7 +144,7 @@ public class Evaluacion implements Serializable {
 
     @Override
     public String toString() {
-        return "ec.edu.espe.seipa.model.Evaluacion[ id=" + id + " ]";
+        return "ec.edu.espe.seipa.model.Evaluacion[ idevaluacion=" + idevaluacion + " ]";
     }
     
 }

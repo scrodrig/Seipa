@@ -11,8 +11,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -32,7 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Archivos.findById", query = "SELECT a FROM Archivos a WHERE a.id = :id"),
     @NamedQuery(name = "Archivos.findByNombre", query = "SELECT a FROM Archivos a WHERE a.nombre = :nombre"),
     @NamedQuery(name = "Archivos.findByExtension", query = "SELECT a FROM Archivos a WHERE a.extension = :extension"),
-    @NamedQuery(name = "Archivos.findByUrl", query = "SELECT a FROM Archivos a WHERE a.url = :url")})
+    @NamedQuery(name = "Archivos.findByUrl", query = "SELECT a FROM Archivos a WHERE a.url = :url"),
+    @NamedQuery(name = "Archivos.findByIddocente", query = "SELECT a FROM Archivos a WHERE a.iddocente = :iddocente")})
 public class Archivos implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -50,9 +49,9 @@ public class Archivos implements Serializable {
     @Size(max = 400)
     @Column(name = "URL", length = 400)
     private String url;
-    @JoinColumn(name = "ID_DOCENTE", referencedColumnName = "ID")
-    @ManyToOne
-    private Docente idDocente;
+    @Size(max = 100)
+    @Column(name = "IDDOCENTE", length = 100)
+    private String iddocente;
 
     public Archivos() {
     }
@@ -93,12 +92,12 @@ public class Archivos implements Serializable {
         this.url = url;
     }
 
-    public Docente getIdDocente() {
-        return idDocente;
+    public String getIddocente() {
+        return iddocente;
     }
 
-    public void setIdDocente(Docente idDocente) {
-        this.idDocente = idDocente;
+    public void setIddocente(String iddocente) {
+        this.iddocente = iddocente;
     }
 
     @Override

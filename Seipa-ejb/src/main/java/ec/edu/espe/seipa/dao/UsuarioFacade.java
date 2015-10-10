@@ -18,6 +18,7 @@ import javax.persistence.Query;
  */
 @Stateless
 public class UsuarioFacade extends AbstractFacade<Usuario> {
+
     @PersistenceContext(unitName = "ec.edu.espe.seipa_Seipa-ejb_ejb_1PU")
     private EntityManager em;
 
@@ -29,7 +30,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
     public UsuarioFacade() {
         super(Usuario.class);
     }
-    
+
     public Usuario findByName(String nombreUsuario) {
         try {
             String sql = "SELECT obj FROM Usuario obj WHERE obj.usuario=?1";
@@ -40,5 +41,5 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
             return null;
         }
     }
-    
+
 }

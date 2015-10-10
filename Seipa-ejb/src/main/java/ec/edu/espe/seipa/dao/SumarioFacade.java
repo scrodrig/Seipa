@@ -5,7 +5,7 @@
  */
 package ec.edu.espe.seipa.dao;
 
-import ec.edu.espe.seipa.model.Dimtime;
+import ec.edu.espe.seipa.model.Sumario;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author ronny
  */
 @Stateless
-public class DimtimeFacade extends AbstractFacade<Dimtime> {
+public class SumarioFacade extends AbstractFacade<Sumario> {
     @PersistenceContext(unitName = "ec.edu.espe.seipa_Seipa-ejb_ejb_1PU")
     private EntityManager em;
 
@@ -24,8 +24,8 @@ public class DimtimeFacade extends AbstractFacade<Dimtime> {
         return em;
     }
 
-    public DimtimeFacade() {
-        super(Dimtime.class);
+    public SumarioFacade() {
+        super(Sumario.class);
     }
     
 }

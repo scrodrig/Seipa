@@ -5,7 +5,7 @@
  */
 package ec.edu.espe.seipa.dao;
 
-import ec.edu.espe.seipa.model.ResultadosHeterogeneas;
+import ec.edu.espe.seipa.model.Opcion;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author ronny
  */
 @Stateless
-public class ResultadosHeterogeneasFacade extends AbstractFacade<ResultadosHeterogeneas> {
+public class OpcionFacade extends AbstractFacade<Opcion> {
     @PersistenceContext(unitName = "ec.edu.espe.seipa_Seipa-ejb_ejb_1PU")
     private EntityManager em;
 
@@ -24,8 +24,8 @@ public class ResultadosHeterogeneasFacade extends AbstractFacade<ResultadosHeter
         return em;
     }
 
-    public ResultadosHeterogeneasFacade() {
-        super(ResultadosHeterogeneas.class);
+    public OpcionFacade() {
+        super(Opcion.class);
     }
     
 }

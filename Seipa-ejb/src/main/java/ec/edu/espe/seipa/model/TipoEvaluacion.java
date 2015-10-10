@@ -26,58 +26,47 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author ronny
  */
 @Entity
-@Table(name = "PREGUNTAS", catalog = "", schema = "BI")
+@Table(name = "TIPO_EVALUACION", catalog = "", schema = "BI")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Preguntas.findAll", query = "SELECT p FROM Preguntas p"),
-    @NamedQuery(name = "Preguntas.findById", query = "SELECT p FROM Preguntas p WHERE p.id = :id"),
-    @NamedQuery(name = "Preguntas.findByPregunta", query = "SELECT p FROM Preguntas p WHERE p.pregunta = :pregunta"),
-    @NamedQuery(name = "Preguntas.findByValor", query = "SELECT p FROM Preguntas p WHERE p.valor = :valor")})
-public class Preguntas implements Serializable {
+    @NamedQuery(name = "TipoEvaluacion.findAll", query = "SELECT t FROM TipoEvaluacion t"),
+    @NamedQuery(name = "TipoEvaluacion.findByIdtipoevaluacion", query = "SELECT t FROM TipoEvaluacion t WHERE t.idtipoevaluacion = :idtipoevaluacion"),
+    @NamedQuery(name = "TipoEvaluacion.findByDescripcion", query = "SELECT t FROM TipoEvaluacion t WHERE t.descripcion = :descripcion")})
+public class TipoEvaluacion implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ID", nullable = false, precision = 38, scale = 0)
-    private BigDecimal id;
-    @Size(max = 600)
-    @Column(name = "PREGUNTA", length = 600)
-    private String pregunta;
-    @Column(name = "VALOR", precision = 126)
-    private Double valor;
-    @OneToMany(mappedBy = "idPregunta")
+    @Column(name = "IDTIPOEVALUACION", nullable = false, precision = 38, scale = 0)
+    private BigDecimal idtipoevaluacion;
+    @Size(max = 100)
+    @Column(name = "DESCRIPCION", length = 100)
+    private String descripcion;
+    @OneToMany(mappedBy = "idtipoevaluacion")
     private List<Evaluacion> evaluacionList;
 
-    public Preguntas() {
+    public TipoEvaluacion() {
     }
 
-    public Preguntas(BigDecimal id) {
-        this.id = id;
+    public TipoEvaluacion(BigDecimal idtipoevaluacion) {
+        this.idtipoevaluacion = idtipoevaluacion;
     }
 
-    public BigDecimal getId() {
-        return id;
+    public BigDecimal getIdtipoevaluacion() {
+        return idtipoevaluacion;
     }
 
-    public void setId(BigDecimal id) {
-        this.id = id;
+    public void setIdtipoevaluacion(BigDecimal idtipoevaluacion) {
+        this.idtipoevaluacion = idtipoevaluacion;
     }
 
-    public String getPregunta() {
-        return pregunta;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setPregunta(String pregunta) {
-        this.pregunta = pregunta;
-    }
-
-    public Double getValor() {
-        return valor;
-    }
-
-    public void setValor(Double valor) {
-        this.valor = valor;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     @XmlTransient
@@ -92,18 +81,18 @@ public class Preguntas implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idtipoevaluacion != null ? idtipoevaluacion.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Preguntas)) {
+        if (!(object instanceof TipoEvaluacion)) {
             return false;
         }
-        Preguntas other = (Preguntas) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        TipoEvaluacion other = (TipoEvaluacion) object;
+        if ((this.idtipoevaluacion == null && other.idtipoevaluacion != null) || (this.idtipoevaluacion != null && !this.idtipoevaluacion.equals(other.idtipoevaluacion))) {
             return false;
         }
         return true;
@@ -111,7 +100,7 @@ public class Preguntas implements Serializable {
 
     @Override
     public String toString() {
-        return "ec.edu.espe.seipa.model.Preguntas[ id=" + id + " ]";
+        return "ec.edu.espe.seipa.model.TipoEvaluacion[ idtipoevaluacion=" + idtipoevaluacion + " ]";
     }
     
 }
