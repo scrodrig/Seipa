@@ -25,13 +25,16 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author SchubertDavid
+ * @author ronny
  */
 @Entity
 @Table(name = "CARRERA", catalog = "", schema = "BI")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Carrera.findAll", query = "SELECT c FROM Carrera c")})
+    @NamedQuery(name = "Carrera.findAll", query = "SELECT c FROM Carrera c"),
+    @NamedQuery(name = "Carrera.findById", query = "SELECT c FROM Carrera c WHERE c.id = :id"),
+    @NamedQuery(name = "Carrera.findByNombre", query = "SELECT c FROM Carrera c WHERE c.nombre = :nombre"),
+    @NamedQuery(name = "Carrera.findByDescripcion", query = "SELECT c FROM Carrera c WHERE c.descripcion = :descripcion")})
 public class Carrera implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -46,11 +49,11 @@ public class Carrera implements Serializable {
     @Size(max = 1000)
     @Column(name = "DESCRIPCION", length = 1000)
     private String descripcion;
+    @OneToMany(mappedBy = "idDepartamento")
+    private List<Materia> materiaList;
     @JoinColumn(name = "ID_DEPARTAMENTO", referencedColumnName = "ID")
     @ManyToOne
     private Departamento idDepartamento;
-    @OneToMany(mappedBy = "idDepartamento")
-    private List<Materia> materiaList;
 
     public Carrera() {
     }
@@ -83,14 +86,6 @@ public class Carrera implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Departamento getIdDepartamento() {
-        return idDepartamento;
-    }
-
-    public void setIdDepartamento(Departamento idDepartamento) {
-        this.idDepartamento = idDepartamento;
-    }
-
     @XmlTransient
     public List<Materia> getMateriaList() {
         return materiaList;
@@ -98,6 +93,14 @@ public class Carrera implements Serializable {
 
     public void setMateriaList(List<Materia> materiaList) {
         this.materiaList = materiaList;
+    }
+
+    public Departamento getIdDepartamento() {
+        return idDepartamento;
+    }
+
+    public void setIdDepartamento(Departamento idDepartamento) {
+        this.idDepartamento = idDepartamento;
     }
 
     @Override

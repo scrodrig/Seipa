@@ -25,13 +25,16 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author SchubertDavid
+ * @author ronny
  */
 @Entity
 @Table(name = "TIPO_USUARIO", catalog = "", schema = "BI")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TipoUsuario.findAll", query = "SELECT t FROM TipoUsuario t")})
+    @NamedQuery(name = "TipoUsuario.findAll", query = "SELECT t FROM TipoUsuario t"),
+    @NamedQuery(name = "TipoUsuario.findById", query = "SELECT t FROM TipoUsuario t WHERE t.id = :id"),
+    @NamedQuery(name = "TipoUsuario.findByTipoUsuario", query = "SELECT t FROM TipoUsuario t WHERE t.tipoUsuario = :tipoUsuario"),
+    @NamedQuery(name = "TipoUsuario.findByDescripcion", query = "SELECT t FROM TipoUsuario t WHERE t.descripcion = :descripcion")})
 public class TipoUsuario implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -51,8 +54,6 @@ public class TipoUsuario implements Serializable {
     private Roles idTiporoles;
     @OneToMany(mappedBy = "idTipoUsuario")
     private List<Usuario> usuarioList;
-    @OneToMany(mappedBy = "idTipoUsuario")
-    private List<Docente> docenteList;
 
     public TipoUsuario() {
     }
@@ -100,15 +101,6 @@ public class TipoUsuario implements Serializable {
 
     public void setUsuarioList(List<Usuario> usuarioList) {
         this.usuarioList = usuarioList;
-    }
-
-    @XmlTransient
-    public List<Docente> getDocenteList() {
-        return docenteList;
-    }
-
-    public void setDocenteList(List<Docente> docenteList) {
-        this.docenteList = docenteList;
     }
 
     @Override

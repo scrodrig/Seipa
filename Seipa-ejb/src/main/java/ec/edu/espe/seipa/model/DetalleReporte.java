@@ -22,13 +22,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author SchubertDavid
+ * @author ronny
  */
 @Entity
 @Table(name = "DETALLE_REPORTE", catalog = "", schema = "BI")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "DetalleReporte.findAll", query = "SELECT d FROM DetalleReporte d")})
+    @NamedQuery(name = "DetalleReporte.findAll", query = "SELECT d FROM DetalleReporte d"),
+    @NamedQuery(name = "DetalleReporte.findById", query = "SELECT d FROM DetalleReporte d WHERE d.id = :id"),
+    @NamedQuery(name = "DetalleReporte.findByCampo", query = "SELECT d FROM DetalleReporte d WHERE d.campo = :campo")})
 public class DetalleReporte implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation

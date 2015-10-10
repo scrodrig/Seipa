@@ -24,13 +24,17 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author SchubertDavid
+ * @author ronny
  */
 @Entity
 @Table(name = "PUNTAJE_DOCENTE", catalog = "", schema = "BI")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "PuntajeDocente.findAll", query = "SELECT p FROM PuntajeDocente p")})
+    @NamedQuery(name = "PuntajeDocente.findAll", query = "SELECT p FROM PuntajeDocente p"),
+    @NamedQuery(name = "PuntajeDocente.findById", query = "SELECT p FROM PuntajeDocente p WHERE p.id = :id"),
+    @NamedQuery(name = "PuntajeDocente.findByPuntajeHeterogenera", query = "SELECT p FROM PuntajeDocente p WHERE p.puntajeHeterogenera = :puntajeHeterogenera"),
+    @NamedQuery(name = "PuntajeDocente.findByPuntajeHomogenea", query = "SELECT p FROM PuntajeDocente p WHERE p.puntajeHomogenea = :puntajeHomogenea"),
+    @NamedQuery(name = "PuntajeDocente.findByPuntajeCoevaluacion", query = "SELECT p FROM PuntajeDocente p WHERE p.puntajeCoevaluacion = :puntajeCoevaluacion")})
 public class PuntajeDocente implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -45,11 +49,11 @@ public class PuntajeDocente implements Serializable {
     private Double puntajeHomogenea;
     @Column(name = "PUNTAJE_COEVALUACION", precision = 126)
     private Double puntajeCoevaluacion;
+    @OneToMany(mappedBy = "idPuntaje")
+    private List<Docente> docenteList;
     @JoinColumn(name = "ID_EVALUACION", referencedColumnName = "ID")
     @ManyToOne
     private Evaluacion idEvaluacion;
-    @OneToMany(mappedBy = "idPuntaje")
-    private List<Docente> docenteList;
 
     public PuntajeDocente() {
     }
@@ -90,14 +94,6 @@ public class PuntajeDocente implements Serializable {
         this.puntajeCoevaluacion = puntajeCoevaluacion;
     }
 
-    public Evaluacion getIdEvaluacion() {
-        return idEvaluacion;
-    }
-
-    public void setIdEvaluacion(Evaluacion idEvaluacion) {
-        this.idEvaluacion = idEvaluacion;
-    }
-
     @XmlTransient
     public List<Docente> getDocenteList() {
         return docenteList;
@@ -105,6 +101,14 @@ public class PuntajeDocente implements Serializable {
 
     public void setDocenteList(List<Docente> docenteList) {
         this.docenteList = docenteList;
+    }
+
+    public Evaluacion getIdEvaluacion() {
+        return idEvaluacion;
+    }
+
+    public void setIdEvaluacion(Evaluacion idEvaluacion) {
+        this.idEvaluacion = idEvaluacion;
     }
 
     @Override

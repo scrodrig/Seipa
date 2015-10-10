@@ -29,13 +29,18 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author SchubertDavid
+ * @author ronny
  */
 @Entity
 @Table(name = "EVALUACION", catalog = "", schema = "BI")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Evaluacion.findAll", query = "SELECT e FROM Evaluacion e")})
+    @NamedQuery(name = "Evaluacion.findAll", query = "SELECT e FROM Evaluacion e"),
+    @NamedQuery(name = "Evaluacion.findById", query = "SELECT e FROM Evaluacion e WHERE e.id = :id"),
+    @NamedQuery(name = "Evaluacion.findByRespuesta", query = "SELECT e FROM Evaluacion e WHERE e.respuesta = :respuesta"),
+    @NamedQuery(name = "Evaluacion.findByPuntaje", query = "SELECT e FROM Evaluacion e WHERE e.puntaje = :puntaje"),
+    @NamedQuery(name = "Evaluacion.findByFechaevaluacion", query = "SELECT e FROM Evaluacion e WHERE e.fechaevaluacion = :fechaevaluacion"),
+    @NamedQuery(name = "Evaluacion.findByNumEvaluacion", query = "SELECT e FROM Evaluacion e WHERE e.numEvaluacion = :numEvaluacion")})
 public class Evaluacion implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -58,11 +63,11 @@ public class Evaluacion implements Serializable {
     @ManyToOne
     private Preguntas idPregunta;
     @OneToMany(mappedBy = "idEvaluacion")
+    private List<Parametros> parametrosList;
+    @OneToMany(mappedBy = "idEvaluacion")
     private List<PuntajeDocente> puntajeDocenteList;
     @OneToMany(mappedBy = "idEvaluacionDocente")
     private List<ResultadosHeterogeneas> resultadosHeterogeneasList;
-    @OneToMany(mappedBy = "idEvaluacion")
-    private List<Parametros> parametrosList;
 
     public Evaluacion() {
     }
@@ -120,6 +125,15 @@ public class Evaluacion implements Serializable {
     }
 
     @XmlTransient
+    public List<Parametros> getParametrosList() {
+        return parametrosList;
+    }
+
+    public void setParametrosList(List<Parametros> parametrosList) {
+        this.parametrosList = parametrosList;
+    }
+
+    @XmlTransient
     public List<PuntajeDocente> getPuntajeDocenteList() {
         return puntajeDocenteList;
     }
@@ -135,15 +149,6 @@ public class Evaluacion implements Serializable {
 
     public void setResultadosHeterogeneasList(List<ResultadosHeterogeneas> resultadosHeterogeneasList) {
         this.resultadosHeterogeneasList = resultadosHeterogeneasList;
-    }
-
-    @XmlTransient
-    public List<Parametros> getParametrosList() {
-        return parametrosList;
-    }
-
-    public void setParametrosList(List<Parametros> parametrosList) {
-        this.parametrosList = parametrosList;
     }
 
     @Override

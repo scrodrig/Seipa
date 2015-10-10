@@ -6,7 +6,7 @@
 package ec.edu.espe.seipa.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,34 +15,41 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author SchubertDavid
+ * @author ronny
  */
 @Entity
 @Table(name = "USUARIO", catalog = "", schema = "BI")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")})
+    @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u"),
+    @NamedQuery(name = "Usuario.findById", query = "SELECT u FROM Usuario u WHERE u.id = :id"),
+    @NamedQuery(name = "Usuario.findByUsuario", query = "SELECT u FROM Usuario u WHERE u.usuario = :usuario"),
+    @NamedQuery(name = "Usuario.findByPass", query = "SELECT u FROM Usuario u WHERE u.pass = :pass")})
 public class Usuario implements Serializable {
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ID", nullable = false, precision = 38, scale = 0)
-    private BigDecimal id;
+    @Size(min = 1, max = 100)
+    @Column(name = "ID", nullable = false, length = 100)
+    private String id;
     @Size(max = 100)
     @Column(name = "USUARIO", length = 100)
     private String usuario;
     @Size(max = 100)
     @Column(name = "PASS", length = 100)
     private String pass;
+    @OneToMany(mappedBy = "idUsuario")
+    private List<Docente> docenteList;
     @JoinColumn(name = "ID_TIPO_USUARIO", referencedColumnName = "ID")
     @ManyToOne
     private TipoUsuario idTipoUsuario;
@@ -50,15 +57,15 @@ public class Usuario implements Serializable {
     public Usuario() {
     }
 
-    public Usuario(BigDecimal id) {
+    public Usuario(String id) {
         this.id = id;
     }
 
-    public BigDecimal getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -76,6 +83,15 @@ public class Usuario implements Serializable {
 
     public void setPass(String pass) {
         this.pass = pass;
+    }
+
+    @XmlTransient
+    public List<Docente> getDocenteList() {
+        return docenteList;
+    }
+
+    public void setDocenteList(List<Docente> docenteList) {
+        this.docenteList = docenteList;
     }
 
     public TipoUsuario getIdTipoUsuario() {

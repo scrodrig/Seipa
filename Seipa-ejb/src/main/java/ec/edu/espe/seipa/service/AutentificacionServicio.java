@@ -26,8 +26,8 @@ public class AutentificacionServicio {
     
     @EJB
     private UsuarioFacade usuarioFacede;
-    public Usuario usuarioAutentificar(String nombreUsuario, String clave){
     
+    public Usuario usuarioAutentificar(String nombreUsuario, String clave){
         Usuario usuario =this.usuarioFacede.findByName(nombreUsuario);
         if(usuario != null){
             if (usuario.getPass().equals(clave)){
@@ -35,6 +35,7 @@ public class AutentificacionServicio {
             }
         }
         return null;
+
     }
     
 }

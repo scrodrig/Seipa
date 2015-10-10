@@ -38,8 +38,8 @@ public class DocenteServicio {
      * @param cedula
      * @return
      */
-    public Docente findByID(String idDocente){
-        return this.docenteFacede.findByID(idDocente);
+    public Docente findByIdUsuario(String idUsuario){
+        return this.docenteFacede.findByIdUsuario(idUsuario);
     }
     
     /**
@@ -67,7 +67,7 @@ public class DocenteServicio {
      */
     
     public void eliminar(Docente docente){
-        Docente docenteTmp = this.docenteFacede.findByID(docente.getId().toString());
-        this.docenteFacede.remove(docenteTmp);
+        //Docente docenteTmp = this.docenteFacede.findByID(docente.getId());
+        //this.docenteFacede.remove(docenteTmp);
     }
 }

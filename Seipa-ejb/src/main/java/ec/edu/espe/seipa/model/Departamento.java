@@ -23,13 +23,16 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author SchubertDavid
+ * @author ronny
  */
 @Entity
 @Table(name = "DEPARTAMENTO", catalog = "", schema = "BI")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Departamento.findAll", query = "SELECT d FROM Departamento d")})
+    @NamedQuery(name = "Departamento.findAll", query = "SELECT d FROM Departamento d"),
+    @NamedQuery(name = "Departamento.findById", query = "SELECT d FROM Departamento d WHERE d.id = :id"),
+    @NamedQuery(name = "Departamento.findByNombre", query = "SELECT d FROM Departamento d WHERE d.nombre = :nombre"),
+    @NamedQuery(name = "Departamento.findByDescripcion", query = "SELECT d FROM Departamento d WHERE d.descripcion = :descripcion")})
 public class Departamento implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -45,13 +48,13 @@ public class Departamento implements Serializable {
     @Column(name = "DESCRIPCION", length = 1000)
     private String descripcion;
     @OneToMany(mappedBy = "idDepartamento")
-    private List<Carrera> carreraList;
-    @OneToMany(mappedBy = "idDepartamento")
-    private List<Administrativas> administrativasList;
-    @OneToMany(mappedBy = "idDepartamento")
     private List<Unidadesinvestigativas> unidadesinvestigativasList;
     @OneToMany(mappedBy = "idDepartamento")
     private List<Docente> docenteList;
+    @OneToMany(mappedBy = "idDepartamento")
+    private List<Carrera> carreraList;
+    @OneToMany(mappedBy = "idDepartamento")
+    private List<Administrativas> administrativasList;
 
     public Departamento() {
     }
@@ -85,24 +88,6 @@ public class Departamento implements Serializable {
     }
 
     @XmlTransient
-    public List<Carrera> getCarreraList() {
-        return carreraList;
-    }
-
-    public void setCarreraList(List<Carrera> carreraList) {
-        this.carreraList = carreraList;
-    }
-
-    @XmlTransient
-    public List<Administrativas> getAdministrativasList() {
-        return administrativasList;
-    }
-
-    public void setAdministrativasList(List<Administrativas> administrativasList) {
-        this.administrativasList = administrativasList;
-    }
-
-    @XmlTransient
     public List<Unidadesinvestigativas> getUnidadesinvestigativasList() {
         return unidadesinvestigativasList;
     }
@@ -118,6 +103,24 @@ public class Departamento implements Serializable {
 
     public void setDocenteList(List<Docente> docenteList) {
         this.docenteList = docenteList;
+    }
+
+    @XmlTransient
+    public List<Carrera> getCarreraList() {
+        return carreraList;
+    }
+
+    public void setCarreraList(List<Carrera> carreraList) {
+        this.carreraList = carreraList;
+    }
+
+    @XmlTransient
+    public List<Administrativas> getAdministrativasList() {
+        return administrativasList;
+    }
+
+    public void setAdministrativasList(List<Administrativas> administrativasList) {
+        this.administrativasList = administrativasList;
     }
 
     @Override

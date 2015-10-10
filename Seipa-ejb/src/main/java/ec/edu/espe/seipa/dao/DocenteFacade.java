@@ -14,7 +14,7 @@ import javax.persistence.Query;
 
 /**
  *
- * @author SchubertDavid
+ * @author ronny
  */
 @Stateless
 public class DocenteFacade extends AbstractFacade<Docente> {
@@ -30,11 +30,11 @@ public class DocenteFacade extends AbstractFacade<Docente> {
         super(Docente.class);
     }
     
-    public Docente findByID(String idDocente){
+    public Docente findByIdUsuario(String idUsuario){
         try{
-            String sql = "SELECT obj FROM DOCENTE obj WHERE obj.id=?1";
+            String sql = "SELECT obj FROM Docente obj join Usuario u WHERE u.idUsuario=?1";
             Query qry = this.getEntityManager().createQuery(sql);
-            qry.setParameter(1, idDocente);
+            qry.setParameter(1, idUsuario);
             return (Docente) qry.getSingleResult();
         }catch(NoResultException e){
             return null;

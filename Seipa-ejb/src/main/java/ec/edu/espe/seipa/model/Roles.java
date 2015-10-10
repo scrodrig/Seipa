@@ -25,13 +25,16 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author SchubertDavid
+ * @author ronny
  */
 @Entity
 @Table(name = "ROLES", catalog = "", schema = "BI")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Roles.findAll", query = "SELECT r FROM Roles r")})
+    @NamedQuery(name = "Roles.findAll", query = "SELECT r FROM Roles r"),
+    @NamedQuery(name = "Roles.findById", query = "SELECT r FROM Roles r WHERE r.id = :id"),
+    @NamedQuery(name = "Roles.findByRol", query = "SELECT r FROM Roles r WHERE r.rol = :rol"),
+    @NamedQuery(name = "Roles.findByDescripcion", query = "SELECT r FROM Roles r WHERE r.descripcion = :descripcion")})
 public class Roles implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -46,11 +49,11 @@ public class Roles implements Serializable {
     @Size(max = 100)
     @Column(name = "DESCRIPCION", length = 100)
     private String descripcion;
-    @OneToMany(mappedBy = "idTiporoles")
-    private List<TipoUsuario> tipoUsuarioList;
     @JoinColumn(name = "ID_MODULO", referencedColumnName = "ID")
     @ManyToOne
     private Modulo idModulo;
+    @OneToMany(mappedBy = "idTiporoles")
+    private List<TipoUsuario> tipoUsuarioList;
 
     public Roles() {
     }
@@ -83,6 +86,14 @@ public class Roles implements Serializable {
         this.descripcion = descripcion;
     }
 
+    public Modulo getIdModulo() {
+        return idModulo;
+    }
+
+    public void setIdModulo(Modulo idModulo) {
+        this.idModulo = idModulo;
+    }
+
     @XmlTransient
     public List<TipoUsuario> getTipoUsuarioList() {
         return tipoUsuarioList;
@@ -90,14 +101,6 @@ public class Roles implements Serializable {
 
     public void setTipoUsuarioList(List<TipoUsuario> tipoUsuarioList) {
         this.tipoUsuarioList = tipoUsuarioList;
-    }
-
-    public Modulo getIdModulo() {
-        return idModulo;
-    }
-
-    public void setIdModulo(Modulo idModulo) {
-        this.idModulo = idModulo;
     }
 
     @Override
