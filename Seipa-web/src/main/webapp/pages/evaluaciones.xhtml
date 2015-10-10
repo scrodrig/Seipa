@@ -5,27 +5,26 @@
                 xmlns:f="http://java.sun.com/jsf/core" 
                 xmlns:ui="http://java.sun.com/jsf/facelets" 
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
                 template="/templates/templateMantenimiento.xhtml">
     <ui:define name="titulo">Evaluaciones</ui:define> 
     <ui:define name="cuerpo">
-        <p:layout style="min-width:400px;min-height:200px;">
-            <p:layoutUnit position="west" resizable="true" size="100" minSize="40" maxSize="200">
+        <p:layout style="height: 500px">
+            <p:layoutUnit position="west" >
                 <p:growl autoUpdate="true"/>
-                    <p:panelMenu style="width:300px">
-                        <p:submenu label="Navigations" >
-                            <p:submenu label="Links" icon="ui-icon-extlink">
-                                <p:submenu label="PrimeFaces" icon="ui-icon-heart">
-                                    <p:menuitem value="Home" url="http://www.primefaces.org" icon="ui-icon-home" />
-                                    <p:menuitem value="Docs" url="http://www.primefaces.org/documentation" icon="ui-icon-document" />
-                                    <p:menuitem value="Download" url="http://www.primefaces.org/downloads" icon="ui-icon-arrowthick-1-s" />
-                                    <p:menuitem value="Support" url="http://www.primefaces.org/support" icon="ui-icon-wrench" />
-                                </p:submenu>
+                    <p:panelMenu style="width: 330px">
+                            <p:submenu label="Evaluaciones" icon="ui-icon-note">
+                                 <c:forEach items="#{evaluacionBean.evaluaciones}" var="evaluacion">
+                                     <p:menuitem value="#{evaluacion.descripcion}"
+                                                 style="text-align: left" ajax="false" 
+                                                 update="evaluacionPanel" icon="ui-icon-document-b" 
+                                                 actionListener="#{evaluacionBean.seleccionarTipoEvaluacion(evaluacion)}"/>
+                                 </c:forEach>
                             </p:submenu>
-                        </p:submenu>
                     </p:panelMenu>
             </p:layoutUnit>
-            <p:layoutUnit position="center">
-                Test
+            <p:layoutUnit id="evaluacionPanel" position="center">
+               #{evaluacionBean.evaluacionSeleccionada.descripcion}
             </p:layoutUnit>
         </p:layout>
     </ui:define>
