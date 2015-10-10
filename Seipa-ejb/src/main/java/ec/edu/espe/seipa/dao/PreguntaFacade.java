@@ -5,10 +5,14 @@
  */
 package ec.edu.espe.seipa.dao;
 
+import ec.edu.espe.seipa.model.Evaluacion;
 import ec.edu.espe.seipa.model.Pregunta;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -28,4 +32,14 @@ public class PreguntaFacade extends AbstractFacade<Pregunta> {
         super(Pregunta.class);
     }
     
+    public List<Pregunta> getPreguntaByEvaluacion(Evaluacion evaluacion) {
+        try {
+            String sql = "SELECT obj FROM Pregunta obj join obj.evaluacionList ev WHERE ev.Id=?1";
+            Query qry = this.getEntityManager().createQuery(sql);
+            qry.setParameter(1, evaluacion.getIdevaluacion());
+            return qry.getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 }

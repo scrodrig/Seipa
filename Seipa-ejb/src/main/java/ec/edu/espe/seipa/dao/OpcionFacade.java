@@ -6,9 +6,13 @@
 package ec.edu.espe.seipa.dao;
 
 import ec.edu.espe.seipa.model.Opcion;
+import ec.edu.espe.seipa.model.Pregunta;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -16,6 +20,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class OpcionFacade extends AbstractFacade<Opcion> {
+
     @PersistenceContext(unitName = "ec.edu.espe.seipa_Seipa-ejb_ejb_1PU")
     private EntityManager em;
 
@@ -27,5 +32,16 @@ public class OpcionFacade extends AbstractFacade<Opcion> {
     public OpcionFacade() {
         super(Opcion.class);
     }
-    
+
+    public List<Opcion> getOpcionesByPregunta(Pregunta pregunta) {
+        try {
+            String sql = "SELECT obj FROM Opcion obj join obj.preguntaList pr WHERE pr.Id=?1";
+            Query qry = this.getEntityManager().createQuery(sql);
+            qry.setParameter(1, pregunta.getIdpregunta());
+            return qry.getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
 }
