@@ -20,7 +20,7 @@
             <p:layoutUnit position="west" size="150" header=" Opciones" collapsible="true">         
                     <p:growl autoUpdate="true"/>
                     <p:menu style="margin-top:5px; font-size: 14">
-                            <p:menuitem value="Perfil" url="perfil.jsf" />
+                        <p:menuitem value="Perfil" url="perfil.jsf"  actionListener="#{perfilBean.datosDocente()}"/>
                             <p:menuitem value="Logros Academicos" url="logros.jsf" />    
                     </p:menu>
             </p:layoutUnit>

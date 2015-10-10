@@ -41,6 +41,9 @@ public class InicioBean implements Serializable{
     private String idUsuario;
     private String nombreDocente;
     private String clave;
+    private Docente docente;
+    
+    //PerfilBean perfilBean;
 
     public String getNombreUsuario() {
         return nombreUsuario;
@@ -52,16 +55,20 @@ public class InicioBean implements Serializable{
         System.out.println(nombreUsuario);
         try{
             Usuario usuario = this.autentificacionServicio.usuarioAutentificar(nombreUsuario, clave);
-            System.out.println(usuario.getId());
+            //System.out.println(usuario.getId());
             if (usuario != null){
                 Docente docente = this.docenteServicio.findByIdUsuario(usuario.getId());
-                System.out.println(usuario.getId());
+                //System.out.println(docente.getNombre().concat(" ").concat(docente.getApellido()));
                 if (docente != null){
-                    if (docente.getId().equals(usuario.getId())){
+                    System.out.println(docente.getIdUsuario().getId());
+                    if (docente.getIdUsuario().getId().equals(usuario.getId())){
                         //usuario.setFechaUltAcceso(new Date());
                         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Usuario", usuario);
                         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Docente", docente);
-                        nombreDocente = docente.getNombre().concat(" ").concat(docente.getApellido());
+                        this.nombreDocente = docente.getNombre().concat(" ").concat(docente.getApellido());
+                        this.docente = docente;
+                        //perfilBean.datosDocente();
+                        //System.out.println(nombreDocente);
                         //nombreEmpleado = empleado.getNombre();
                         //usuario.setFechaUltAcceso(new Date());
                         //usuarioServicio.actualizar(usuario);
@@ -69,7 +76,7 @@ public class InicioBean implements Serializable{
                     } else {
                         return "home";
                     }
-                    return "index";
+                    return "home";
 
                 } else {
                 FacesContext.getCurrentInstance().addMessage(
@@ -132,5 +139,19 @@ public class InicioBean implements Serializable{
      */
     public void setIdUsuario(String idUsuario) {
         this.idUsuario = idUsuario;
+    }
+
+    /**
+     * @return the docente
+     */
+    public Docente getDocente() {
+        return docente;
+    }
+
+    /**
+     * @param docente the docente to set
+     */
+    public void setDocente(Docente docente) {
+        this.docente = docente;
     }
 }

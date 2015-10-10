@@ -41,7 +41,13 @@ public class CabeceraBean implements Serializable{
     }
 
      public String logout() {
-        ((HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true)).invalidate();
+        try{
+            //FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+            ((HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true)).invalidate();
+            return "index";
+        }catch(Exception ex){
+            
+        }
         return "index";
     }
 
