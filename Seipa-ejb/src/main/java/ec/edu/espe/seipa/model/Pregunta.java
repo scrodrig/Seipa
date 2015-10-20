@@ -18,6 +18,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -37,6 +38,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Pregunta.findByTextopregunta", query = "SELECT p FROM Pregunta p WHERE p.textopregunta = :textopregunta"),
     @NamedQuery(name = "Pregunta.findByOrdernumber", query = "SELECT p FROM Pregunta p WHERE p.ordernumber = :ordernumber")})
 public class Pregunta implements Serializable {
+    @OneToMany(mappedBy = "idpregunta")
+    private List<Preguntaevaluacion> preguntaevaluacionList;
+    @OneToMany(mappedBy = "idpregunta")
+    private List<Preguntaopcion> preguntaopcionList;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -137,6 +142,24 @@ public class Pregunta implements Serializable {
     @Override
     public String toString() {
         return "ec.edu.espe.seipa.model.Pregunta[ idpregunta=" + idpregunta + " ]";
+    }
+
+    @XmlTransient
+    public List<Preguntaevaluacion> getPreguntaevaluacionList() {
+        return preguntaevaluacionList;
+    }
+
+    public void setPreguntaevaluacionList(List<Preguntaevaluacion> preguntaevaluacionList) {
+        this.preguntaevaluacionList = preguntaevaluacionList;
+    }
+
+    @XmlTransient
+    public List<Preguntaopcion> getPreguntaopcionList() {
+        return preguntaopcionList;
+    }
+
+    public void setPreguntaopcionList(List<Preguntaopcion> preguntaopcionList) {
+        this.preguntaopcionList = preguntaopcionList;
     }
     
 }

@@ -36,6 +36,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Opcion.findByIdopcion", query = "SELECT o FROM Opcion o WHERE o.idopcion = :idopcion"),
     @NamedQuery(name = "Opcion.findByValorOpcion", query = "SELECT o FROM Opcion o WHERE o.valorOpcion = :valorOpcion")})
 public class Opcion implements Serializable {
+    @OneToMany(mappedBy = "idopcion")
+    private List<Preguntaopcion> preguntaopcionList;
     @Size(max = 100)
     @Column(name = "DESCRIPCION", length = 100)
     private String descripcion;
@@ -129,6 +131,15 @@ public class Opcion implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    @XmlTransient
+    public List<Preguntaopcion> getPreguntaopcionList() {
+        return preguntaopcionList;
+    }
+
+    public void setPreguntaopcionList(List<Preguntaopcion> preguntaopcionList) {
+        this.preguntaopcionList = preguntaopcionList;
     }
     
 }
