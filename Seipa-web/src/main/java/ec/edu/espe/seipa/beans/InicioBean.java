@@ -42,9 +42,7 @@ public class InicioBean implements Serializable{
     private String nombreDocente;
     private String clave;
     private Docente docente;
-    //public String a;
-    
-    //PerfilBean perfilBean;
+
 
     public String getNombreUsuario() {
         return nombreUsuario;
@@ -56,10 +54,8 @@ public class InicioBean implements Serializable{
         System.out.println(nombreUsuario);
         try{
             Usuario usuario = this.autentificacionServicio.usuarioAutentificar(nombreUsuario, clave);
-            //System.out.println(usuario.getId());
             if (usuario != null){
                 Docente docente = this.docenteServicio.findByIdUsuario(usuario.getId());
-                //System.out.println(docente.getNombre().concat(" ").concat(docente.getApellido()));
                 if (docente != null){
                     System.out.println(docente.getIdUsuario().getId());
                     if (docente.getIdUsuario().getId().equals(usuario.getId())){
@@ -68,7 +64,6 @@ public class InicioBean implements Serializable{
                         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Docente", docente);
                         this.nombreDocente = docente.getNombre().concat(" ").concat(docente.getApellido());
                         this.docente = docente;
-                        //a = perfilBean.datosDocente(nombreUsuario);
                         //System.out.println(nombreDocente);
                         //nombreEmpleado = empleado.getNombre();
                         //usuario.setFechaUltAcceso(new Date());

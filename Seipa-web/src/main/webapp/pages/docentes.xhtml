@@ -122,28 +122,38 @@
         </p:panel>
 
         <p:panel id="modificarUsr" header="Modificación de Docente" rendered="#{docentesBean.enEdicion}" style="width: 800px">
-           <!-- <p:panelGrid columns="3">
-                <p:outputLabel for="m_codigo" value="Usuario"/>
-                  <p:inputText id="m_codigo" value="#{docentesBean.docente.id}" readonly="true" label="NombreEmpleado" required="true">
+           <p:panelGrid columns="3">
+                <p:outputLabel for="m_cedulaDocente" value="Cedula Docente:"/>
+                  <p:inputText id="m_cedulaDocente" value="#{docentesBean.docente.id}" readonly="true" label="CedulaDocente" required="true">
                 </p:inputText>
-                <p:message for="m_codigo" />
+                <p:message for="m_cedulaDocente" />
 
-                <p:outputLabel for="m_docente" value="Nombre Empleado:"/>                
-                <p:inputText id="m_docente" value="#{docentesBean.docente.nombre}" label="NombreEmpleado" required="true">
+                <p:outputLabel for="m_nombreDocente" value="Nombres Docente:"/>                
+                <p:inputText id="m_nombreDocente" value="#{docentesBean.docente.nombre}" label="NombreDocente" required="true">
                 </p:inputText>
-                <p:message for="m_docente" />
+                <p:message for="m_nombreDocente" />
+                
+                <p:outputLabel for="m_apellidoDocente" value="Apellidos Docente:"/>                
+                <p:inputText id="m_apellidoDocente" value="#{docentesBean.docente.apellido}" label="ApellidoDocente" required="true">
+                </p:inputText>
+                <p:message for="m_apellidoDocente" />
 
-                <p:outputLabel for="m_telef" value="Telefono" />
-                <p:inputMask id="m_telef" mask="9999999999" value="#{docentesBean.docente.telefono}" label="Telefono" required="true"/> 
-                <p:message for="m_telef" />
+                <p:outputLabel for="m_direccionDocente" value="Apellidos Docente:"/>                
+                <p:inputText id="m_direccionDocente" value="#{docentesBean.docente.direccion}" label="DireccionDocente" required="true">
+                </p:inputText>
+                <p:message for="m_direccionDocente" />
+                
+                <p:outputLabel for="m_telefDocente" value="Telefono" />
+                <p:inputMask id="m_telefDocente" mask="9999999999" value="#{docentesBean.docente.telefono}" label="TelefonoDocente" required="true"/> 
+                <p:message for="m_telefDocente" />
 
-                <p:outputLabel for="m_email" value="Email" />
-                <p:inputText id="m_email" value="#{docentesBean.docente.correo}" label="Email" required="true" validatorMessage="Dirección de correo inválida">
+                <p:outputLabel for="m_emailDocente" value="Email" />
+                <p:inputText id="m_emailDocente" value="#{docentesBean.docente.correo}" label="EmailDoocente" required="true" validatorMessage="Dirección de correo inválida">
                     <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                 </p:inputText> 
-                <p:message for="m_email" />
+                <p:message for="m_emailDocente" />
 
-            </p:panelGrid>-->
+            </p:panelGrid>
 
             <f:facet name="footer"> 
                 <p:commandButton actionListener="#{docentesBean.guardar(evento)}" value="Guardar" update="@form" icon="ui-icon-disk"/>

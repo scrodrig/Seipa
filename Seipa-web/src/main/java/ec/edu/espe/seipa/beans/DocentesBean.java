@@ -125,11 +125,12 @@ public class DocentesBean extends BotonesBean implements Serializable {
     public void modificar(ActionEvent evento) {
         this.setDocente(new Docente());
         try {
-//            this.docente = (Docente) BeanUtils.cloneBean(this.docenteSeleccionado);
+            this.docente = (Docente) BeanUtils.cloneBean(this.docenteSeleccionado);
+            this.docenteServicio.actualizar(this.docente);
 //            //Invariable Objetos de Auditoria            
 //            this.docente.setUsrModificacion(usrSesion.getCodigo());
 //            this.docente.setFmodificacion(new Date());
-//            super.modificar();
+            super.modificar();
         } catch (Exception ex) {
             MensajesGenericos.errorCopyProperties();
         }

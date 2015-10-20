@@ -13,6 +13,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 
 /**
  *
@@ -20,7 +21,7 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean
 @ViewScoped
-public class PerfilBean implements Serializable {
+public class PerfilBean extends BotonesBean implements Serializable {
 
     @EJB
     private DocenteServicio docenteServicio;
@@ -38,36 +39,66 @@ public class PerfilBean implements Serializable {
     
     @PostConstruct
     public void postConstructor() {
-        //this.usuario= (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Usuario");
         this.setDocente((Docente) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Docente"));
         datosDocente();
     }
     
     public void datosDocente() {
-
-  
         if (docente != null) {
             this.usuario = docente.getIdUsuario().getUsuario();
             this.nombre = docente.getNombre();
             this.apellido = docente.getApellido();
             this.cedula = docente.getId();
-            this.telefono = docente.getTelefono();
+            if (docente.getTelefono() != null)
+            {
+                this.telefono = docente.getTelefono();    
+            } else {
+                this.telefono = "Sin registro";
+            }
+            
+            
             this.direccion = docente.getDireccion();
             this.correo = docente.getCorreo();
-
-        } else {
-            
-            usuario="S/N";
-            nombre="S/N";
-            apellido="S/N";
-            cedula="S/N";
-            telefono="S/N";
-            direccion="S/N";
-            correo="S/N";
-                    
-
+        } else {        
+            usuario="Sin Datos";
+            nombre="Sin Datos";
+            apellido="Sin Datos";
+            cedula="Sin Datos";
+            telefono="Sin Datos";
+            direccion="Sin Datos";
+            correo="Sin Datos";
         }
+    }
+    public void modificarNombrePerfil(ValueChangeEvent event){
         
+        this.nombre = event.getNewValue().toString();
+        this.docente.setNombre(this.nombre);
+        this.docenteServicio.actualizar(this.docente);
+    }
+    
+    public void modificarApellidoPerfil(ValueChangeEvent event){
+        
+        this.apellido = event.getNewValue().toString();
+        this.docente.setApellido(this.apellido);
+        this.docenteServicio.actualizar(this.docente);
+    }
+    public void modificarDireccionPerfil(ValueChangeEvent event){
+        
+        this.direccion = event.getNewValue().toString();
+        this.docente.setDireccion(this.direccion);
+        this.docenteServicio.actualizar(this.docente);
+    }
+    public void modificarTelefonoPerfil(ValueChangeEvent event){
+        
+        this.telefono = event.getNewValue().toString();
+        this.docente.setTelefono(this.telefono);
+        this.docenteServicio.actualizar(this.docente);
+    }
+    public void modificarCorreoPerfil(ValueChangeEvent event){
+        
+        this.correo = event.getNewValue().toString();
+        this.docente.setCorreo(this.correo);
+        this.docenteServicio.actualizar(this.docente);
     }
 
     /**
