@@ -5,9 +5,14 @@
  */
 package ec.edu.espe.seipa.beans;
 
+import ec.edu.espe.seipa.model.Docente;
+import ec.edu.espe.seipa.service.DocenteServicio;
 import java.io.Serializable;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -17,6 +22,9 @@ import javax.faces.bean.ViewScoped;
 @ViewScoped
 public class PerfilBean implements Serializable {
 
+    @EJB
+    private DocenteServicio docenteServicio;
+    
     private String usuario;
     private String nombre;
     private String apellido;
@@ -24,20 +32,28 @@ public class PerfilBean implements Serializable {
     private String correo;
     private String cedula;
     private String direccion;
+    
+    private Docente docente;
 
-    InicioBean inicioBean;
-
+    
+    @PostConstruct
+    public void postConstructor() {
+        //this.usuario= (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Usuario");
+        this.setDocente((Docente) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Docente"));
+        datosDocente();
+    }
+    
     public void datosDocente() {
 
-        
-        if (inicioBean.getDocente() != null) {
-            this.usuario = inicioBean.getIdUsuario();
-            this.nombre = inicioBean.getDocente().getNombre();
-            this.apellido = inicioBean.getDocente().getApellido();
-            this.cedula = inicioBean.getDocente().getId();
-            this.telefono = inicioBean.getDocente().getTelefono();
-            this.direccion = inicioBean.getDocente().getDireccion();
-            this.correo = inicioBean.getDocente().getCorreo();
+  
+        if (docente != null) {
+            this.usuario = docente.getIdUsuario().getUsuario();
+            this.nombre = docente.getNombre();
+            this.apellido = docente.getApellido();
+            this.cedula = docente.getId();
+            this.telefono = docente.getTelefono();
+            this.direccion = docente.getDireccion();
+            this.correo = docente.getCorreo();
 
         } else {
             
@@ -51,7 +67,7 @@ public class PerfilBean implements Serializable {
                     
 
         }
-
+        
     }
 
     /**
@@ -151,5 +167,14 @@ public class PerfilBean implements Serializable {
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
+    
+    public Docente getDocente() {
+        return docente;
+    }
+
+    public void setDocente(Docente docente) {
+        this.docente = docente;
+    }
+
 
 }

@@ -42,6 +42,7 @@ public class InicioBean implements Serializable{
     private String nombreDocente;
     private String clave;
     private Docente docente;
+    //public String a;
     
     //PerfilBean perfilBean;
 
@@ -67,7 +68,7 @@ public class InicioBean implements Serializable{
                         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("Docente", docente);
                         this.nombreDocente = docente.getNombre().concat(" ").concat(docente.getApellido());
                         this.docente = docente;
-                        //perfilBean.datosDocente();
+                        //a = perfilBean.datosDocente(nombreUsuario);
                         //System.out.println(nombreDocente);
                         //nombreEmpleado = empleado.getNombre();
                         //usuario.setFechaUltAcceso(new Date());
