@@ -12,7 +12,7 @@
             </br>
             <p:fieldset legend="Perfil Docente" style="margin-bottom:15px">
                 <h:panelGrid columns="4" columnClasses="column" border="1" cellpadding="0" cellspacing="7" >
-                    <h:outputLabel for="idUsuario" value="Id Usuario:" style="font-weight: bold"/>
+                    <h:outputLabel for="idUsuario" value="ID Banner:" style="font-weight: bold"/>
                     <br/>
                     <p:inplace id="idUsuario" editor="false">
                         <p:inputText value="#{perfilBean.usuario}" required="true" label="text" />
@@ -43,7 +43,7 @@
                     <h:outputLabel for="direccion" value="Direccion:" style="font-weight: bold" />          
                     <br/>
                     <p:inplace id="direccion" editor="true">
-                        <p:inputText value="#{perfilBean.direccion}" required="true" label="text" valueChangeListener="#{perfilBean.modificarDireccionPerfil}"/>
+                        <p:inputMask mask="9999999999" value="#{perfilBean.direccion}" required="true" label="text" valueChangeListener="#{perfilBean.modificarDireccionPerfil}"/>
                     </p:inplace>
                     <br/>
                     

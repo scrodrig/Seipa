@@ -107,13 +107,13 @@ public class DocentesBean extends BotonesBean implements Serializable {
                 //this.docente.setId(BigDecimal.ONE);
                 this.docenteServicio.crear(this.docente);
                 this.docentes.add(this.docente);
-                MensajesGenericos.infoCrear("Docente", this.docente.getId().toString().concat(" - ").concat(this.docente.getNombre()).concat(" ").concat(this.docente.getApellido()), Boolean.TRUE);
+                MensajesGenericos.infoCrear("Docente", this.docente.getId().concat(" - ").concat(this.docente.getNombre()).concat(" ").concat(this.docente.getApellido()), Boolean.TRUE);
                 super.sinSeleccion();
             } else if (super.getEnEdicion()) {
                 int i = this.docentes.indexOf(this.docente);
                 this.docenteServicio.actualizar(this.docente);
                 docentes.set(i, this.docente);
-                MensajesGenericos.infoModificar("Usuario", this.docente.getId().toString().concat(" - ").concat(this.docente.getNombre()).concat(" ").concat(this.docente.getApellido()), Boolean.TRUE);
+                MensajesGenericos.infoModificar("Usuario", this.docente.getId().concat(" - ").concat(this.docente.getNombre()).concat(" ").concat(this.docente.getApellido()), Boolean.TRUE);
                 super.sinSeleccion();
             }
         } catch (Exception e) {
@@ -137,11 +137,11 @@ public class DocentesBean extends BotonesBean implements Serializable {
     }
 
     public void eliminar(ActionEvent evento) {
-        //this.docenteServicio.eliminar(this.docenteSeleccionado);
-//        this.docenteSeleccionado.setEstado("I");
-//        this.docenteServicio.actualizar(docenteSeleccionado);
-//        //this.docentes.remove(this.docenteSeleccionado);
-//        MensajesGenericos.infoEliminar("Docente", this.docente.getCodigo().toString().concat(" - ").concat(this.docente.getNombre()), Boolean.TRUE);
+        this.docenteServicio.eliminar(this.docenteSeleccionado);
+//      this.docenteSeleccionado.setEstado("I");
+//      this.docenteServicio.actualizar(docenteSeleccionado);
+        this.docentes.remove(this.docenteSeleccionado);
+        MensajesGenericos.infoEliminar("Docente", this.docente.getId().concat(" - ").concat(this.docente.getNombre()).concat(" ").concat(this.docente.getApellido()), Boolean.TRUE);
         super.sinSeleccion();
     }
 
