@@ -8,6 +8,7 @@ package ec.edu.espe.seipa.beans;
 import ec.edu.espe.seipa.model.Evaluacion;
 import ec.edu.espe.seipa.model.Pregunta;
 import ec.edu.espe.seipa.service.EvaluacionServicio;
+import ec.edu.espe.seipa.utils.EvaluacionUtils;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -50,8 +51,7 @@ public class EvaluacionBean {
      
      public void seleccionarTipoEvaluacion(Evaluacion evaluacion){
          this.evaluacionSeleccionada=evaluacion;
-         this.preguntas=this.evaluacionServicio.getPreguntaByEvaluacion(evaluacion);
-         //this.preguntas=this.evaluacionSeleccionada.getPreguntaList();
+         this.preguntas=EvaluacionUtils.getPreguntaListFromEvaluacion(evaluacion);
      }
 
     public Evaluacion getEvaluacionSeleccionada() {

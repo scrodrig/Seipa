@@ -24,7 +24,14 @@
                     </p:panelMenu>
             </p:layoutUnit>
             <p:layoutUnit id="evaluacionPanel" position="center">
-               #{evaluacionBean.evaluacionSeleccionada.descripcion}
+                <h:outputLabel style="font-size: x-large;font-weight: bold;">#{evaluacionBean.evaluacionSeleccionada.descripcion}</h:outputLabel>
+                <c:forEach items="#{evaluacionBean.preguntas}" var="pregunta">
+                    <p:panel header="Pregunta #{pregunta.idpregunta}"  style="margin-bottom:20px">
+                        <h:panelGrid columns="2" cellpadding="10" style="text-align: left">
+                             #{pregunta.textopregunta}
+                        </h:panelGrid>
+                    </p:panel>
+                </c:forEach>
             </p:layoutUnit>
         </p:layout>
     </ui:define>
