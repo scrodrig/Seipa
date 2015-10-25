@@ -34,9 +34,9 @@ public class PreguntaFacade extends AbstractFacade<Pregunta> {
     
     public List<Pregunta> getPreguntaByEvaluacion(Evaluacion evaluacion) {
         try {
-            String sql = "SELECT obj FROM Pregunta obj";
+            String sql = "SELECT obj FROM Pregunta obj join Evaluacion ev WHERE ev.idevaluacion=?1";
             Query qry = this.getEntityManager().createQuery(sql);
-            //qry.setParameter(1, evaluacion.getIdevaluacion());
+            qry.setParameter(1, evaluacion.getIdevaluacion());
             return qry.getResultList();
         } catch (NoResultException e) {
             return null;
