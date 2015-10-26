@@ -5,7 +5,7 @@
  */
 package ec.edu.espe.seipa.dao;
 
-import ec.edu.espe.seipa.model.TipoEvaluacion;
+import ec.edu.espe.seipa.model.TipoPregunta;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -17,7 +17,7 @@ import javax.persistence.Query;
  * @author ronny
  */
 @Stateless
-public class TipoEvaluacionFacade extends AbstractFacade<TipoEvaluacion> {
+public class TipoPreguntaFacade extends AbstractFacade<TipoPregunta> {
     @PersistenceContext(unitName = "ec.edu.espe.seipa_Seipa-ejb_ejb_1PU")
     private EntityManager em;
 
@@ -26,16 +26,16 @@ public class TipoEvaluacionFacade extends AbstractFacade<TipoEvaluacion> {
         return em;
     }
 
-    public TipoEvaluacionFacade() {
-        super(TipoEvaluacion.class);
+    public TipoPreguntaFacade() {
+        super(TipoPregunta.class);
     }
     
-    public TipoEvaluacion findByIdTipoEvaluacion(String idTipoEvaluacion) {
+    public TipoPregunta findByIdTipoPregunta(String idTipoPregunta) {
         try {
-            String sql = "SELECT obj FROM TipoEvaluacion obj WHERE obj.idTipoEvaluacion.id=?1";
+            String sql = "SELECT obj FROM TipoPregunta obj WHERE obj.idTipoPreguta=?1";
             Query qry = this.getEntityManager().createQuery(sql);
-            qry.setParameter(1, idTipoEvaluacion);
-            return (TipoEvaluacion) qry.getSingleResult();
+            qry.setParameter(1, idTipoPregunta);
+            return (TipoPregunta) qry.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }

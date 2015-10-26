@@ -12,6 +12,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -38,6 +39,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Docente.findByTelefono", query = "SELECT d FROM Docente d WHERE d.telefono = :telefono"),
     @NamedQuery(name = "Docente.findByCorreo", query = "SELECT d FROM Docente d WHERE d.correo = :correo")})
 public class Docente implements Serializable {
+    @Lob
+    @Column(name = "IMAGENPERFIL")
+    private Serializable imagenperfil;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -172,6 +176,14 @@ public class Docente implements Serializable {
     @Override
     public String toString() {
         return "ec.edu.espe.seipa.model.Docente[ id=" + id + " ]";
+    }
+
+    public Serializable getImagenperfil() {
+        return imagenperfil;
+    }
+
+    public void setImagenperfil(Serializable imagenperfil) {
+        this.imagenperfil = imagenperfil;
     }
     
 }
