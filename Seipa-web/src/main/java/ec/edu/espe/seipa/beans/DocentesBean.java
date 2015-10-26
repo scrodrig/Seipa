@@ -6,11 +6,9 @@
 package ec.edu.espe.seipa.beans;
 
 import ec.edu.espe.seipa.model.Docente;
-import ec.edu.espe.seipa.service.UsuarioService;
 import ec.edu.espe.seipa.service.DocenteServicio;
 import ec.edu.espe.seipa.utils.MensajesGenericos;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;

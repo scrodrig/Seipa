@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" 
+                xmlns:ui="http://java.sun.com/jsf/facelets" 
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/templateMantenimiento.xhtml">
+
+    <ui:define name="titulo">CreacionEvaluaciones</ui:define> 
+
+    <ui:define name="cuerpo">
+        <p:panel id="pEvaluacion" header=" Descripcion de la Pregunta"  style="margin-bottom:100px">
+            <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="2">
+                <p:outputLabel for="tEvaluacion" value="Seleccione el tipo de Evaluacion:"/>
+                <p:selectOneMenu id="tEvaluacion" value="#{creacionPreguntasBean.tipoEvaluacion}" style="width:462px" var="t">
+                    <f:selectItems value="#{creacionPreguntasBean.tipoEvaluaciones}" var="tipoEvaluacion" itemLabel="#{tipoEvaluacion.descripcion}" itemValue="#{tipoEvaluacion}"/>
+                    <p:column>
+                        <h:outputText value="#{t.descripcion}" />
+                    </p:column>
+                </p:selectOneMenu>
+
+                <p:outputLabel for="tPregunta" value="Seleccione el tipo de Pregunta:"/>
+                <p:selectOneMenu id="tPregunta" value="#{creacionPreguntasBean.tipoPregunta}" style="width:200px" var="tP">
+                    <f:selectItems value="#{creacionPreguntasBean.tipoPreguntas}" var="tipoPregunta" itemLabel="#{tipoPregunta.tipoPregunta}" itemValue="#{tipoPregunta}"/>
+                    <p:column>
+                        <h:outputText value="#{tP.tipoPregunta}" />
+                    </p:column>
+                </p:selectOneMenu>
+
+                <p:outputLabel for="pregunta" value="Pregunta:"/>
+                <p:inputTextarea rows="2" cols="100" counter="pregunta" maxlength="150" counterTemplate="{0} caracteres sobrantes." autoResize="false" required="False" value="#{creacionPreguntasBean.textoPregunta}"/>
+                <h:outputText id="pregunta"/>
+
+                <f:facet name="footer"> 
+                    <p:commandButton  value="Opciones" update="@form" actionListener="#{opcionBean.nuevo(evento)}" disabled="#{opcionBean.disabledNuevo}" icon="ui-icon-document"/>  
+                </f:facet>
+            </h:panelGrid>
+        </p:panel>
+        
+        <p:separator />
+        
+        <p:panel id="nuevo" style="margin-bottom:100px" rendered="#{opcionBean.enRegistro}">
+            <p:focus context="nuevo"/> 
+            <p:dataTable id="tblOpciones" value="#{opcionBean.opciones}" var="oPregunta" scrollable="true" 
+                         rowKey="#{opcionBean.opcion.idopcion}" style="width: 1000px"  scrollWidth="false"
+                         paginator="true" rows="5" paginatorPosition="bottom"
+                         paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                         emptyMessage="No se ha registrado ningún Opcion">
+
+                <f:facet name="header">
+                    Opciones Pregunta
+                </f:facet>
+                <p:column headerText="Texto Opcion" style="width:200px">
+                    #{opcionBean.opcion.descripcion}
+                </p:column>
+                <p:column headerText="Valor Opcion" style="width:100px">
+                    #{opcionBean.opcion.valorOpcion}
+                </p:column>
+                <f:facet name="footer">
+                    <p:commandButton value="Agregar Opcion" type="button" onclick="PF('dlgOpcion').show();"/> 
+                </f:facet>
+
+            </p:dataTable>
+        </p:panel>
+
+        <!-- Panel Grid para el manejo de los opciones
+        -->
+        <p:dialog header="Detalle Opciones" widgetVar="dlgOpcion" modal="true" height="100">  
+            <p:panel>
+                <p:panelGrid id="opcion" columns="2" >
+                    <h:outputLabel for="opcionD" value="Descripcion Opcion:"/>
+                    <h:inputText id="opcionD" value="#{opcionBean.opcionTexto}" />
+                    <h:outputLabel for="opcionV" value="Valor Opcion:"/>
+                    <h:inputText id="opcionV" value="#{opcionBean.opcionValor}" />
+                </p:panelGrid>
+            </p:panel>
+            
+            <f:facet name="footer"> 
+                <p:commandButton actionListener="#{opcionBean.agregarOpciones()}" update=":form:tblOpciones" onclick="PF('dlgOpcion').hide();"  value="Agregar" icon="ui-icon-check"/>
+                <p:commandButton onclick="PF('dlgOpcion').hide();" immediate="true" value="Cancelar" update=":form:tblOpciones" icon="ui-icon-cancel"/>
+            </f:facet>
+        </p:dialog> 
+    </ui:define>
+</ui:composition>

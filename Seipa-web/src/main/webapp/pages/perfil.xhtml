@@ -8,69 +8,80 @@
                 template="/pages/home.xhtml">
     <ui:define name="titulo">Perfil</ui:define> 
     <ui:define name="PerfilUsuario">
-            <br>       
-            </br>
-            <p:fieldset legend="Perfil Docente" style="margin-bottom:15px">
-                <h:panelGrid columns="4" columnClasses="column" border="1" cellpadding="0" cellspacing="7" >
-                    <h:outputLabel for="idUsuario" value="ID Banner:" style="font-weight: bold"/>
-                    <br/>
-                    <p:inplace id="idUsuario" editor="false">
-                        <p:inputText value="#{perfilBean.usuario}" required="true" label="text" />
-                    </p:inplace>
-                    <br/> 
+        <br>       
+        </br>
+        <p:fieldset legend="Perfil Docente" style="margin-bottom:15px">
+            <h:panelGrid columns="4" columnClasses="column" border="1" cellpadding="0" cellspacing="7" >
+                <h:outputLabel for="idUsuario" value="ID Banner:" style="font-weight: bold"/>
+                <br/>
+                <p:inplace id="idUsuario" editor="false">
+                    <p:inputText value="#{perfilBean.usuario}" required="true" label="text" />
+                </p:inplace>
+                <br/> 
 
-                    <h:outputLabel for="cedula" value="Cedula:" style="font-weight: bold" />
-                    <br/>
-                    <p:inplace id="cedula" editor="false">
-                        <p:inputText value="#{perfilBean.cedula}" required="true" label="text" />
-                    </p:inplace>
-                    <br/>
+                <h:outputLabel for="cedula" value="Cedula:" style="font-weight: bold" />
+                <br/>
+                <p:inplace id="cedula" editor="false">
+                    <p:inputText value="#{perfilBean.cedula}" required="true" label="text" />
+                </p:inplace>
+                <br/>
+
+                <h:outputLabel for="nombre" value="Nombres:" style="font-weight: bold" />
+                <br/>
+                <p:inplace id="nombre" editor="true">
+                    <p:inputText value="#{perfilBean.nombre}" required="true" label="text" valueChangeListener="#{perfilBean.modificarNombrePerfil}"/>
+                </p:inplace>
+                <br/>
+
+                <h:outputLabel for="apellido" value="Apellidos:" style="font-weight: bold" />
+                <br/>
+                <p:inplace id="apellido" editor="true">
+                    <p:inputText value="#{perfilBean.apellido}" required="true" label="text" valueChangeListener="#{perfilBean.modificarApellidoPerfil}"/>
+                </p:inplace>
+                <br/>
+
+                <h:outputLabel for="direccion" value="Direccion:" style="font-weight: bold" />          
+                <br/>
+                <p:inplace id="direccion" editor="true">
+                    <p:inputMask mask="9999999999" value="#{perfilBean.direccion}" required="true" label="text" valueChangeListener="#{perfilBean.modificarDireccionPerfil}"/>
+                </p:inplace>
+                <br/>
+
+                <h:outputLabel for="telefono" value="Telefono:" style="font-weight: bold" />                             
+                <br/>
+                <p:inplace id="telefono" editor="true">
+                    <p:inputText value="#{perfilBean.telefono}" required="true" label="text" valueChangeListener="#{perfilBean.modificarTelefonoPerfil}"/>
+                </p:inplace>
+                <br/>
+
+                <h:outputLabel for="correo" value="Correo:" style="font-weight: bold" />
+                <br/>
+                <p:inplace id="correo" editor="true">
+                    <p:inputText value="#{perfilBean.correo}" required="true" label="text" valueChangeListener="#{perfilBean.modificarCorreoPerfil}" validatorMessage="Dirección de correo inválida">
+                        <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                    </p:inputText>
+                </p:inplace>
+                <br/>
+
+            </h:panelGrid>
+        </p:fieldset>
+        <br/>
+        <br/>
+        <p:fieldset legend="Fotografia Docente" style="margin-bottom:15px">
+            <h:panelGrid columns="2" columnClasses="column" border="1" cellpadding="0" cellspacing="7">
+                <p:outputPanel id="imagenDocente">
                     
-                    <h:outputLabel for="nombre" value="Nombres:" style="font-weight: bold" />
-                    <br/>
-                    <p:inplace id="nombre" editor="true">
-                        <p:inputText value="#{perfilBean.nombre}" required="true" label="text" valueChangeListener="#{perfilBean.modificarNombrePerfil}"/>
-                    </p:inplace>
-                    <br/>
+                </p:outputPanel>
+                
+                <h:outputText value="Cargue su imagen de Peril:" />
+                    <p:fileUpload value="#{cargaImagenBean.file}" mode="simple" />
+		<h:outputText value="" />
+                
+                <p:commandButton value="Guardar Imagen" actionListener="#{cargaImagenBean.guardarImagen}">
                     
-                    <h:outputLabel for="apellido" value="Apellidos:" style="font-weight: bold" />
-                    <br/>
-                    <p:inplace id="apellido" editor="true">
-                        <p:inputText value="#{perfilBean.apellido}" required="true" label="text" valueChangeListener="#{perfilBean.modificarApellidoPerfil}"/>
-                    </p:inplace>
-                    <br/>
-                    
-                    <h:outputLabel for="direccion" value="Direccion:" style="font-weight: bold" />          
-                    <br/>
-                    <p:inplace id="direccion" editor="true">
-                        <p:inputMask mask="9999999999" value="#{perfilBean.direccion}" required="true" label="text" valueChangeListener="#{perfilBean.modificarDireccionPerfil}"/>
-                    </p:inplace>
-                    <br/>
-                    
-                    <h:outputLabel for="telefono" value="Telefono:" style="font-weight: bold" />                             
-                    <br/>
-                    <p:inplace id="telefono" editor="true">
-                        <p:inputText value="#{perfilBean.telefono}" required="true" label="text" valueChangeListener="#{perfilBean.modificarTelefonoPerfil}"/>
-                    </p:inplace>
-                    <br/>
-                    
-                    <h:outputLabel for="correo" value="Correo:" style="font-weight: bold" />
-                    <br/>
-                    <p:inplace id="correo" editor="true">
-                        <p:inputText value="#{perfilBean.correo}" required="true" label="text" valueChangeListener="#{perfilBean.modificarCorreoPerfil}" validatorMessage="Dirección de correo inválida">
-                            <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
-                        </p:inputText>
-                    </p:inplace>
-                    <br/>
-                    
-                </h:panelGrid>
-            </p:fieldset>
-            <br/>
-            <br/>
-            <p:fieldset legend="Fotografia Docente" style="margin-bottom:15px">
-                <h:panelGrid columns="2" columnClasses="column" border="1" cellpadding="0" cellspacing="7">
-                    
-                </h:panelGrid>
-            </p:fieldset>
+                </p:commandButton>
+                
+            </h:panelGrid>
+        </p:fieldset>
     </ui:define>
 </ui:composition>
