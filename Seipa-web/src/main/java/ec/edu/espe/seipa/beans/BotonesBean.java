@@ -13,6 +13,7 @@ import javax.annotation.PostConstruct;
 public class BotonesBean {
 
     private Boolean disabledNuevo;
+    private Boolean disabledNuevaOpcion;
     private Boolean disabledModificar;
     private Boolean disabledEliminar;
     private Boolean disableAuditoria;
@@ -21,7 +22,9 @@ public class BotonesBean {
     private Boolean varios;
     private Boolean noSeleccionados;
     private Boolean enEdicion;
+    private Boolean enEdicionOpciones;
     private Boolean enRegistro;
+    private Boolean enRegistroOpciones;
     private Boolean soloLectura;
     private Boolean enAuditoria;
     private Boolean enCargaDocumentos;
@@ -59,6 +62,16 @@ public class BotonesBean {
         this.disabledEliminar = Boolean.TRUE;
         this.disableAuditoria = Boolean.TRUE;
         this.enRegistro = Boolean.TRUE;
+        this.disableCargaDocumentos = Boolean.TRUE;
+    }
+    
+    public void crearOpciones() {
+        this.reset();
+        this.disabledNuevaOpcion = Boolean.TRUE;
+        this.disabledModificar = Boolean.TRUE;
+        this.disabledEliminar = Boolean.TRUE;
+        this.disableAuditoria = Boolean.TRUE;
+        this.setEnRegistroOpciones(Boolean.TRUE);
         this.disableCargaDocumentos = Boolean.TRUE;
     }
 
@@ -237,4 +250,46 @@ public class BotonesBean {
     public void setEnCargaDocumentos(Boolean enCargaDocumentos) {
         this.enCargaDocumentos = enCargaDocumentos;
     }    
+
+    /**
+     * @return the enEdicionOpciones
+     */
+    public Boolean getEnEdicionOpciones() {
+        return enEdicionOpciones;
+    }
+
+    /**
+     * @param enEdicionOpciones the enEdicionOpciones to set
+     */
+    public void setEnEdicionOpciones(Boolean enEdicionOpciones) {
+        this.enEdicionOpciones = enEdicionOpciones;
+    }
+
+    /**
+     * @return the enRegistroOpciones
+     */
+    public Boolean getEnRegistroOpciones() {
+        return enRegistroOpciones;
+    }
+
+    /**
+     * @param enRegistroOpciones the enRegistroOpciones to set
+     */
+    public void setEnRegistroOpciones(Boolean enRegistroOpciones) {
+        this.enRegistroOpciones = enRegistroOpciones;
+    }
+
+    /**
+     * @return the disabledNuevaOpcion
+     */
+    public Boolean getDisabledNuevaOpcion() {
+        return disabledNuevaOpcion;
+    }
+
+    /**
+     * @param disabledNuevaOpcion the disabledNuevaOpcion to set
+     */
+    public void setDisabledNuevaOpcion(Boolean disabledNuevaOpcion) {
+        this.disabledNuevaOpcion = disabledNuevaOpcion;
+    }
 }

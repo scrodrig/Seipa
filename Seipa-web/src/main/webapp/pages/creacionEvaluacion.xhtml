@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" 
+                xmlns:ui="http://java.sun.com/jsf/facelets" 
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/templateMantenimiento.xhtml">
+
+    <ui:define name="titulo">Creacion Evaluacion</ui:define> 
+
+    <ui:define name="cuerpo">
+        <p:dataTable id="evaluaciones"  value="#{evaluacionBean.evaluaciones}" var="evaluacion" selection="#{evaluacionBean.evaluacionSeleccionada}" selectionMode="single" scrollable="true" 
+                     rowKey="#{evaluacion.idevaluacion}" style="width: 1000px" 
+                     paginator="true" rows="10"  scrollWidth="false" paginatorPosition="bottom"
+                     paginatorTemplate="  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                     emptyMessage="No se ha registrado ninguna evaluacion" rendered="#{not (evaluacionBean.enRegistro or evaluacionBean.enEdicion or evaluacionBean.enAuditoria)}" >
+
+            <p:ajax event="rowSelect" listener="#{evaluacionBean.filaSeleccionada(evento)}" update="evaluaciones"/>
+            <p:ajax event="rowUnselect" listener="#{evaluacionBean.filaSeleccionada(evento)}" update="evaluaciones"/>
+
+            <f:facet name="header">
+                Evaluaciones
+            </f:facet>
+            <p:column headerText="Identificacion Evaluacion" style="width: 55px">
+                #{evaluacion.idevaluacion}
+            </p:column>
+            <p:column headerText="Descripcion" style="width: 100px">
+                #{evaluacion.descripcion}
+            </p:column>
+            <p:column headerText="Tipo Evaluacion" style="width: 100px">
+                #{evaluacion.idtipoevaluacion.descripcion}
+            </p:column>
+            <p:column headerText="Fecha de Creacion" style="width: 140px">
+                #{evaluacion.fechaCreacion}
+            </p:column>
+            <f:facet name="footer">  
+                <p:commandButton  value="Nuevo" update="@form" actionListener="#{evaluacionBean.nuevo(evento)}" disabled="#{evaluacionBean.disabledNuevo}" icon="ui-icon-document"/>  
+                <p:commandButton  value="Preguntas" type="button" onclick="PF('preguntasdlg').show();"/>
+                <p:commandButton  value="Modificar" update="@form" actionListener="#{evaluacionBean.modificar(evento)}" disabled="#{evaluacionBean.disabledModificar}" icon="ui-icon-pencil"/>
+                <p:commandButton  value="Eliminar" onclick="confirmation.show();" disabled="#{evaluacionBean.disabledEliminar}" icon="ui-icon-close"/>
+            </f:facet>
+        </p:dataTable>
+
+        <p:panel id="nuevoEvalucion" header="Registro de Evaluaciones" rendered="#{evaluacionBean.enRegistro}" style="width: 800px">
+            <p:panelGrid columns="3">
+                <p:outputLabel for="descripcionE" value="Descripcion de la Evaluacion:"/>                
+                <p:inputText id="descripcionE" value="#{evaluacionBean.evaluacion.descripcion}" label="DescripcionEvaluacion">
+                </p:inputText>
+                <p:message for="descripcionE" />
+
+                <p:outputLabel for="tipoEvaluacionL" value="Seleccione el tipo de Evaluacion:"/>
+                <p:selectOneMenu id="tipoEvaluacionL" value="#{evaluacionBean.tEvaluacion}" style="width:462px" var="t">
+                    <f:selectItem itemLabel="Seleccione Uno" itemValue="" />
+                    <f:selectItems value="#{creacionPreguntasBean.tipoEvaluaciones}" var="tipoEvaluacion" itemLabel="#{tipoEvaluacion.descripcion}" itemValue="#{tipoEvaluacion}"/>
+                    <p:column>
+                        <h:outputText value="#{t.descripcion}" />
+                    </p:column>
+                </p:selectOneMenu>
+            </p:panelGrid>
+            <f:facet name="footer"> 
+                <p:commandButton actionListener="#{evaluacionBean.guardar(evento)}" value="Guardar" update="@form" icon="ui-icon-disk"/>
+                <p:commandButton actionListener="#{evaluacionBean.cancelar(evento)}"  value="Cancelar" immediate="true" update="@form" icon="ui-icon-cancel"/>
+            </f:facet>
+        </p:panel>
+
+        <p:panel id="modEvalucion" header="Modificar de Evaluacion" rendered="#{evaluacionBean.enEdicion}" style="width: 800px">
+            <p:panelGrid columns="2">
+
+                <p:outputLabel for="m_idEvaluacion" value="Id Evaluacion:"/>
+                <p:inputText id="m_idEvaluacion" value="#{evaluacionBean.evaluacion.idevaluacion}" label="IdEvaluacion">
+                </p:inputText>
+
+                <p:outputLabel for="m_descripcionE" value="Descripcion de la Evaluacion:"/>                
+                <p:inputText id="m_descripcionE" value="#{evaluacionBean.evaluacion.descripcion}" label="DescripcionEvaluacion" style="width:350px">
+                </p:inputText>
+
+                <p:outputLabel for="m_tipoEvaluacion" value="Seleccione el tipo de Evaluacion:"/>
+                <p:selectOneMenu id="m_tipoEvaluacion" value="#{evaluacionBean.tEvaluacion}" style="width:462px" var="m_t">
+                    <f:selectItems value="#{creacionPreguntasBean.tipoEvaluaciones}" var="m_tipoEvaluacion" itemLabel="#{m_tipoEvaluacion.descripcion}" itemValue="#{m_tipoEvaluacion}"/>
+                    <p:column>
+                        <h:outputText value="#{m_t.descripcion}" />
+                    </p:column>
+                </p:selectOneMenu>
+
+            </p:panelGrid>
+            <f:facet name="footer"> 
+                <p:commandButton actionListener="#{evaluacionBean.guardar(evento)}" value="Guardar" update="@form" icon="ui-icon-disk"/>
+                <p:commandButton actionListener="#{evaluacionBean.cancelar()}"  value="Cancelar" immediate="true" update="@form" icon="ui-icon-cancel"/>
+            </f:facet>
+        </p:panel>
+
+        <p:dialog header="Listado de Preguntas" widgetVar="preguntasdlg" modal="true" height="300" width="600">
+            <p:dataList value="#{evaluacionBean.preguntas}" var="pregunta" type="unordered" itemType="none" paginator="true" rows="10" styleClass="paginated">
+                <f:facet name="header">
+                    Preguntas
+                </f:facet>
+                <p:commandLink update="@form" oncomplete="PF('opcionDialog').show()" title="Ver Opciones" styleClass="ui-icon ui-icon-search" style="float:left;margin-right:10px">
+                    <f:setPropertyActionListener value="#{pregunta}" target="#{evaluacionBean.preguntaSelecciona}" />
+                    <h:outputText value="#{pregunta.idpregunta}" />
+                </p:commandLink>
+                <h:outputText value="#{pregunta.idpregunta}" style="display:inline-block"/>
+            </p:dataList>
+        </p:dialog>
+
+        <p:dialog header="Opciones" widgetVar="opcionDialog" modal="true" showEffect="blind" hideEffect="explode" resizable="false">
+            <p:outputPanel id="opcionDetail" style="text-align:center;">
+                <p:panelGrid  columns="2" rendered="#{not empty evaluacionBean.preguntaSelecciona}" columnClasses="label,value">
+                    <h:outputText value="Cantidad de Opciones:" />
+                    <h:outputText value="#{evaluacionBean.preguntaSelecciona.opcionList.size}" />
+                </p:panelGrid>
+            </p:outputPanel>
+        </p:dialog>
+
+    </ui:define>
+
+
+
+</ui:composition>
+

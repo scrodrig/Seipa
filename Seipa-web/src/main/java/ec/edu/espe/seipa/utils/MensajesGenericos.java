@@ -108,4 +108,8 @@ public class MensajesGenericos {
     public static void errorGuardar() {
         FacesUtil.addMessageError(null, "Se produjo un error al guardar la información. Verifique el log de errores.");
     }
+    
+    public static void sinOpciones(){
+        FacesUtil.addMessageError(null, "No se han agredado opciones");
+    }
 }
