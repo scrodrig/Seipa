@@ -8,7 +8,9 @@ package ec.edu.espe.seipa.dao;
 import ec.edu.espe.seipa.model.Evaluacion;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -26,6 +28,17 @@ public class EvaluacionFacade extends AbstractFacade<Evaluacion> {
 
     public EvaluacionFacade() {
         super(Evaluacion.class);
+    }
+    
+    public String findID() {
+        try {
+            String codigoNuevo;
+            Query qry = em.createNativeQuery("select max(IDEVALUACION) from BI.EVALUACION");
+            codigoNuevo= qry.getSingleResult().toString();
+            return (codigoNuevo);
+        } catch (NoResultException e) {
+            return null;
+        }
     }
     
 }

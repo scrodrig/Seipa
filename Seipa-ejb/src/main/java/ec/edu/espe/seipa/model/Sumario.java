@@ -17,6 +17,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -32,6 +33,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Sumario.findByPuntajeObtenido", query = "SELECT s FROM Sumario s WHERE s.puntajeObtenido = :puntajeObtenido"),
     @NamedQuery(name = "Sumario.findByPorcentajeObtenido", query = "SELECT s FROM Sumario s WHERE s.porcentajeObtenido = :porcentajeObtenido")})
 public class Sumario implements Serializable {
+    @Size(max = 100)
+    @Column(name = "ESTADOEVALUACION", length = 100)
+    private String estadoevaluacion;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -120,6 +124,14 @@ public class Sumario implements Serializable {
     @Override
     public String toString() {
         return "ec.edu.espe.seipa.model.Sumario[ idsumario=" + idsumario + " ]";
+    }
+
+    public String getEstadoevaluacion() {
+        return estadoevaluacion;
+    }
+
+    public void setEstadoevaluacion(String estadoevaluacion) {
+        this.estadoevaluacion = estadoevaluacion;
     }
     
 }

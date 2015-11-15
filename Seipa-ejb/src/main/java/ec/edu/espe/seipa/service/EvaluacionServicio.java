@@ -23,27 +23,38 @@ import javax.ejb.Stateless;
 @Stateless
 @LocalBean
 public class EvaluacionServicio {
-    
+
     @EJB
     private EvaluacionFacade evaluacionFacade;
-    
+
     @EJB
     private PreguntaFacade preguntaFacade;
-    
+
     @EJB
     private OpcionFacade opcionFacade;
+
+    public void crear(Evaluacion evaluacion) {
+        this.evaluacionFacade.create(evaluacion);
+    }
     
-    public List<Evaluacion> getEvaluaciones()
-    {
+    public void actualizar(Evaluacion evaluacion) {
+        this.evaluacionFacade.edit(evaluacion);
+    }
+    
+    public String codigoNuevoEvaluacion(){
+        return(this.evaluacionFacade.findID());
+    }
+
+    public List<Evaluacion> getEvaluaciones() {
         return this.evaluacionFacade.findAll();
     }
-    
-    public List<Pregunta> getPreguntaByEvaluacion(Evaluacion evaluacion){
+
+    public List<Pregunta> getPreguntaByEvaluacion(Evaluacion evaluacion) {
         return this.preguntaFacade.getPreguntaByEvaluacion(evaluacion);
     }
-   
-    public List<Opcion> getOpcionesByPregunta(Pregunta pregunta){
+
+    public List<Opcion> getOpcionesByPregunta(Pregunta pregunta) {
         return this.opcionFacade.getOpcionesByPregunta(pregunta);
     }
-    
+
 }
