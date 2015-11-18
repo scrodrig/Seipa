@@ -42,4 +42,27 @@ public class PreguntaFacade extends AbstractFacade<Pregunta> {
             return null;
         }
     }
+    
+    public Pregunta findByIdEvaluacion(String idEvaluacion) {
+        try {
+            String sql = "SELECT obj FROM PreguntaEvaluacion obj WHERE obj.idEvaluacion=?1";
+            Query qry = this.getEntityManager().createQuery(sql);
+            qry.setParameter(1, idEvaluacion);
+            return (Pregunta) qry.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+
+    }
+    
+    public String findIdPregunta() {
+        try {
+            String codigoNuevo;
+            Query qry = em.createNativeQuery("select max(IDPREGUNTA) from BI.PREGUNTA");
+            codigoNuevo= qry.getSingleResult().toString();
+            return (codigoNuevo);
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 }

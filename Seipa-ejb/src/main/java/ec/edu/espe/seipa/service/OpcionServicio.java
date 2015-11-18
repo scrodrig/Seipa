@@ -7,6 +7,8 @@ package ec.edu.espe.seipa.service;
 
 import ec.edu.espe.seipa.dao.OpcionFacade;
 import ec.edu.espe.seipa.model.Opcion;
+import ec.edu.espe.seipa.model.Pregunta;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -20,14 +22,18 @@ import javax.ejb.Stateless;
 public class OpcionServicio {
 
     @EJB
-    private OpcionFacade opcionFacede;
+    private OpcionFacade opcionFacade;
 
     public void crear(Opcion opcion) {
-        this.opcionFacede.create(opcion);
+        this.opcionFacade.create(opcion);
     }
 
     public void actualizar(Opcion opcion) {
-        this.opcionFacede.edit(opcion);
+        this.opcionFacade.edit(opcion);
     }
 
+    public List<Opcion> findByPregunta(Pregunta pregunta)
+    {
+        return this.opcionFacade.getOpcionesByPregunta(pregunta);
+    }
 }

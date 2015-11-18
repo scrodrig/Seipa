@@ -35,7 +35,7 @@ public class OpcionFacade extends AbstractFacade<Opcion> {
 
     public List<Opcion> getOpcionesByPregunta(Pregunta pregunta) {
         try {
-            String sql = "SELECT obj FROM Opcion obj join obj.preguntaList pr WHERE pr.Id=?1";
+            String sql = "SELECT obj FROM Opcion obj join Pregunta pr WHERE pr.idpregunta=?1";
             Query qry = this.getEntityManager().createQuery(sql);
             qry.setParameter(1, pregunta.getIdpregunta());
             return qry.getResultList();
