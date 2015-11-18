@@ -36,11 +36,13 @@
             </p:column>
             <f:facet name="footer">  
                 <p:commandButton  value="Nuevo" update="@form" actionListener="#{evaluacionBean.nuevo(evento)}" disabled="#{evaluacionBean.disabledNuevo}" icon="ui-icon-document"/>  
-                <p:commandButton  value="Preguntas" type="button" onclick="PF('preguntasdlg').show();"/>
+                <p:commandButton  value="Preguntas" update=":form:preguntas" actionListener="#{evaluacionBean.nuevaPregunta(evento)}" icon="ui-icon-folder-open" onsuccess="PF('preguntasDlg').show();"/>
                 <p:commandButton  value="Modificar" update="@form" actionListener="#{evaluacionBean.modificar(evento)}" disabled="#{evaluacionBean.disabledModificar}" icon="ui-icon-pencil"/>
                 <p:commandButton  value="Eliminar" onclick="confirmation.show();" disabled="#{evaluacionBean.disabledEliminar}" icon="ui-icon-close"/>
             </f:facet>
         </p:dataTable>
+
+        <!--Creacion de Nuevas Evaluaciones-->
 
         <p:panel id="nuevoEvalucion" header="Registro de Evaluaciones" rendered="#{evaluacionBean.enRegistro}" style="width: 800px">
             <p:panelGrid columns="3">
@@ -63,6 +65,8 @@
                 <p:commandButton actionListener="#{evaluacionBean.cancelar(evento)}"  value="Cancelar" immediate="true" update="@form" icon="ui-icon-cancel"/>
             </f:facet>
         </p:panel>
+
+        <!--Edicion de Nuevas Evaluaciones-->
 
         <p:panel id="modEvalucion" header="Modificar de Evaluacion" rendered="#{evaluacionBean.enEdicion}" style="width: 800px">
             <p:panelGrid columns="2">
@@ -90,31 +94,116 @@
             </f:facet>
         </p:panel>
 
-        <p:dialog header="Listado de Preguntas" widgetVar="preguntasdlg" modal="true" height="300" width="600">
-            <p:dataList value="#{evaluacionBean.preguntas}" var="pregunta" type="unordered" itemType="none" paginator="true" rows="10" styleClass="paginated">
+        <!--Despliegue de Preguntas por Evaluacion Seleccionada-->
+
+        <p:dialog header="Listado Preguntas" widgetVar="preguntasDlg" modal="true" height="200" width="1020">
+            <p:dataTable id="preguntas"  value="#{evaluacionBean.preguntas}" var="pregunta" selection="#{evaluacionBean.preguntaSelecciona}" selectionMode="single" scrollable="true" 
+                         rowKey="#{pregunta.idpregunta}" style="width: 1000px" 
+                         paginator="true" rows="5"  scrollWidth="false" paginatorPosition="bottom"
+                         paginatorTemplate="  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                         emptyMessage="No se ha registrado ninguna pregunta" rendered="#{not (evaluacionBean.enEdicionPregunta)}" >
+
+                <p:ajax event="rowSelect" listener="#{evaluacionBean.filaSeleccionada(evento)}" update="preguntas"/>
+                <p:ajax event="rowUnselect" listener="#{evaluacionBean.filaSeleccionada(evento)}" update="preguntas"/>
+
                 <f:facet name="header">
                     Preguntas
                 </f:facet>
-                <p:commandLink update="@form" oncomplete="PF('opcionDialog').show()" title="Ver Opciones" styleClass="ui-icon ui-icon-search" style="float:left;margin-right:10px">
-                    <f:setPropertyActionListener value="#{pregunta}" target="#{evaluacionBean.preguntaSelecciona}" />
-                    <h:outputText value="#{pregunta.idpregunta}" />
-                </p:commandLink>
-                <h:outputText value="#{pregunta.idpregunta}" style="display:inline-block"/>
-            </p:dataList>
+                <p:column headerText="Identificacion Pregunta" style="width: 55px">
+                    #{pregunta.idpregunta}
+                </p:column>
+                <p:column headerText="Pregunta" style="width: 100px">
+                    #{pregunta.textopregunta}
+                </p:column>
+                <f:facet name="footer">  
+                    <p:commandButton  value="Nueva" actionListener="#{evaluacionBean.nuevaP(evento)}" disabled="#{evaluacionBean.disabledNuevo}" icon="ui-icon-document" onsuccess="PF('npreguntaDlg').show();"/>  
+                    <p:commandButton  value="Opciones" update=":form:opciones" actionListener="#{evaluacionBean.nuevaOpcion(evento)}" onsuccess="PF('opcionesDlg').show();"/>
+                    <p:commandButton  value="Modificar" update="@form" actionListener="#{evaluacionBean.modificar(evento)}" disabled="#{evaluacionBean.disabledModificar}" icon="ui-icon-pencil"/>
+                    <p:commandButton  value="Eliminar" onclick="confirmation.show();" disabled="#{evaluacionBean.disabledEliminar}" icon="ui-icon-close"/>
+                </f:facet>
+            </p:dataTable>
         </p:dialog>
 
-        <p:dialog header="Opciones" widgetVar="opcionDialog" modal="true" showEffect="blind" hideEffect="explode" resizable="false">
-            <p:outputPanel id="opcionDetail" style="text-align:center;">
-                <p:panelGrid  columns="2" rendered="#{not empty evaluacionBean.preguntaSelecciona}" columnClasses="label,value">
-                    <h:outputText value="Cantidad de Opciones:" />
-                    <h:outputText value="#{evaluacionBean.preguntaSelecciona.opcionList.size}" />
+        <!--Creacion de Nuevas Preguntas-->
+        
+        <p:dialog header="Nueva Pregunta" widgetVar="npreguntaDlg" modal="true" height="200" width="1020">
+              <p:panelGrid columns="3">
+                    <p:outputLabel for="descripcionPregunta" value="Descripcion de la Pregunta"/>                
+                    <p:inputText id="descripcionPregunta" value="#{evaluacionBean.pregunta.textopregunta}" label="DescripcionPregunta">
+                    </p:inputText>
+                    <p:message for="descripcionPregunta" />
+                    <p:outputLabel for="tipoPreguntaL" value="Seleccione el tipo de Pregunta:"/>
+                    <p:selectOneMenu id="tipoPreguntaL" value="#{evaluacionBean.tPregunta}" style="width:462px" var="t">
+                        <f:selectItem itemLabel="Seleccione Uno" itemValue="" />
+                        <f:selectItems value="#{creacionPreguntasBean.tipoPreguntas}" var="tipoPregunta" itemLabel="#{tipoPregunta.tipoPregunta}" itemValue="#{tipoPregunta}"/>
+                        <p:column>
+                            <h:outputText value="#{t.tipoPregunta}" />
+                        </p:column>
+                    </p:selectOneMenu>
                 </p:panelGrid>
-            </p:outputPanel>
+                <f:facet name="footer"> 
+                    <p:commandButton actionListener="#{evaluacionBean.guardarPregunta(evento)}" value="Guardar" update=":form:preguntas" icon="ui-icon-disk"/>
+                    <p:commandButton actionListener="#{evaluacionBean.cancelar(evento)}"  value="Cancelar" immediate="true" update="@form" icon="ui-icon-cancel"/>
+                </f:facet>
         </p:dialog>
 
+        <!--Edicion de preguntas-->
+
+        <p:panel id="modPregunta" header="Modificar de Pregunta" rendered="#{evaluacionBean.enEdicionPregunta}" style="width: 800px">
+            <p:panelGrid columns="2">
+
+                <p:outputLabel for="m_tipoPregunta" value="Pregunta:"/>                
+                <p:inputText id="m_tipoPregunta" value="#{evaluacionBean.evaluacion.descripcion}" label="DescripcionEvaluacion" style="width:350px">
+                </p:inputText>
+
+                <p:outputLabel for="m_tipoPreguntaL" value="Seleccione el tipo de Pregunta:"/>
+                <p:selectOneMenu id="m_tipoPreguntaL" value="#{evaluacionBean.tPregunta}" style="width:462px" var="t">
+                    <f:selectItem itemLabel="Seleccione Uno" itemValue="" />
+                    <f:selectItems value="#{creacionPreguntasBean.tipoPreguntas}" var="tipoPregunta" itemLabel="#{tipoPregunta.tipoPregunta}" itemValue="#{tipoPregunta}"/>
+                    <p:column>
+                        <h:outputText value="#{t.tipoPregunta}" />
+                    </p:column>
+                </p:selectOneMenu>
+
+            </p:panelGrid>
+            <f:facet name="footer"> 
+                <p:commandButton actionListener="#{evaluacionBean.guardar(evento)}" value="Guardar" update=":form:preguntas" icon="ui-icon-disk"/>
+                <p:commandButton actionListener="#{evaluacionBean.cancelar()}"  value="Cancelar" immediate="true" update="@form" icon="ui-icon-cancel"/>
+            </f:facet>
+        </p:panel>
+
+        <!--Despliegue de Opciones por Pregunta Seleccionada-->
+
+        <p:dialog header="Listado Opciones" widgetVar="opcionesDlg" modal="true" height="200" width="1020">
+            <p:dataTable id="opciones"  value="#{evaluacionBean.opciones}" var="opcion" selection="#{evaluacionBean.opcionSeleccionada}" selectionMode="single" scrollable="true" 
+                         rowKey="#{opcion.idopcion}" style="width: 1000px" 
+                         paginator="true" rows="5"  scrollWidth="false" paginatorPosition="bottom"
+                         paginatorTemplate="  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                         emptyMessage="No se ha registrado ninguna opcion" rendered="#{not (evaluacionBean.enEdicionPregunta)}" >
+
+                <p:ajax event="rowSelect" listener="#{evaluacionBean.filaSeleccionada(evento)}" update="opciones"/>
+                <p:ajax event="rowUnselect" listener="#{evaluacionBean.filaSeleccionada(evento)}" update="opciones"/>
+
+                <f:facet name="header">
+                    Opciones
+                </f:facet>
+                <p:column headerText="Identificacion Opcion" style="width: 55px">
+                    #{opcion.idopcion}
+                </p:column>
+                <p:column headerText="Opcion" style="width: 100px">
+                    #{opcion.descripcion}
+                </p:column>
+                <p:column headerText="Valor" style="width: 100px">
+                    #{opcion.valorOpcion}
+                </p:column>
+                <f:facet name="footer">  
+                    <p:commandButton  value="Nuevo" update="@form" actionListener="#{evaluacionBean.nuevo(evento)}" disabled="#{evaluacionBean.disabledNuevo}" icon="ui-icon-document"/>  
+                    <p:commandButton  value="Opciones" actionListener="#{evaluacionBean.cargarPreguntasEvaluacion(evento)}" onsuccess="PF('preguntasdlg').show();"/>
+                    <p:commandButton  value="Modificar" update="@form" actionListener="#{evaluacionBean.modificar(evento)}" disabled="#{evaluacionBean.disabledModificar}" icon="ui-icon-pencil"/>
+                    <p:commandButton  value="Eliminar" onclick="confirmation.show();" disabled="#{evaluacionBean.disabledEliminar}" icon="ui-icon-close"/>
+                </f:facet>
+            </p:dataTable>
+        </p:dialog>
     </ui:define>
-
-
-
 </ui:composition>
 

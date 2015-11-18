@@ -22,8 +22,10 @@ public class BotonesBean {
     private Boolean varios;
     private Boolean noSeleccionados;
     private Boolean enEdicion;
+    private Boolean enEdicionPregunta;
     private Boolean enEdicionOpciones;
     private Boolean enRegistro;
+    private Boolean enRegitroPregunta;
     private Boolean enRegistroOpciones;
     private Boolean soloLectura;
     private Boolean enAuditoria;
@@ -64,7 +66,16 @@ public class BotonesBean {
         this.enRegistro = Boolean.TRUE;
         this.disableCargaDocumentos = Boolean.TRUE;
     }
-    
+
+    public void crearPreguntas() {
+        this.reset();
+        //this.disabledNuevo = Boolean.TRUE;
+        this.disabledModificar = Boolean.TRUE;
+        this.disabledEliminar = Boolean.TRUE;
+        this.enRegitroPregunta = Boolean.TRUE;
+
+    }
+
     public void crearOpciones() {
         this.reset();
         this.disabledNuevaOpcion = Boolean.TRUE;
@@ -96,7 +107,6 @@ public class BotonesBean {
 //        this.disableCargaDocumentos = Boolean.TRUE;
 //        this.soloLectura = Boolean.FALSE;
 //    }
-    
     public void cancelar() {
         this.reset();
         this.disabledModificar = Boolean.TRUE;
@@ -130,7 +140,7 @@ public class BotonesBean {
 
     public void verCargaDocumentos() {
         this.reset();
-        
+
         this.disabledNuevo = Boolean.TRUE;
         this.disabledModificar = Boolean.TRUE;
         this.disabledEliminar = Boolean.TRUE;
@@ -144,14 +154,14 @@ public class BotonesBean {
         this.disabledModificar = Boolean.FALSE;
         this.disabledEliminar = Boolean.FALSE;
         this.disableAuditoria = Boolean.FALSE;
-        this.disableCargaDocumentos= Boolean.FALSE;
+        this.disableCargaDocumentos = Boolean.FALSE;
         this.uno = Boolean.FALSE;
         this.varios = Boolean.FALSE;
         this.noSeleccionados = Boolean.FALSE;
         this.enEdicion = Boolean.FALSE;
         this.enRegistro = Boolean.FALSE;
         this.enAuditoria = Boolean.FALSE;
-        this.enCargaDocumentos=Boolean.FALSE;
+        this.enCargaDocumentos = Boolean.FALSE;
         this.soloLectura = Boolean.FALSE;
     }
 
@@ -249,7 +259,7 @@ public class BotonesBean {
 
     public void setEnCargaDocumentos(Boolean enCargaDocumentos) {
         this.enCargaDocumentos = enCargaDocumentos;
-    }    
+    }
 
     /**
      * @return the enEdicionOpciones
@@ -291,5 +301,33 @@ public class BotonesBean {
      */
     public void setDisabledNuevaOpcion(Boolean disabledNuevaOpcion) {
         this.disabledNuevaOpcion = disabledNuevaOpcion;
+    }
+
+    /**
+     * @return the enEdicionPregunta
+     */
+    public Boolean getEnEdicionPregunta() {
+        return enEdicionPregunta;
+    }
+
+    /**
+     * @param enEdicionPregunta the enEdicionPregunta to set
+     */
+    public void setEnEdicionPregunta(Boolean enEdicionPregunta) {
+        this.enEdicionPregunta = enEdicionPregunta;
+    }
+
+    /**
+     * @return the enRegitroPregunta
+     */
+    public Boolean getEnRegitroPregunta() {
+        return enRegitroPregunta;
+    }
+
+    /**
+     * @param enRegitroPregunta the enRegitroPregunta to set
+     */
+    public void setEnRegitroPregunta(Boolean enRegitroPregunta) {
+        this.enRegitroPregunta = enRegitroPregunta;
     }
 }
