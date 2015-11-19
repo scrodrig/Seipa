@@ -119,8 +119,8 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
         this.setEvaluacion(new Evaluacion());
         try {
             this.evaluacion = (Evaluacion) BeanUtils.cloneBean(this.evaluacionSeleccionada);
-            System.out.println(this.evaluacionSeleccionada.getIdevaluacion().toString());
-            this.preguntas = preguntaServicio.findByEvaluacion(evaluacionSeleccionada);
+            System.out.println(this.evaluacion.getIdevaluacion().toString());
+            this.preguntas = preguntaServicio.findByEvaluacion(evaluacion);
             //super.verDetalles();
         } catch (Exception ex) {
             MensajesGenericos.errorCopyProperties();
@@ -137,7 +137,7 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
         this.setPregunta(new Pregunta());
         try {
             this.pregunta = (Pregunta) BeanUtils.cloneBean(this.preguntaSelecciona);
-            System.out.println(this.preguntaSelecciona.getIdpregunta().toString());
+            System.out.println(this.pregunta.getIdpregunta().toString());
             this.setOpciones(opcionServicio.findByPregunta(preguntaSelecciona));
             //super.verDetalles();
         } catch (Exception ex) {
@@ -157,8 +157,8 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
 
     public void guardar(ActionEvent evento) {
         try {
-            this.setTipoEvaluacionN(new TipoEvaluacion());
-            this.tipoEvaluacionN.setIdtipoevaluacion(new BigDecimal(gettEvaluacion().substring(57, 59).trim()));
+            this.tipoEvaluacionN = new TipoEvaluacion();
+            this.tipoEvaluacionN.setIdtipoevaluacion(new BigDecimal(tEvaluacion.substring(57, tEvaluacion.length()-1).trim()));
             if (this.evaluacion.getIdtipoevaluacion() == null) {
                 this.evaluacion.setIdevaluacion(new BigDecimal(evaluacionServicio.codigoNuevoEvaluacion()).add(new BigDecimal("1")));
             }
@@ -186,18 +186,20 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
 
     public void guardarPregunta(ActionEvent evento) {
         try {
-            this.setTipoPreguntaCode(new TipoPregunta());
+            this.tipoPreguntaCode = new TipoPregunta();            
+            this.tipoPreguntaCode.setIdtipopregunta(new BigDecimal(tPregunta.substring(53,tPregunta.length()-1).trim()));
+            this.pregunta.setIdtipopregunta(tipoPreguntaCode);
             System.out.println(tPregunta);
-            this.tipoPreguntaCode.setTipoPregunta(gettPregunta().substring(52, 50).trim());
             if (this.pregunta.getIdpregunta() == null) {
                 this.pregunta.setIdpregunta(new BigDecimal(preguntaServicio.codigoNuevoPregunta()).add(new BigDecimal("1")));
             }
             if (super.getEnRegitroPregunta()) {
                 //Envio de datos a pregunta Evaluacion
-                if (this.preguntaEvaluacion.getIdpreevaluacion() == null) {
+                if (this.preguntaEvaluacion == null) {
+                    this.preguntaEvaluacion = new Preguntaevaluacion();
                     this.preguntaEvaluacion.setIdpreevaluacion(new BigDecimal(preguntaEvaluacionServicio.codigoNuevoPreguntaEvaluacion()).add(new BigDecimal("1")));
                 }
-                char a = 1;
+                char a = '1';
                 this.preguntaEvaluacion.setIdpregunta(pregunta);
                 this.preguntaEvaluacion.setIdevaluacion(evaluacion);
                 this.preguntaEvaluacion.setEstadopreevaluacion(a);
