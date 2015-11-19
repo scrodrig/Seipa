@@ -5,8 +5,13 @@
  */
 package ec.edu.espe.seipa.dao;
 
+import ec.edu.espe.seipa.model.Evaluacion;
 import ec.edu.espe.seipa.model.Opcion;
 import ec.edu.espe.seipa.model.Pregunta;
+import ec.edu.espe.seipa.model.TipoPregunta;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -35,10 +40,22 @@ public class OpcionFacade extends AbstractFacade<Opcion> {
 
     public List<Opcion> getOpcionesByPregunta(Pregunta pregunta) {
         try {
-            String sql = "SELECT obj FROM Opcion obj join Pregunta pr WHERE pr.idpregunta=?1";
-            Query qry = this.getEntityManager().createQuery(sql);
-            qry.setParameter(1, pregunta.getIdpregunta());
-            return qry.getResultList();
+
+            Opcion objOpcion;
+            List<Opcion> lsOpcion = new ArrayList();
+            String sql = "SELECT o.* FROM BI.OPCION o join BI.PREGUNTAOPCION po on o.IDOPCION= po.IDOPCION WHERE po.IDPREGUNTA=" + pregunta.getIdpregunta();
+            Query qry = em.createNativeQuery(sql);
+            List<Object[]> p1 = qry.getResultList();
+            if (p1.size() >= 1) {
+                for (int i = 0; i < p1.size(); i++) {
+                    objOpcion = new Opcion();
+                    objOpcion.setIdopcion(new BigDecimal(p1.get(i)[0].toString()));
+                    objOpcion.setValorOpcion(p1.get(i)[1].toString());
+                    objOpcion.setDescripcion(p1.get(i)[2].toString());
+                    lsOpcion.add(objOpcion);
+                }
+            }
+            return lsOpcion;
         } catch (NoResultException e) {
             return null;
         }
