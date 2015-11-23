@@ -7,6 +7,7 @@ package ec.edu.espe.seipa.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,10 +16,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,6 +36,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Sumario.findByPuntajeObtenido", query = "SELECT s FROM Sumario s WHERE s.puntajeObtenido = :puntajeObtenido"),
     @NamedQuery(name = "Sumario.findByPorcentajeObtenido", query = "SELECT s FROM Sumario s WHERE s.porcentajeObtenido = :porcentajeObtenido")})
 public class Sumario implements Serializable {
+    @OneToMany(mappedBy = "idsumario")
+    private List<Sumarioopcion> sumarioopcionList;
     @Size(max = 100)
     @Column(name = "ESTADOEVALUACION", length = 100)
     private String estadoevaluacion;
@@ -132,6 +137,15 @@ public class Sumario implements Serializable {
 
     public void setEstadoevaluacion(String estadoevaluacion) {
         this.estadoevaluacion = estadoevaluacion;
+    }
+
+    @XmlTransient
+    public List<Sumarioopcion> getSumarioopcionList() {
+        return sumarioopcionList;
+    }
+
+    public void setSumarioopcionList(List<Sumarioopcion> sumarioopcionList) {
+        this.sumarioopcionList = sumarioopcionList;
     }
     
 }

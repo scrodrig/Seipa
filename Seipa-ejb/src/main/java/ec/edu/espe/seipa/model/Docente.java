@@ -8,6 +8,7 @@ package ec.edu.espe.seipa.model;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -39,6 +40,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Docente.findByTelefono", query = "SELECT d FROM Docente d WHERE d.telefono = :telefono"),
     @NamedQuery(name = "Docente.findByCorreo", query = "SELECT d FROM Docente d WHERE d.correo = :correo")})
 public class Docente implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "iddocente")
+    private List<Horasdocente> horasdocenteList;
     @Lob
     @Column(name = "IMAGENPERFIL")
     private Serializable imagenperfil;
@@ -184,6 +187,15 @@ public class Docente implements Serializable {
 
     public void setImagenperfil(Serializable imagenperfil) {
         this.imagenperfil = imagenperfil;
+    }
+
+    @XmlTransient
+    public List<Horasdocente> getHorasdocenteList() {
+        return horasdocenteList;
+    }
+
+    public void setHorasdocenteList(List<Horasdocente> horasdocenteList) {
+        this.horasdocenteList = horasdocenteList;
     }
     
 }

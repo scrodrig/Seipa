@@ -41,6 +41,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Evaluacion.findByDescripcion", query = "SELECT e FROM Evaluacion e WHERE e.descripcion = :descripcion"),
     @NamedQuery(name = "Evaluacion.findByFechaCreacion", query = "SELECT e FROM Evaluacion e WHERE e.fechaCreacion = :fechaCreacion")})
 public class Evaluacion implements Serializable {
+    @Size(max = 100)
+    @Column(name = "ESTADO", length = 100)
+    private String estado;
+    @Column(name = "FEC_LIMITE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecLimite;
     @OneToMany(mappedBy = "idevaluacion")
     private List<Preguntaevaluacion> preguntaevaluacionList;
     private static final long serialVersionUID = 1L;
@@ -156,6 +162,22 @@ public class Evaluacion implements Serializable {
 
     public void setPreguntaevaluacionList(List<Preguntaevaluacion> preguntaevaluacionList) {
         this.preguntaevaluacionList = preguntaevaluacionList;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public Date getFecLimite() {
+        return fecLimite;
+    }
+
+    public void setFecLimite(Date fecLimite) {
+        this.fecLimite = fecLimite;
     }
     
 }
