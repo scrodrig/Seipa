@@ -14,7 +14,7 @@
                 <p:growl autoUpdate="true"/>
                     <p:panelMenu style="width: 330px">
                             <p:submenu label="Evaluaciones" icon="ui-icon-note">
-                                 <c:forEach items="#{evaluacionBean. evaluaciones}" var="evaluacion">
+                                 <c:forEach items="#{evaluacionBean.evaluaciones}" var="evaluacion">
                                      <p:menuitem value="#{evaluacion.descripcion}"
                                                  style="text-align: left" ajax="false" 
                                                  update="evaluacionPanel" icon="ui-icon-document-b" 
@@ -29,6 +29,33 @@
                     <p:panel header="Pregunta #{pregunta.idpregunta}"  style="margin-bottom:20px">
                         <h:panelGrid columns="2" cellpadding="10" style="text-align: left">
                              #{pregunta.textopregunta}
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" cellpadding="10" style="text-align: left">
+                            
+                            <c:choose>
+                                <c:when test="${pregunta.idtipopregunta.idtipopregunta==1}">
+                                   <h:selectOneRadio value="#{evaluacionBean.valor}">
+                                    <f:selectItem itemValue="1" itemLabel="Si" />
+                                    <f:selectItem itemValue="2" itemLabel="No" />	   			
+                                 </h:selectOneRadio>
+                                </c:when>
+                                <c:when test="${pregunta.idtipopregunta.idtipopregunta==2}">
+                                   2	ORDEN
+                                </c:when>
+                                <c:when test="${pregunta.idtipopregunta.idtipopregunta==3}">
+                                   2	ORDEN
+                                </c:when>
+                                <c:when test="${pregunta.idtipopregunta.idtipopregunta==4}">
+                                   2	ORDEN
+                                </c:when>
+                                <c:when test="${pregunta.idtipopregunta.idtipopregunta==5}">
+                                   2	ORDEN
+                                </c:when>
+                                <c:when test="${pregunta.idtipopregunta.idtipopregunta==6}">
+                                   2	ORDEN
+                                </c:when>
+                            </c:choose>
+                             
                         </h:panelGrid>
                     </p:panel>
                 </c:forEach>
