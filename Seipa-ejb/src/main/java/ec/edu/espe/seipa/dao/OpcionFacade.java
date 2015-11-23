@@ -60,5 +60,29 @@ public class OpcionFacade extends AbstractFacade<Opcion> {
             return null;
         }
     }
+    
+    public String IdOpcion() {
+        try {
+            String sql ="SELECT max(IDOPCION) from BI.OPCION";
+            String idOpcion;
+            Query qry = em.createNativeQuery(sql);           
+            idOpcion = qry.getSingleResult().toString();
+            return idOpcion;
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+    
+    public String IdPreguntaOpcion(){
+        try{
+            String sql="SELECT max(IDPREOPCION) from BI.PREGUNTAOPCION";
+            String idPreguntaOpcion;
+            Query qry = em.createNativeQuery(sql);
+            idPreguntaOpcion = qry.getSingleResult().toString();
+            return idPreguntaOpcion;
+        } catch (NoResultException e){
+            return null;
+        }
+    }
 
 }

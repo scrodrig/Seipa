@@ -40,6 +40,10 @@ public class PreguntaServicio {
         return this.preguntaFacade.findByIdEvaluacion(idEvaluacion);
     }
     
+    public String findOrderNumberPregunta(Evaluacion evaluacion){
+         return this.preguntaFacade.orderNumbrePregunta(evaluacion);
+    }
+    
     public void crear(Pregunta pregunta) {
         this.preguntaFacade.create(pregunta);
     }

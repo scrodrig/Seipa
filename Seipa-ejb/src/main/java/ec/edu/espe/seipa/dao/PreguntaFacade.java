@@ -86,4 +86,16 @@ public class PreguntaFacade extends AbstractFacade<Pregunta> {
             return null;
         }
     }
+    
+    public String orderNumbrePregunta(Evaluacion evaluacion){
+        try{
+            String orderNumber;
+            String sql = "select max(ordernumber) from BI.PREGUNTA p join BI.PREGUNTAEVALUACION pe on p.IDPREGUNTA=pe.IDPREGUNTA where pe.IDEVALUACION = " + evaluacion.getIdevaluacion();
+            Query qry = em.createNativeQuery(sql);
+            orderNumber = qry.getSingleResult().toString();
+            return orderNumber;
+        }catch (NoResultException e){
+            return null;
+        }
+    }
 }

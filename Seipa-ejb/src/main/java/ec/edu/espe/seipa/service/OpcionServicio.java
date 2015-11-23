@@ -36,4 +36,12 @@ public class OpcionServicio {
     {
         return this.opcionFacade.getOpcionesByPregunta(pregunta);
     }
+    
+    public String opcionId(){
+        return this.opcionFacade.IdOpcion();
+    }
+    
+    public String opcionPreguntaId(){
+        return this.opcionFacade.IdPreguntaOpcion();
+    }
 }
