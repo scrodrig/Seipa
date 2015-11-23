@@ -9,11 +9,13 @@ import ec.edu.espe.seipa.model.Evaluacion;
 import ec.edu.espe.seipa.model.Opcion;
 import ec.edu.espe.seipa.model.Pregunta;
 import ec.edu.espe.seipa.model.Preguntaevaluacion;
+import ec.edu.espe.seipa.model.Preguntaopcion;
 import ec.edu.espe.seipa.model.TipoEvaluacion;
 import ec.edu.espe.seipa.model.TipoPregunta;
 import ec.edu.espe.seipa.service.EvaluacionServicio;
 import ec.edu.espe.seipa.service.OpcionServicio;
 import ec.edu.espe.seipa.service.PreguntaEvaluacionServicio;
+import ec.edu.espe.seipa.service.PreguntaOpcionServicio;
 import ec.edu.espe.seipa.service.PreguntaServicio;
 import ec.edu.espe.seipa.service.TipoEvaluacionServicio;
 import ec.edu.espe.seipa.service.TipoPreguntaServicio;
@@ -21,7 +23,7 @@ import ec.edu.espe.seipa.utils.EvaluacionUtils;
 import ec.edu.espe.seipa.utils.MensajesGenericos;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.MathContext;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -63,6 +65,9 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
     @EJB
     private PreguntaEvaluacionServicio preguntaEvaluacionServicio;
 
+    @EJB
+    private PreguntaOpcionServicio preguntaOpcionServicio;
+
     private List<Evaluacion> evaluaciones;
     private Evaluacion evaluacionSeleccionada;
 
@@ -80,11 +85,15 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
     private List<Opcion> opciones;
     private Opcion opcionSeleccionada;
     private Opcion opcion;
+    private String idOpcion;
+    private String idPreguntaOpcion;
 
     private List<TipoPregunta> tipoPreguntas;
     private TipoPregunta tipoPreguntaCode;
 
     private Preguntaevaluacion preguntaEvaluacion;
+
+    private Preguntaopcion preguntaOpcion;
 
     @PostConstruct
     public void postConstruct() {
@@ -114,6 +123,11 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
         this.setEvaluacion(new Evaluacion());
     }
 
+    public void nuevoOpcion(ActionEvent evento) {
+        super.crearOpciones();
+        this.opcion = new Opcion();
+    }
+
     public void nuevaPregunta(ActionEvent evento) {
         super.crearPreguntas();
         this.setEvaluacion(new Evaluacion());
@@ -129,7 +143,7 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
 
     public void nuevaP(ActionEvent evento) {
         super.crearPreguntas();
-        this.setPregunta(new Pregunta());
+        this.pregunta = new Pregunta();
     }
 
     public void nuevaOpcion(ActionEvent evento) {
@@ -158,7 +172,7 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
     public void guardar(ActionEvent evento) {
         try {
             this.tipoEvaluacionN = new TipoEvaluacion();
-            this.tipoEvaluacionN.setIdtipoevaluacion(new BigDecimal(tEvaluacion.substring(57, tEvaluacion.length()-1).trim()));
+            this.tipoEvaluacionN.setIdtipoevaluacion(new BigDecimal(tEvaluacion.substring(57, tEvaluacion.length() - 1).trim()));
             if (this.evaluacion.getIdtipoevaluacion() == null) {
                 this.evaluacion.setIdevaluacion(new BigDecimal(evaluacionServicio.codigoNuevoEvaluacion()).add(new BigDecimal("1")));
             }
@@ -186,8 +200,8 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
 
     public void guardarPregunta(ActionEvent evento) {
         try {
-            this.tipoPreguntaCode = new TipoPregunta();            
-            this.tipoPreguntaCode.setIdtipopregunta(new BigDecimal(tPregunta.substring(53,tPregunta.length()-1).trim()));
+            this.tipoPreguntaCode = new TipoPregunta();
+            this.tipoPreguntaCode.setIdtipopregunta(new BigDecimal(tPregunta.substring(53, tPregunta.length() - 1).trim()));
             this.pregunta.setIdtipopregunta(tipoPreguntaCode);
             System.out.println(tPregunta);
             if (this.pregunta.getIdpregunta() == null) {
@@ -203,9 +217,21 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
                 this.preguntaEvaluacion.setIdpregunta(pregunta);
                 this.preguntaEvaluacion.setIdevaluacion(evaluacion);
                 this.preguntaEvaluacion.setEstadopreevaluacion(a);
+
+                String orderNumberPregunta = preguntaServicio.findOrderNumberPregunta(evaluacion);
+                //Numero de orden de las preguntas 
+                if (orderNumberPregunta == null) {
+                    this.pregunta.setOrdernumber(new BigInteger("1"));
+                } else {
+                    this.pregunta.setOrdernumber(new BigInteger(preguntaServicio.findOrderNumberPregunta(evaluacion)).add(new BigInteger("1")));
+                }
+                //Guardar Pregunta.
                 this.preguntaServicio.crear(this.pregunta);
+                //Guarda Pregunta Correspondiente a Evaluacion.
                 this.preguntaEvaluacionServicio.crear(preguntaEvaluacion);
+                //Agrega pregunta a listado de preguntas de la Evaluacion.
                 this.preguntas.add(this.pregunta);
+                //Mensaje de Exito al guardar.
                 MensajesGenericos.infoCrear("Pregunta", this.pregunta.getIdpregunta().toString().concat(" - Creada con exito"), Boolean.TRUE);
                 super.sinSeleccion();
             } else if (super.getEnEdicionPregunta()) {
@@ -218,6 +244,40 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
         } catch (Exception e) {
             MensajesGenericos.errorGuardar();
         }
+    }
+
+    public void guardarOpcion(ActionEvent evento) {
+
+        try {
+
+            //Claves Primarias Opcion & OpcionPregunta
+            this.idOpcion = opcionServicio.opcionId();
+            this.idPreguntaOpcion = opcionServicio.opcionPreguntaId();
+
+            if (super.getEnRegistroOpciones()) {
+
+                //Registro Opciones
+                this.opcion.setIdopcion(new BigDecimal(idOpcion).add(new BigDecimal("1")));
+                this.opcionServicio.crear(opcion);
+                
+                //Registro Opciones Pregunta
+                char a = '1';
+                this.preguntaOpcion.setIdpreopcion(new BigDecimal(idPreguntaOpcion).add(new BigDecimal("1")));
+                this.preguntaOpcion.setIdpregunta(pregunta);
+                this.preguntaOpcion.setEstadopreopcion(a);
+                this.preguntaOpcionServicio.crear(preguntaOpcion);
+                
+                //Agrego opcion a una lista
+                this.opciones.add(opcion);
+
+            } else if (super.getEnEdicionOpciones()) {
+
+            }
+
+        } catch (Exception e) {
+            MensajesGenericos.errorGuardar();
+        }
+
     }
 
     public void modificar(ActionEvent evento) {
@@ -435,6 +495,48 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
      */
     public void setPreguntaEvaluacion(Preguntaevaluacion preguntaEvaluacion) {
         this.preguntaEvaluacion = preguntaEvaluacion;
+    }
+
+    /**
+     * @return the idOpcion
+     */
+    public String getIdOpcion() {
+        return idOpcion;
+    }
+
+    /**
+     * @param idOpcion the idOpcion to set
+     */
+    public void setIdOpcion(String idOpcion) {
+        this.idOpcion = idOpcion;
+    }
+
+    /**
+     * @return the idPreguntaOpcion
+     */
+    public String getIdPreguntaOpcion() {
+        return idPreguntaOpcion;
+    }
+
+    /**
+     * @param idPreguntaOpcion the idPreguntaOpcion to set
+     */
+    public void setIdPreguntaOpcion(String idPreguntaOpcion) {
+        this.idPreguntaOpcion = idPreguntaOpcion;
+    }
+
+    /**
+     * @return the preguntaOpcion
+     */
+    public Preguntaopcion getPreguntaOpcion() {
+        return preguntaOpcion;
+    }
+
+    /**
+     * @param preguntaOpcion the preguntaOpcion to set
+     */
+    public void setPreguntaOpcion(Preguntaopcion preguntaOpcion) {
+        this.preguntaOpcion = preguntaOpcion;
     }
 
 }

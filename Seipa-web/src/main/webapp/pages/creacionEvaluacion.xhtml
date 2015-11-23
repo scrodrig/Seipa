@@ -118,7 +118,7 @@
                 <f:facet name="footer">  
                     <p:commandButton  value="Nueva" actionListener="#{evaluacionBean.nuevaP(evento)}" disabled="#{evaluacionBean.disabledNuevo}" icon="ui-icon-document" onsuccess="PF('npreguntaDlg').show();"/>  
                     <p:commandButton  value="Opciones" update=":form:opciones" actionListener="#{evaluacionBean.nuevaOpcion(evento)}" onsuccess="PF('opcionesDlg').show();"/>
-                    <p:commandButton  value="Modificar" update="@form" actionListener="#{evaluacionBean.modificar(evento)}" disabled="#{evaluacionBean.disabledModificar}" icon="ui-icon-pencil"/>
+                    <p:commandButton  value="Modificar"  actionListener="#{evaluacionBean.modificar(evento)}" disabled="#{evaluacionBean.disabledModificar}" icon="ui-icon-pencil"/>
                     <p:commandButton  value="Eliminar" onclick="confirmation.show();" disabled="#{evaluacionBean.disabledEliminar}" icon="ui-icon-close"/>
                 </f:facet>
             </p:dataTable>
@@ -142,7 +142,7 @@
                     </p:selectOneMenu>
                 </p:panelGrid>
                 <f:facet name="footer"> 
-                    <p:commandButton actionListener="#{evaluacionBean.guardarPregunta(evento)}" value="Guardar" update=":form:preguntas" icon="ui-icon-disk"/>
+                    <p:commandButton actionListener="#{evaluacionBean.guardarPregunta(evento)}" value="Guardar" update=":form:preguntas" icon="ui-icon-disk" onsuccess="PF('npreguntaDlg').hide();"/>
                     <p:commandButton actionListener="#{evaluacionBean.cancelar(evento)}"  value="Cancelar" immediate="true" update="@form" icon="ui-icon-cancel"/>
                 </f:facet>
         </p:dialog>
@@ -197,13 +197,30 @@
                     #{opcion.valorOpcion}
                 </p:column>
                 <f:facet name="footer">  
-                    <p:commandButton  value="Nuevo" update="@form" actionListener="#{evaluacionBean.nuevo(evento)}" disabled="#{evaluacionBean.disabledNuevo}" icon="ui-icon-document"/>  
-                    <p:commandButton  value="Opciones" actionListener="#{evaluacionBean.cargarPreguntasEvaluacion(evento)}" onsuccess="PF('preguntasdlg').show();"/>
-                    <p:commandButton  value="Modificar" update="@form" actionListener="#{evaluacionBean.modificar(evento)}" disabled="#{evaluacionBean.disabledModificar}" icon="ui-icon-pencil"/>
+                    <p:commandButton  value="Nuevo" actionListener="#{evaluacionBean.nuevoOpcion(evento)}" disabled="#{evaluacionBean.disabledNuevo}" icon="ui-icon-document" onsuccess="PF('nopcionDlg').show();"/>  
+                    <p:commandButton  value="Modificar" actionListener="#{evaluacionBean.modificar(evento)}" disabled="#{evaluacionBean.disabledModificar}" icon="ui-icon-pencil"/> 
                     <p:commandButton  value="Eliminar" onclick="confirmation.show();" disabled="#{evaluacionBean.disabledEliminar}" icon="ui-icon-close"/>
                 </f:facet>
             </p:dataTable>
         </p:dialog>
+        
+        <!-- Creacion de Opciones-->
+        <p:dialog header="Nueva Opcion" widgetVar="nopcionDlg" modal="true" height="200" width="1020">
+              <p:panelGrid columns="3">
+                    <p:outputLabel for="descripcionOpcion" value="Ingrese el texto de la opción:"/>                
+                    <p:inputText id="descripcionOpcion" value="#{evaluacionBean.opcion.descripcion}" label="DescripcionOpcion">
+                    </p:inputText>
+                    <p:message for="descripcionOpcion" />
+                    <p:outputLabel for="valorOpcion" value="Ingrese un valor para la opción:"/>
+                    <p:inputText id="valorOpcion" value="#{evaluacionBean.opcion.valorOpcion}" label="ValorOpcion">
+                    </p:inputText>
+                </p:panelGrid>
+                <f:facet name="footer"> 
+                    <p:commandButton actionListener="#{evaluacionBean.guardarOpcion(evento)}" value="Guardar" update=":form:opciones" icon="ui-icon-disk" onsuccess="PF('nopcionDlg').hide();"/>
+                    <p:commandButton actionListener="#{evaluacionBean.cancelar(evento)}"  value="Cancelar" immediate="true" update="@form" icon="ui-icon-cancel"/>
+                </f:facet>
+        </p:dialog>
+        
     </ui:define>
 </ui:composition>
 

@@ -41,8 +41,8 @@ public class BotonesBean {
         this.disabledModificar = Boolean.TRUE;
         this.disabledEliminar = Boolean.TRUE;
         this.noSeleccionados = Boolean.TRUE;
-        this.disableAuditoria = Boolean.TRUE;
-        this.disableCargaDocumentos = Boolean.TRUE;
+        //this.disableAuditoria = Boolean.TRUE;
+        //this.disableCargaDocumentos = Boolean.TRUE;
         this.uno = Boolean.FALSE;
     }
 
@@ -82,7 +82,7 @@ public class BotonesBean {
         this.disabledModificar = Boolean.TRUE;
         this.disabledEliminar = Boolean.TRUE;
         this.disableAuditoria = Boolean.TRUE;
-        this.setEnRegistroOpciones(Boolean.TRUE);
+        this.enRegistroOpciones = (Boolean.TRUE);
         this.disableCargaDocumentos = Boolean.TRUE;
     }
 
