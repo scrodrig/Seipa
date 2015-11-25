@@ -94,6 +94,8 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
     private Preguntaevaluacion preguntaEvaluacion;
 
     private Preguntaopcion preguntaOpcion;
+    
+    private String orderNumberPregunta;
 
     @PostConstruct
     public void postConstruct() {
@@ -218,12 +220,13 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
                 this.preguntaEvaluacion.setIdevaluacion(evaluacion);
                 this.preguntaEvaluacion.setEstadopreevaluacion(a);
 
-                String orderNumberPregunta = preguntaServicio.findOrderNumberPregunta(evaluacion);
+                this.orderNumberPregunta = preguntaServicio.findOrderNumberPregunta(evaluacion);
                 //Numero de orden de las preguntas 
                 if (orderNumberPregunta == null) {
                     this.pregunta.setOrdernumber(new BigInteger("1"));
                 } else {
                     this.pregunta.setOrdernumber(new BigInteger(preguntaServicio.findOrderNumberPregunta(evaluacion)).add(new BigInteger("1")));
+                    //this.pregunta.setOrdernumber(new BigInteger(orderNumberPregunta).add(new BigInteger("1")));
                 }
                 //Guardar Pregunta.
                 this.preguntaServicio.crear(this.pregunta);
@@ -537,6 +540,20 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
      */
     public void setPreguntaOpcion(Preguntaopcion preguntaOpcion) {
         this.preguntaOpcion = preguntaOpcion;
+    }
+
+    /**
+     * @return the orderNumberPregunta
+     */
+    public String getOrderNumberPregunta() {
+        return orderNumberPregunta;
+    }
+
+    /**
+     * @param orderNumberPregunta the orderNumberPregunta to set
+     */
+    public void setOrderNumberPregunta(String orderNumberPregunta) {
+        this.orderNumberPregunta = orderNumberPregunta;
     }
 
 }

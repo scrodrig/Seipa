@@ -41,7 +41,9 @@ public class PreguntaServicio {
     }
     
     public String findOrderNumberPregunta(Evaluacion evaluacion){
-         return this.preguntaFacade.orderNumbrePregunta(evaluacion);
+        String ordernumber;
+        ordernumber = this.preguntaFacade.orderNumbrePregunta(evaluacion);
+        return ordernumber;
     }
     
     public void crear(Pregunta pregunta) {
