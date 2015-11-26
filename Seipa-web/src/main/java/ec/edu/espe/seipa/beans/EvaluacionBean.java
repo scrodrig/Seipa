@@ -5,6 +5,7 @@
  */
 package ec.edu.espe.seipa.beans;
 
+import ec.edu.espe.seipa.model.Docente;
 import ec.edu.espe.seipa.model.Evaluacion;
 import ec.edu.espe.seipa.model.Opcion;
 import ec.edu.espe.seipa.model.Pregunta;
@@ -98,6 +99,7 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
     private Preguntaevaluacion preguntaEvaluacion;
 
     private Preguntaopcion preguntaOpcion;
+    private Docente docente;
     
     @PostConstruct
     public void postConstruct() {
@@ -106,7 +108,7 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
         this.tipoPreguntas = this.tipoPreguntaServicio.obtener();
         this.pregunta = new Pregunta();
         this.opcion = new Opcion();
-
+        this.docente=((Docente) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Docente"));
     }
 
     public void seleccionarTipoEvaluacion(Evaluacion evaluacion) {
@@ -568,8 +570,13 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
             objSumario=new Sumario();
             
             objSumario.setIdevaluacion((Evaluacion) BeanUtils.cloneBean(this.evaluacionSeleccionada));
+            objSumario.setEstadoevaluacion("1");
+            objSumario.setIdsumario(new BigDecimal(this.evaluacionServicio.codigoNuevoSumario()).add(new BigDecimal("1")));
+            objSumario.setId(docente);
+            objSumario.setPorcentajeObtenido(Double.NaN);
+            objSumario.setPuntajeObtenido(Double.NaN);
             
-            this.evaluacionServicio.crearSumario(null);
+            this.evaluacionServicio.crearSumario(objSumario);
             //Recorrer por todas las preguntas
             for(PreguntaRespuestaCls objPreguntaRespuestaCls:preguntaResp)
             {
@@ -580,18 +587,23 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
                 }
                 catch(Exception ex)
                 {
+                    //Es pregunta abierta u otra
                     objSumarioopcion.setIdopcion(objPreguntaRespuestaCls.getPregunta().getOpcionList().get(0));
                 }
                 
-                objSumarioopcion.setIdsumario(null);
+                objSumarioopcion.setIdsumario(objSumario);
                 objSumarioopcion.setIdsumarionopcion(new BigDecimal(this.evaluacionServicio.codigoNuevoSumarioopcion()).add(new BigDecimal("1")));
                 objSumarioopcion.setValorobtenido(objPreguntaRespuestaCls.getRespuesta());
-
                 this.evaluacionServicio.crearSumarioopcion(objSumarioopcion);
-                //objPreguntaRespuestaCls.getPregunta().getIdtipopregunta().getIdtipopregunta()
-                //Guardar los valores obetnidos en la tabla correspondiente, 
-                //sumar y hacer los calculos correspondientes y guardarlos en la tabla sumario
+                
+                
+
             }
+            
+            objSumario.setPorcentajeObtenido(Double.NaN);
+            objSumario.setPuntajeObtenido(Double.NaN);
+            
+            this.evaluacionServicio.actualizarSumario(objSumario);
 
             FacesContext.getCurrentInstance().addMessage(
             null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Evaluación", "Se guardó correctamente."));
