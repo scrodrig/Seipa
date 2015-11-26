@@ -599,7 +599,7 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
                 objSumarioopcion.setValorobtenido(objPreguntaRespuestaCls.getRespuesta());
                 this.evaluacionServicio.crearSumarioopcion(objSumarioopcion);
                 
-                
+                //sumar y usar la tabla de datos formula
 
             }
             
