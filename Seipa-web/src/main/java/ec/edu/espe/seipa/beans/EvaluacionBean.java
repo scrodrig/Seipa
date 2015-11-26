@@ -10,6 +10,8 @@ import ec.edu.espe.seipa.model.Opcion;
 import ec.edu.espe.seipa.model.Pregunta;
 import ec.edu.espe.seipa.model.Preguntaevaluacion;
 import ec.edu.espe.seipa.model.Preguntaopcion;
+import ec.edu.espe.seipa.model.Sumario;
+import ec.edu.espe.seipa.model.Sumarioopcion;
 import ec.edu.espe.seipa.model.TipoEvaluacion;
 import ec.edu.espe.seipa.model.TipoPregunta;
 import ec.edu.espe.seipa.service.EvaluacionServicio;
@@ -21,22 +23,23 @@ import ec.edu.espe.seipa.service.TipoEvaluacionServicio;
 import ec.edu.espe.seipa.service.TipoPreguntaServicio;
 import ec.edu.espe.seipa.utils.EvaluacionUtils;
 import ec.edu.espe.seipa.utils.MensajesGenericos;
+import ec.edu.espe.seipa.utils.PreguntaRespuestaCls;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.apache.commons.beanutils.BeanUtils;
 
-/**
- *
- * @author SchubertDavid
- */
+
 @ManagedBean
 @ViewScoped
 public class EvaluacionBean extends BotonesBean implements Serializable {
@@ -84,6 +87,7 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
 
     private List<Opcion> opciones;
     private Opcion opcionSeleccionada;
+    private String orderNumberPregunta;
     private Opcion opcion;
     private String idOpcion;
     private String idPreguntaOpcion;
@@ -95,8 +99,6 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
 
     private Preguntaopcion preguntaOpcion;
     
-    private String orderNumberPregunta;
-
     @PostConstruct
     public void postConstruct() {
         this.evaluaciones = this.evaluacionServicio.getEvaluaciones();
@@ -110,6 +112,13 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
     public void seleccionarTipoEvaluacion(Evaluacion evaluacion) {
         this.evaluacionSeleccionada = evaluacion;
         this.preguntas = EvaluacionUtils.getPreguntaListFromEvaluacion(evaluacion);
+        super.verBotonTerminar();
+        this.preguntaResp.clear();
+        for(Pregunta pre:this.preguntas)
+        {
+            this.preguntaResp.add(new PreguntaRespuestaCls(pre));
+        }
+
     }
 
     public void filaSeleccionada(ActionEvent evento) {
@@ -220,14 +229,11 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
                 this.preguntaEvaluacion.setIdevaluacion(evaluacion);
                 this.preguntaEvaluacion.setEstadopreevaluacion(a);
 
-                this.orderNumberPregunta = preguntaServicio.findOrderNumberPregunta(evaluacion);
+                this.setOrderNumberPregunta(preguntaServicio.findOrderNumberPregunta(evaluacion.getIdevaluacion().toString()));
                 //Numero de orden de las preguntas 
-                if (orderNumberPregunta == null) {
-                    this.pregunta.setOrdernumber(new BigInteger("1"));
-                } else {
-                    this.pregunta.setOrdernumber(new BigInteger(preguntaServicio.findOrderNumberPregunta(evaluacion)).add(new BigInteger("1")));
+
+                    this.pregunta.setOrdernumber(new BigInteger(getOrderNumberPregunta()).add(new BigInteger("1")));
                     //this.pregunta.setOrdernumber(new BigInteger(orderNumberPregunta).add(new BigInteger("1")));
-                }
                 //Guardar Pregunta.
                 this.preguntaServicio.crear(this.pregunta);
                 //Guarda Pregunta Correspondiente a Evaluacion.
@@ -265,6 +271,7 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
                 
                 //Registro Opciones Pregunta
                 char a = '1';
+                this.preguntaOpcion.setIdopcion(opcion);
                 this.preguntaOpcion.setIdpreopcion(new BigDecimal(idPreguntaOpcion).add(new BigDecimal("1")));
                 this.preguntaOpcion.setIdpregunta(pregunta);
                 this.preguntaOpcion.setEstadopreopcion(a);
@@ -540,6 +547,60 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
      */
     public void setPreguntaOpcion(Preguntaopcion preguntaOpcion) {
         this.preguntaOpcion = preguntaOpcion;
+    }
+
+    private List<PreguntaRespuestaCls> preguntaResp = new ArrayList();
+
+    public List<PreguntaRespuestaCls> getPreguntaResp() {
+        return preguntaResp;
+    }
+
+    public void setPreguntaResp(List<PreguntaRespuestaCls> preguntaResp) {
+        this.preguntaResp = preguntaResp;
+    }
+
+    public void guardaEvaluacion()
+    {
+        Sumarioopcion objSumarioopcion;
+        Sumario objSumario;
+        try
+        {
+            objSumario=new Sumario();
+            
+            objSumario.setIdevaluacion((Evaluacion) BeanUtils.cloneBean(this.evaluacionSeleccionada));
+            
+            this.evaluacionServicio.crearSumario(null);
+            //Recorrer por todas las preguntas
+            for(PreguntaRespuestaCls objPreguntaRespuestaCls:preguntaResp)
+            {
+                objSumarioopcion=new Sumarioopcion();
+                try
+                {
+                    objSumarioopcion.setIdopcion(this.evaluacionServicio.getOpcionFind(objPreguntaRespuestaCls.getRespuesta()));
+                }
+                catch(Exception ex)
+                {
+                    objSumarioopcion.setIdopcion(objPreguntaRespuestaCls.getPregunta().getOpcionList().get(0));
+                }
+                
+                objSumarioopcion.setIdsumario(null);
+                objSumarioopcion.setIdsumarionopcion(new BigDecimal(this.evaluacionServicio.codigoNuevoSumarioopcion()).add(new BigDecimal("1")));
+                objSumarioopcion.setValorobtenido(objPreguntaRespuestaCls.getRespuesta());
+
+                this.evaluacionServicio.crearSumarioopcion(objSumarioopcion);
+                //objPreguntaRespuestaCls.getPregunta().getIdtipopregunta().getIdtipopregunta()
+                //Guardar los valores obetnidos en la tabla correspondiente, 
+                //sumar y hacer los calculos correspondientes y guardarlos en la tabla sumario
+            }
+
+            FacesContext.getCurrentInstance().addMessage(
+            null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Evaluación", "Se guardó correctamente."));
+        }
+        catch(Exception ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(
+            null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Evaluación", ex.getMessage()));
+        }
     }
 
     /**

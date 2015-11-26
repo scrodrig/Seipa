@@ -4,10 +4,6 @@
  */
 package ec.edu.espe.seipa.beans;
 
-/**
- *
- * @author schubert_david
- */
 import javax.annotation.PostConstruct;
 
 public class BotonesBean {
@@ -30,6 +26,7 @@ public class BotonesBean {
     private Boolean soloLectura;
     private Boolean enAuditoria;
     private Boolean enCargaDocumentos;
+    private Boolean disabledTerminar;
 
     @PostConstruct
     public void postConstructor() {
@@ -148,6 +145,12 @@ public class BotonesBean {
         this.enCargaDocumentos = Boolean.TRUE;
         this.soloLectura = Boolean.FALSE;
     }
+    
+    public void verBotonTerminar()
+    {
+        this.reset();
+        this.disabledTerminar = Boolean.TRUE;
+    }
 
     private void reset() {
         this.disabledNuevo = Boolean.FALSE;
@@ -163,6 +166,7 @@ public class BotonesBean {
         this.enAuditoria = Boolean.FALSE;
         this.enCargaDocumentos = Boolean.FALSE;
         this.soloLectura = Boolean.FALSE;
+        this.disabledTerminar = Boolean.FALSE;
     }
 
     public Boolean getDisabledEliminar() {
@@ -330,4 +334,14 @@ public class BotonesBean {
     public void setEnRegitroPregunta(Boolean enRegitroPregunta) {
         this.enRegitroPregunta = enRegitroPregunta;
     }
+
+    public Boolean getDisabledTerminar() {
+        return disabledTerminar;
+    }
+
+    public void setDisabledTerminar(Boolean disabledTerminar) {
+        this.disabledTerminar = disabledTerminar;
+    }
+    
+    
 }
