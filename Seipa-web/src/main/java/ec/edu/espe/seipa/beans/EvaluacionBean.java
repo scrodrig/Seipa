@@ -5,6 +5,7 @@
  */
 package ec.edu.espe.seipa.beans;
 
+import ec.edu.espe.seipa.model.Datosformulas;
 import ec.edu.espe.seipa.model.Docente;
 import ec.edu.espe.seipa.model.Evaluacion;
 import ec.edu.espe.seipa.model.Opcion;
@@ -565,6 +566,7 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
     {
         Sumarioopcion objSumarioopcion;
         Sumario objSumario;
+        Datosformulas objDatosformulas;
         try
         {
             objSumario=new Sumario();
@@ -577,6 +579,7 @@ public class EvaluacionBean extends BotonesBean implements Serializable {
             objSumario.setPuntajeObtenido(Double.NaN);
             
             this.evaluacionServicio.crearSumario(objSumario);
+            objDatosformulas=this.evaluacionServicio.getDatosformulas("1");
             //Recorrer por todas las preguntas
             for(PreguntaRespuestaCls objPreguntaRespuestaCls:preguntaResp)
             {
