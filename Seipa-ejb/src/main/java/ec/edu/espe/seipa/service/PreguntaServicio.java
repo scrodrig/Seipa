@@ -40,7 +40,7 @@ public class PreguntaServicio {
         return this.preguntaFacade.findByIdEvaluacion(idEvaluacion);
     }
     
-    public String findOrderNumberPregunta(Evaluacion evaluacion){
+    public String findOrderNumberPregunta(String evaluacion){
         String ordernumber;
         ordernumber = this.preguntaFacade.orderNumbrePregunta(evaluacion);
         return ordernumber;

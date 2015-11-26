@@ -8,7 +8,9 @@ package ec.edu.espe.seipa.dao;
 import ec.edu.espe.seipa.model.Datosformulas;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -26,6 +28,18 @@ public class DatosformulasFacade extends AbstractFacade<Datosformulas> {
 
     public DatosformulasFacade() {
         super(Datosformulas.class);
+    }
+    
+    public Datosformulas findByEstado(String idEstado) {
+        try {
+            String sql = "SELECT d FROM Datosformulas d WHERE d.estadoparametro =?1";
+            Query qry = this.getEntityManager().createQuery(sql);
+            qry.setParameter(1, idEstado);
+            return (Datosformulas) qry.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+
     }
     
 }

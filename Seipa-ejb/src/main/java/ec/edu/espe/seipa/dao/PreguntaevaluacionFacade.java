@@ -34,7 +34,12 @@ public class PreguntaevaluacionFacade extends AbstractFacade<Preguntaevaluacion>
         try {
             String codigoNuevo;
             Query qry = em.createNativeQuery("select max(IDPREEVALUACION) from BI.PREGUNTAEVALUACION");
-            codigoNuevo= qry.getSingleResult().toString();
+            if(qry.getSingleResult() == null)
+            {
+                codigoNuevo="0";
+            }else{
+                codigoNuevo= qry.getSingleResult().toString();
+            }
             return (codigoNuevo);
         } catch (NoResultException e) {
             return null;

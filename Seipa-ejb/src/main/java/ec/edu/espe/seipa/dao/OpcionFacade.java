@@ -5,12 +5,9 @@
  */
 package ec.edu.espe.seipa.dao;
 
-import ec.edu.espe.seipa.model.Evaluacion;
 import ec.edu.espe.seipa.model.Opcion;
 import ec.edu.espe.seipa.model.Pregunta;
-import ec.edu.espe.seipa.model.TipoPregunta;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -66,7 +63,13 @@ public class OpcionFacade extends AbstractFacade<Opcion> {
             String sql ="SELECT max(IDOPCION) from BI.OPCION";
             String idOpcion;
             Query qry = em.createNativeQuery(sql);           
-            idOpcion = qry.getSingleResult().toString();
+            if (qry.getSingleResult() == null)
+            {
+                idOpcion = "0";
+            }else{
+                idOpcion = qry.getSingleResult().toString();
+            }
+            
             return idOpcion;
         } catch (NoResultException e) {
             return null;
@@ -78,7 +81,12 @@ public class OpcionFacade extends AbstractFacade<Opcion> {
             String sql="SELECT max(IDPREOPCION) from BI.PREGUNTAOPCION";
             String idPreguntaOpcion;
             Query qry = em.createNativeQuery(sql);
-            idPreguntaOpcion = qry.getSingleResult().toString();
+            if (qry.getSingleResult() == null)
+            {
+                idPreguntaOpcion="0";
+            }else{
+                idPreguntaOpcion = qry.getSingleResult().toString();
+            }
             return idPreguntaOpcion;
         } catch (NoResultException e){
             return null;

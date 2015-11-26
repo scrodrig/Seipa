@@ -5,12 +5,18 @@
  */
 package ec.edu.espe.seipa.service;
 
+import ec.edu.espe.seipa.dao.DatosformulasFacade;
 import ec.edu.espe.seipa.dao.EvaluacionFacade;
 import ec.edu.espe.seipa.dao.OpcionFacade;
 import ec.edu.espe.seipa.dao.PreguntaFacade;
+import ec.edu.espe.seipa.dao.SumarioFacade;
+import ec.edu.espe.seipa.dao.SumarioopcionFacade;
+import ec.edu.espe.seipa.model.Datosformulas;
 import ec.edu.espe.seipa.model.Evaluacion;
 import ec.edu.espe.seipa.model.Opcion;
 import ec.edu.espe.seipa.model.Pregunta;
+import ec.edu.espe.seipa.model.Sumario;
+import ec.edu.espe.seipa.model.Sumarioopcion;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -32,9 +38,26 @@ public class EvaluacionServicio {
 
     @EJB
     private OpcionFacade opcionFacade;
+    
+    @EJB
+    private DatosformulasFacade datosformulasFacade;
+    
+    @EJB
+    private SumarioopcionFacade sumarioopcionFacade;
+    
+    @EJB
+    private SumarioFacade sumarioFacade;
 
     public void crear(Evaluacion evaluacion) {
         this.evaluacionFacade.create(evaluacion);
+    }
+    
+    public void crearSumarioopcion(Sumarioopcion sumarioopcion) {
+        this.sumarioopcionFacade.create(sumarioopcion);
+    }
+    
+    public void crearSumario(Sumario sumario) {
+        this.sumarioFacade.create(sumario);
     }
     
     public void actualizar(Evaluacion evaluacion) {
@@ -43,6 +66,21 @@ public class EvaluacionServicio {
     
     public String codigoNuevoEvaluacion(){
         return(this.evaluacionFacade.findID());
+    }
+    
+    public String codigoNuevoSumarioopcion(){
+        return(this.sumarioopcionFacade.findID());
+    }
+    
+        
+    public Opcion getOpcionFind(String id)
+    {
+        return(this.opcionFacade.find(id));
+    }
+
+    
+    public Datosformulas getDatosformulas(String idEstado){
+        return(this.datosformulasFacade.findByEstado(idEstado));
     }
 
     public List<Evaluacion> getEvaluaciones() {

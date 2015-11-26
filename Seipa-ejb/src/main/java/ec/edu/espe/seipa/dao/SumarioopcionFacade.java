@@ -8,7 +8,9 @@ package ec.edu.espe.seipa.dao;
 import ec.edu.espe.seipa.model.Sumarioopcion;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -26,6 +28,21 @@ public class SumarioopcionFacade extends AbstractFacade<Sumarioopcion> {
 
     public SumarioopcionFacade() {
         super(Sumarioopcion.class);
+    }
+    
+    public String findID() {
+        try {
+            String codigoNuevo;
+            Query qry = em.createNativeQuery("select max(IDSUMARIONOPCION) from BI.SUMARIOOPCION");
+            if (qry.getSingleResult() == null) {
+                codigoNuevo = "0";
+            } else {
+                codigoNuevo = qry.getSingleResult().toString();
+            }
+            return (codigoNuevo);
+        } catch (NoResultException e) {
+            return null;
+        }
     }
     
 }
