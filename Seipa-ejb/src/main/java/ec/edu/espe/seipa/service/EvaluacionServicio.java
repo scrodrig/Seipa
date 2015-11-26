@@ -64,6 +64,10 @@ public class EvaluacionServicio {
         this.evaluacionFacade.edit(evaluacion);
     }
     
+    public void actualizarSumario(Sumario sumario) {
+        this.sumarioFacade.edit(sumario);
+    }
+    
     public String codigoNuevoEvaluacion(){
         return(this.evaluacionFacade.findID());
     }
@@ -72,6 +76,9 @@ public class EvaluacionServicio {
         return(this.sumarioopcionFacade.findID());
     }
     
+    public String codigoNuevoSumario(){
+        return(this.sumarioFacade.findID());
+    }
         
     public Opcion getOpcionFind(String id)
     {
