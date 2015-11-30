@@ -34,7 +34,7 @@
             <p:column headerText="Email" style="width: 140px">
                 #{docente.correo}
             </p:column>
-            <p:column headerText="Direccion" style="width: 100px">
+            <p:column headerText="Dirección" style="width: 100px">
                 #{docente.direccion}
             </p:column>
             <p:column headerText="Teléfono" style="width: 75px">
@@ -99,12 +99,12 @@
                 </p:inputText>
                 <p:message for="apellido" />
 
-                <p:outputLabel for="direccion" value="Direccion:"/>                
+                <p:outputLabel for="direccion" value="Dirección:"/>                
                 <p:inputText id="direccion" value="#{docentesBean.docente.direccion}" label="DireccionDocente" required="true">
                 </p:inputText>
                 <p:message for="direccion" />
                 
-                <p:outputLabel for="telef" value="Telefono" />
+                <p:outputLabel for="telef" value="Teléfono" />
                 <p:inputMask id="telef" mask="9999999999" value="#{docentesBean.docente.telefono}" label="Telefono" required="true"/> 
                 <p:message for="telef" />
 
@@ -123,7 +123,7 @@
 
         <p:panel id="modificarUsr" header="Modificación de Docente" rendered="#{docentesBean.enEdicion}" style="width: 800px">
            <p:panelGrid columns="3">
-                <p:outputLabel for="m_cedulaDocente" value="Cedula Docente:"/>
+                <p:outputLabel for="m_cedulaDocente" value="Cédula Docente:"/>
                   <p:inputText id="m_cedulaDocente" value="#{docentesBean.docente.id}" readonly="true" label="CedulaDocente" required="true">
                 </p:inputText>
                 <p:message for="m_cedulaDocente" />
@@ -143,7 +143,7 @@
                 </p:inputText>
                 <p:message for="m_direccionDocente" />
                 
-                <p:outputLabel for="m_telefDocente" value="Telefono" />
+                <p:outputLabel for="m_telefDocente" value="Teléfono" />
                 <p:inputMask id="m_telefDocente" mask="9999999999" value="#{docentesBean.docente.telefono}" label="TelefonoDocente" required="true"/> 
                 <p:message for="m_telefDocente" />
 

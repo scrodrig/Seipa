@@ -13,16 +13,17 @@
         </div>
     </ui:define>
     <ui:define name="cuerpo">
-        <p:panel header="Sistema de Evaluacion Integral del Personal Academico(SEIPA)" style="width: 1000px"> 
-                    <h:outputText value="SEIPA es concedido con el afan de facilitar la evaluacion del personal academico de la Universidad de las Fuerzas Armadas ESPE." />  
+        <p:panel header="Sistema de Evaluación Integral del Personal Académico(SEIPA)" style="width: 1000px"> 
+            <h:outputText value="SEIPA es concedido con el afan de facilitar la evaluacion del personal academico de la Universidad de las Fuerzas Armadas ESPE." />  
         </p:panel>
         <p:layout style="width:1000px;height:520px" >
             <p:layoutUnit position="west" size="150" header=" Opciones" collapsible="true">         
-                    <p:growl autoUpdate="true"/>
-                    <p:menu style="margin-top:5px; font-size: 12">
-                        <p:menuitem value="Perfil" url="perfil.jsf"/>
-                        <p:menuitem value="Logros Academicos" url="logros.jsf" />    
-                    </p:menu>
+                <p:growl autoUpdate="true"/>
+                <p:menu style="margin-top:5px; font-size: 12">
+                    <p:menuitem value="Perfíl" url="perfil.jsf"/>
+                    <p:menuitem value="Logros Académicos" url="logros.jsf" />
+                    <p:menuitem value="Horas de Docencia" url="horasDocencia.jsf"/>
+                </p:menu>
             </p:layoutUnit>
             <p:layoutUnit position="center">
                 <ui:insert name="PerfilUsuario">
@@ -35,9 +36,22 @@
                     </table>
                 </ui:insert>
             </p:layoutUnit>
+            <p:layoutUnit position="center">
+                <ui:insert name="LogrosDocente">
+                    <table align="center" border="0" width="450px">
+                        <tr align="center">
+                            <td align="center">
+                                <p:graphicImage  value="/images/home.png" />
+                            </td>
+                        </tr>
+                    </table>
+                </ui:insert>
+                <ui:insert name="LogrosDocente">
+                </ui:insert>
+            </p:layoutUnit>
         </p:layout>
-        <p:panel header="SEIPA" footer="Actualmente SEIPA es desarrollado en Quito, en la Av. Colon y Amazonas Edificio España" style="width: 1000px">  
-            <h:outputText value="SEIPA, se basa en lo indicado tanto en el reglamento academico de la Universidad de las Fuerzas Armadas, como lo expuesto en la normativa vigente para la aplicacion de las reglas de negocio, necesarias para la evaluacion integral del desempeño del personal academico" />  
+        <p:panel header="SEIPA" footer="Actualmente SEIPA es desarrollado en Quito, en la Av. Colón y Amazonas Edificio España" style="width: 1000px">  
+            <h:outputText value="SEIPA, se basa en lo indicado tanto en el reglamento académico de la Universidad de las Fuerzas Armadas, como lo expuesto en la normativa vigente para la aplicacion de las reglas de negocio, necesarias para la evaluación integral del desempeño del personal académico" />  
         </p:panel>
     </ui:define>
 </ui:composition>

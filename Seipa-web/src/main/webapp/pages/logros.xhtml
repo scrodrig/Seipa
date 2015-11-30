@@ -6,10 +6,53 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets" 
                 xmlns:p="http://primefaces.org/ui"
                 template="/pages/home.xhtml">
-    <ui:define name="titulo">Logros Academicos</ui:define> 
-    <ui:define name="PerfilUsuario">
-        
-        LOGROS
-       
+    <ui:define name="titulo">Logros Académicos</ui:define> 
+    <ui:define name="LogrosDocente">
+        <p:fieldset legend="Descripción Académica" style="margin-bottom:15px">
+            <p:dataTable id="logros"  value="#{logrosBean.logros}" var="logro" selection="#{logrosBean.logroSeleccionado}" selectionMode="single" scrollable="true" 
+                         rowKey="#{logro.nombre}" style="width: 1000px" 
+                         paginator="true" rows="5"  scrollWidth="false" paginatorPosition="bottom"
+                         paginatorTemplate="  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                         emptyMessage="No se ha registrado ningún Logro" rendered="#{not (logrosBean.enRegistro or logrosBean.enEdicion)}" >
+
+                <p:ajax event="rowSelect" listener="#{logrosBean.filaSeleccionada(evento)}" update="logros"/>
+                <p:ajax event="rowUnselect" listener="#{logrosBean.filaSeleccionada(evento)}" update="logros"/>
+
+                <f:facet name="header">
+                    Logros
+                </f:facet>
+                <p:column headerText="Título" style="width: 100px">
+                    #{logro.nombre}
+                </p:column>
+                <p:commandLink update=":form:logroDetail" oncomplete="PF('logroDialog').show()" title="Ver Dettales">
+                    <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
+                    <f:setPropertyActionListener value="#{logro}" target="#{logroBean.logroSeleccionado}" />
+                </p:commandLink>
+                <f:facet name="footer">  
+                    <p:commandButton  value="Nuevo" update="@form" actionListener="#{logrosBean.nuevo(evento)}" disabled="#{logrosBean.disabledNuevo}" icon="ui-icon-document"/>  
+                    <p:commandButton value="Modificar" update="@form" actionListener="#{logrosBean.modificar(evento)}" disabled="#{logrosBean.disabledModificar}" icon="ui-icon-pencil"/>
+                    <p:commandButton value="Eliminar" onclick="confirmation.show();" disabled="#{logrosBean.disabledEliminar}" icon="ui-icon-close"/>
+                </f:facet>
+            </p:dataTable> 
+        </p:fieldset>
+
+
+
+        <!-- Dialog para la gestion de logros y visualizacion
+        <p:dialog header="Información Logro" widgetVar="logroDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+            <p:outputPanel id="logroDetail" style="text-align:center;">
+                <p:panelGrid  columns="2" rendered="#{not empty logroBean.logroSeleccionado}" columnClasses="label,value">
+                    <h:outputText value="Título" />
+                    <h:outputText value="#{logroBean.logroSeleccionado.nombre}" />
+
+                    <h:outputText value="Extensión:" />
+                    <h:outputText value="#{logroBean.logroSeleccionado.extension}"/>
+
+                    <h:outputText value="URL" />
+                    <h:outputText value="#{logroBean.logroSeleccionado.url}" />
+                </p:panelGrid>
+            </p:outputPanel>
+        </p:dialog> -->
+
     </ui:define>
 </ui:composition>
