@@ -9,11 +9,16 @@ import ec.edu.espe.seipa.dao.ArchivosFacade;
 import ec.edu.espe.seipa.model.Archivos;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
 
 /**
  *
  * @author ronny
  */
+
+@Stateless
+@LocalBean
 public class LogroServicio {
 
     @EJB
