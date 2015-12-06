@@ -6,11 +6,13 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets" 
                 xmlns:p="http://primefaces.org/ui"
                 template="/pages/home.xhtml">
-    <ui:define name="titulo">Logros Académicos</ui:define> 
+    <ui:define name="titulo">Horas Docente</ui:define> 
     <ui:define name="LogrosDocente">
-        <p:fieldset legend="Descripción Académica" style="margin-bottom:15px">
+        <br>       
+        </br>
+        <p:fieldset legend="Descripción Académica el Docente" style="margin-bottom:15px">
             <p:dataTable id="logros"  value="#{logrosBean.logros}" var="logro" selection="#{logrosBean.logroSeleccionado}" selectionMode="single" scrollable="true" 
-                         rowKey="#{logro.nombre}" style="width: 1000px" 
+                         rowKey="#{logro.nombre}" style="width: 800px" 
                          paginator="true" rows="5"  scrollWidth="false" paginatorPosition="bottom"
                          paginatorTemplate="  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                          emptyMessage="No se ha registrado ningún Logro" rendered="#{not (logrosBean.enRegistro or logrosBean.enEdicion)}" >
@@ -24,7 +26,7 @@
                 <p:column headerText="Título" style="width: 100px">
                     #{logro.nombre}
                 </p:column>
-                <p:commandLink update=":form:logroDetail" oncomplete="PF('logroDialog').show()" title="Ver Dettales">
+                <p:commandLink update=":form:logroDetail" oncomplete="PF('logroDialog').show()" title="Ver Detalles">
                     <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
                     <f:setPropertyActionListener value="#{logro}" target="#{logroBean.logroSeleccionado}" />
                 </p:commandLink>
@@ -35,11 +37,29 @@
                 </f:facet>
             </p:dataTable> 
         </p:fieldset>
+        <p:fieldset legend="Registro Académica" style="margin-bottom:15px">
+            <p:panelGrid columns="2">
+
+                <h:outputText value="Título:" />
+                <p:inputText id="tituloDocente" value="#{logrosBean.logro.nombre}" label="TituloDocente" required="true" style="width:240px"/>
+                
+                <h:outputText value="Año Obtencion:" />
+                <p:inputText id="extencion" value="#{logrosBean.logro.extension}" label="Extencion" required="true" style="width:240px"/>
+                
+                <h:outputText value="Descripción:" />
+                <p:inputText id="descripcion" value="#{logrosBean.logro.url}" label="Descripcion" required="true" style="width:240px" />
+
+                <f:facet name="footer">
+                    <p:commandButton actionListener="#{logrosBean.guardar(evento)}" value="Guardar" update="@form" icon="ui-icon-disk"/>
+                    <p:commandButton actionListener="#{logrosBean.cancelar()}"  value="Cancelar" immediate="true" update="@form" icon="ui-icon-cancel"/>
+                </f:facet>
+            </p:panelGrid>           
+        </p:fieldset>
 
 
-
-        <!-- Dialog para la gestion de logros y visualizacion
+        <!-- Dialog para la gestion de logros y visualizacion-->
         <p:dialog header="Información Logro" widgetVar="logroDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+
             <p:outputPanel id="logroDetail" style="text-align:center;">
                 <p:panelGrid  columns="2" rendered="#{not empty logroBean.logroSeleccionado}" columnClasses="label,value">
                     <h:outputText value="Título" />
@@ -52,7 +72,7 @@
                     <h:outputText value="#{logroBean.logroSeleccionado.url}" />
                 </p:panelGrid>
             </p:outputPanel>
-        </p:dialog> -->
+        </p:dialog> 
 
     </ui:define>
 </ui:composition>

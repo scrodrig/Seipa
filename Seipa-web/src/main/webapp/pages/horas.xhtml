@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" 
+                xmlns:ui="http://java.sun.com/jsf/facelets" 
+                xmlns:p="http://primefaces.org/ui"
+                template="/pages/home.xhtml">
+    <ui:define name="titulo">Horas Docencia</ui:define> 
+    <ui:define name="HorasDocente">
+        <br>       
+        </br>
+        <p:fieldset legend="Horas Docencia" style="margin-bottom:15px">
+            <p:dataTable id="horas"  value="#{horasBean.horas}" var="hora" selection="#{horasBean.horaDocenteSeleccionado}" selectionMode="single" scrollable="true" 
+                         rowKey="#{hora.idhorasdocente}" style="width: 800px" 
+                         paginator="true" rows="5"  scrollWidth="false" paginatorPosition="bottom"
+                         paginatorTemplate="  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                         emptyMessage="No se ha registrado ningún hora Académica" rendered="#{not (horasBean.enRegistro or horasBean.enEdicion)}" >
+
+                <p:ajax event="rowSelect" listener="#{horasBean.filaSeleccionada(evento)}" update="horas"/>
+                <p:ajax event="rowUnselect" listener="#{horasBean.filaSeleccionada(evento)}" update="horas"/>
+
+                <f:facet name="header">
+                    Horas
+                </f:facet>
+                <p:column headerText="Tipo Horas" style="width: 100px">
+                    #{hora.tipohoras}
+                </p:column>
+                <p:column headerText="Total Horas" style="width: 100px">
+                    #{hora.horas}
+                </p:column>
+                <p:commandLink update=":form:horaDetail" oncomplete="PF('horaDialog').show()" title="Ver Detalles">
+                    <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
+                    <f:setPropertyActionListener value="#{hora}" target="#{horasBean.horaDocenteSeleccionado}" />
+                </p:commandLink>
+                <f:facet name="footer">  
+                    <p:commandButton  value="Nuevo" update="@form" actionListener="#{horasBean.nuevo(evento)}" disabled="#{horasBean.disabledNuevo}" icon="ui-icon-document"/>  
+                    <p:commandButton value="Modificar" update="@form" actionListener="#{horasBean.modificar(evento)}" disabled="#{horasBean.disabledModificar}" icon="ui-icon-pencil"/>
+                    <p:commandButton value="Eliminar" onclick="confirmation.show();" disabled="#{horasBean.disabledEliminar}" icon="ui-icon-close"/>
+                </f:facet>
+            </p:dataTable> 
+        </p:fieldset>
+        <p:fieldset legend="Registro Horas" style="margin-bottom:15px">
+            <p:panelGrid columns="2">
+
+                <h:outputText value="Típo Horas:" />
+                <p:selectOneMenu id="tipoHoras" value="#{horasBean.horaDocente.tipohoras}" style="width:240px">
+                    <f:selectItem itemLabel="Seleccione Uno" itemValue="" />
+                    <f:selectItem itemLabel="Gestión Docencia" itemValue="Docencia" />
+                    <f:selectItem itemLabel="Gestión Investigativa" itemValue="Investigativa" />
+                    <f:selectItem itemLabel="Gestión Administrativa y Dirección" itemValue="Administrativa" />
+                </p:selectOneMenu>
+
+                <h:outputText value="Cantidad de Horas: *"/>
+                <p:spinner id="horasDocente" value="#{horasBean.horaDocente.horas}" label="HorasDocente"/>
+
+                <f:facet name="footer">
+                    <p:commandButton actionListener="#{horasBean.guardar(evento)}" value="Guardar" update="@form" icon="ui-icon-disk"/>
+                    <p:commandButton actionListener="#{horasBean.cancelar()}"  value="Cancelar" immediate="true" update="@form" icon="ui-icon-cancel"/>
+                </f:facet>
+            </p:panelGrid>
+        </p:fieldset>
+
+
+        <!-- Dialog para la gestion de horas y visualizacion-->
+        <p:dialog header="Información Horas Académicas" widgetVar="horaDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+
+            <p:outputPanel id="horaDetail" style="text-align:center;">
+                <p:panelGrid  columns="2" rendered="#{not empty horasBean.horaDocenteSeleccionado}" columnClasses="label,value">
+                    <h:outputText value="Típo Horas" />
+                    <h:outputText value="#{horasBean.horaDocenteSeleccionado.nombre}" />
+
+                    <h:outputText value="Cantidad de Horas:" />
+                    <h:outputText value="#{horasBean.horaDocenteSeleccionado.horas}"/>
+
+                </p:panelGrid>
+            </p:outputPanel>
+        </p:dialog> 
+
+    </ui:define>
+</ui:composition>

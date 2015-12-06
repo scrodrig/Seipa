@@ -22,31 +22,18 @@
                 <p:menu style="margin-top:5px; font-size: 12">
                     <p:menuitem value="Perfíl" url="perfil.jsf"/>
                     <p:menuitem value="Logros Académicos" url="logros.jsf" />
-                    <p:menuitem value="Horas de Docencia" url="horasDocencia.jsf"/>
+                    <p:menuitem value="Horas de Docencia" url="horas.jsf"/>
                 </p:menu>
             </p:layoutUnit>
             <p:layoutUnit position="center">
+                <ui:insert name="LogrosDocente">
+
+                </ui:insert>
                 <ui:insert name="PerfilUsuario">
-                    <table align="center" border="0" width="450px">
-                        <tr align="center">
-                            <td align="center">
-                                <p:graphicImage  value="/images/home.png" />
-                            </td>
-                        </tr>
-                    </table>
+
                 </ui:insert>
-            </p:layoutUnit>
-            <p:layoutUnit position="center">
-                <ui:insert name="LogrosDocente">
-                    <table align="center" border="0" width="450px">
-                        <tr align="center">
-                            <td align="center">
-                                <p:graphicImage  value="/images/home.png" />
-                            </td>
-                        </tr>
-                    </table>
-                </ui:insert>
-                <ui:insert name="LogrosDocente">
+                <ui:insert name="HorasDocente">
+
                 </ui:insert>
             </p:layoutUnit>
         </p:layout>

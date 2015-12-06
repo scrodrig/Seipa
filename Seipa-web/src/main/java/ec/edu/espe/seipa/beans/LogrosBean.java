@@ -13,6 +13,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -48,6 +49,7 @@ public class LogrosBean extends BotonesBean implements Serializable {
         // id Variable de Session Docente
         this.setDocente((Docente) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Docente"));
         this.idDocente = docente.getId();
+        //this.logros = new ArrayList<Archivos>();
         this.logros = this.logroServicio.findByDocente(idDocente);
     }
     
