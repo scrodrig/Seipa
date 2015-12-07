@@ -1,16 +1,82 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
-</html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" 
+                xmlns:ui="http://java.sun.com/jsf/facelets" 
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/templateMantenimiento.xhtml">
+    <ui:define name="titulo">Parametros Evaluación</ui:define> 
+    <ui:define name="cuerpo">
+        <br>       
+        </br>
+        <p:fieldset legend="Descripción de Parametros Evaluacion Docente" style="margin-bottom:15px">
+            <p:dataTable id="parametros"  value="#{parametrosBean.parametros}" var="parametro" selection="#{parametrosBean.datoSeleccionado}" selectionMode="single" scrollable="true" 
+                         rowKey="#{parametro.parametro}" style="width: 800px" 
+                         paginator="true" rows="5"  scrollWidth="false" paginatorPosition="bottom"
+                         paginatorTemplate="  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                         emptyMessage="No se ha registrado ningún Parametro" rendered="#{not (parametrosBean.enRegistro or parametrosBean.enEdicion)}" >
+
+                <p:ajax event="rowSelect" listener="#{parametrosBean.filaSeleccionada(evento)}" update="parametros"/>
+                <p:ajax event="rowUnselect" listener="#{parametrosBean.filaSeleccionada(evento)}" update="parametros"/>
+
+                <f:facet name="header">
+                    Parametros
+                </f:facet>
+                <p:column headerText="Parámetro" style="width: 100px">
+                    #{parametro.parametro}
+                </p:column>
+                <p:column headerText="Descripción" style="width: 100px">
+                    <p:commandLink update=":form:parametroDetail" oncomplete="PF('parametroDialog').show()" title="Ver Detalles">
+                        <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
+                        <f:setPropertyActionListener value="#{parametro}" target="#{parametrosBean.datoSeleccionado}" />
+                    </p:commandLink>
+                </p:column>
+
+                <f:facet name="footer">  
+                    <!--<p:commandButton  value="Nuevo" update="@form" actionListener="#{parametrosBean.nuevo(evento)}" disabled="#{parametrosBean.disabledNuevo}" icon="ui-icon-document"/> --> 
+                    <p:commandButton value="Modificar" update="@form" actionListener="#{parametrosBean.modificar(evento)}" disabled="#{parametrosBean.disabledModificar}" icon="ui-icon-pencil"/>
+                    <p:commandButton value="Eliminar" onclick="confirmation.show();" disabled="#{parametrosBean.disabledEliminar}" icon="ui-icon-close"/>
+                </f:facet>
+            </p:dataTable> 
+        </p:fieldset>
+        <p:fieldset legend="Registro Parametros" style="margin-bottom:15px">
+            <p:panelGrid columns="2">
+
+                <h:outputText value="Parámetro:" />
+                <p:inputText id="parametro" value="#{parametrosBean.datoFormula.parametro}" label="Parametro" required="true" style="width:240px"/>
+
+                <h:outputText value="Valor:" />
+                <p:inputText id="valor" value="#{parametrosBean.datoFormula.valorparametro}" label="Valor" required="true" style="width:240px"/>
+
+                <f:facet name="footer">
+                    <p:commandButton actionListener="#{parametrosBean.guardar(evento)}" value="Guardar" update="@form" icon="ui-icon-disk"/>
+                    <p:commandButton actionListener="#{parametrosBean.cancelar()}"  value="Cancelar" immediate="true" update="@form" icon="ui-icon-cancel"/>
+                </f:facet>
+            </p:panelGrid>           
+        </p:fieldset>
+
+
+        <!-- Dialog para la gestion de logros y visualizacion-->
+        <p:dialog header="Información Dato" widgetVar="parametroDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+
+            <p:outputPanel id="parametroDetail" style="text-align:center;">
+                <p:panelGrid  columns="2" rendered="#{not empty parametrosBean.datoSeleccionado}" columnClasses="label,value">
+                    <h:outputText value="Id:" />
+                    <h:outputText value="#{parametrosBean.datoSeleccionado.iddatosformula}" />
+
+                    <h:outputText value="Descripción:" />
+                    <h:outputText value="#{parametrosBean.datoSeleccionado.parametro}"/>
+
+                    <h:outputText value="Valor:" />
+                    <h:outputText value="#{parametrosBean.datoSeleccionado.valorparametro}" />
+                    
+                    <h:outputText value="Estado:" />
+                    <p:selectBooleanCheckbox value="#{parametrosBean.datoSeleccionado.estadoparametro}" />
+                </p:panelGrid>
+            </p:outputPanel>
+        </p:dialog> 
+
+    </ui:define>
+</ui:composition>
+

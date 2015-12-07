@@ -70,17 +70,17 @@
         <p:fieldset legend="Fotografía Docente" style="margin-bottom:15px">
             <h:panelGrid columns="2" columnClasses="column" border="1" cellpadding="0" cellspacing="7">
                 <p:outputPanel id="imagenDocente">
-                    
+
                 </p:outputPanel>
-                
-                <h:outputText value="Cargue su imagen de Perfíl:" />
-                    <p:fileUpload value="#{cargaImagenBean.file}" mode="simple" />
-		<h:outputText value="" />
-                
-                <p:commandButton value="Guardar Imagen" actionListener="#{cargaImagenBean.guardarImagen}">
-                    
-                </p:commandButton>
-                
+                <h:panelGroup>
+                    <p:fileUpload id="fileDocente" value="#{perfilBean.file}" 
+                                  fileUploadListener="#{perfilBean.GuardarImagen(event)}"
+                                  sizeLimit="512000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                  cancelLabel="Cancelar" uploadLabel="Subir Imagen"
+                                  label="Examinar" update="grapDocente"/>
+                    <p:graphicImage id="grapDocente" value="#{perfilBean.docente.imagenperfil}" width="150" height="120"/>
+
+                </h:panelGroup>
             </h:panelGrid>
         </p:fieldset>
     </ui:define>

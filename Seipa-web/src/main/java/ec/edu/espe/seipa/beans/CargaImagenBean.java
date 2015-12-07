@@ -7,6 +7,8 @@ package ec.edu.espe.seipa.beans;
 
 import ec.edu.espe.seipa.model.Docente;
 import ec.edu.espe.seipa.service.DocenteServicio;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -29,8 +31,16 @@ import org.primefaces.event.FileUploadEvent;
 public class CargaImagenBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private UploadedFile file;
+    private File file;
     private Docente docente;
+
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
     
     DocenteServicio docenteServicio;
     
@@ -42,23 +52,13 @@ public class CargaImagenBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
-    public UploadedFile getFile() {
-        return file;
-    }
-
-    public void setFile(UploadedFile file) {
-        System.out.println("Uploaded: {}");
-        this.file = file;
-    }
-
-    public void GuardarImagen() {
+    public void GuardarImagen(FileUploadEvent event) {
 
         // Para cargar la imagen en la Entidad
-        InputStream fi;
         try {
-            fi = getFile().getInputstream();
+            InputStream fi = new FileInputStream(file);
             // creamos el buffer
-            byte[] buffer = new byte[(int) getFile().getSize()];
+            byte[] buffer = new byte[(int) file.length()];
             // Leer al buffer
             int readers = fi.read(buffer);
             this.docente.setImagenperfil(buffer);

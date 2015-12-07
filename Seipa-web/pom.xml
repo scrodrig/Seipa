@@ -2,10 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-    <artifactId>Seipa</artifactId>
-    <groupId>ec.edu.espe.seipa</groupId>
-    <version>1</version>
-  </parent>
+        <artifactId>Seipa</artifactId>
+        <groupId>ec.edu.espe.seipa</groupId>
+        <version>1</version>
+    </parent>
 
     <groupId>ec.edu.espe.seipa</groupId>
     <artifactId>Seipa-web</artifactId>
@@ -29,7 +29,7 @@
     </repositories>
     
     <dependencies>
-         <dependency>
+        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>Seipa-ejb</artifactId>
             <version>${project.version}</version>
@@ -51,19 +51,19 @@
             <version>6.0</version>
             <scope>provided</scope>
         </dependency>
-         <dependency>
+        <dependency>
             <groupId>com.sun.faces</groupId>
             <artifactId>jsf-api</artifactId>
             <version>2.2.12</version>
             <scope>provided</scope>
         </dependency>
-         <dependency>
+        <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
             <version>1.9.2</version>
             <type>jar</type>
         </dependency>
-         <dependency>
+        <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.4</version>
@@ -75,10 +75,15 @@
             <version>2.8.1</version>
         </dependency> 
         
-          <dependency>
+        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-digester3</artifactId>
             <version>3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.3.1</version> <!-- makesure correct version here -->
         </dependency> 
     </dependencies>
 

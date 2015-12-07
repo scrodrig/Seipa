@@ -25,34 +25,32 @@ import org.apache.commons.beanutils.BeanUtils;
  *
  * @author ronny
  */
-
 @ManagedBean
 @ViewScoped
 public class LogrosBean extends BotonesBean implements Serializable {
-    
+
     @EJB
     private LogroServicio logroServicio;
-    
+
     private List<Archivos> logros;
     private Archivos logro;
     private Archivos logroSeleccionado;
-    
+
     private Docente docente;
     private String idDocente;
-    
-    
+
     @PostConstruct
     @Override
-    public void postConstructor(){
-        
+    public void postConstructor() {
+
         super.sinSeleccion();
         // id Variable de Session Docente
         this.setDocente((Docente) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Docente"));
         this.idDocente = docente.getId();
-        //this.logros = new ArrayList<Archivos>();
         this.logros = this.logroServicio.findByDocente(idDocente);
+        this.logro = new Archivos();
     }
-    
+
     public void filaSeleccionada(ActionEvent evento) {
         if (logroSeleccionado instanceof Archivos) {
             super.seleccionadoUno();
@@ -60,7 +58,7 @@ public class LogrosBean extends BotonesBean implements Serializable {
             super.sinSeleccion();
         }
     }
-    
+
     public void cancelar(ActionEvent evento) {
         if (super.getEnRegistro()) {
             super.sinSeleccion();
@@ -70,12 +68,12 @@ public class LogrosBean extends BotonesBean implements Serializable {
         this.logro = new Archivos();
         MensajesGenericos.infoCancelar();
     }
-    
-    public void nuevo(ActionEvent evento){
+
+    public void nuevo(ActionEvent evento) {
         super.crear();
         this.logro = new Archivos();
     }
-    
+
     public void modificar(ActionEvent evento) {
         this.setDocente(new Docente());
         try {
@@ -86,22 +84,22 @@ public class LogrosBean extends BotonesBean implements Serializable {
             MensajesGenericos.errorCopyProperties();
         }
     }
-    
+
     public void eliminar(ActionEvent evento) {
         this.logroServicio.eliminar(this.logroSeleccionado);
         this.logros.remove(this.logroSeleccionado);
         MensajesGenericos.infoEliminar("Registro Académico", this.logro.getNombre().concat(" - Eliminado con éxito "), Boolean.TRUE);
         super.sinSeleccion();
     }
-        
+
     public void guardar(ActionEvent evento) {
         try {
-            
-            if (this.logro == null) {
-                this.logro.setId(new BigDecimal (logroServicio.idLogro()).add(new BigDecimal("1")));
-            }
-            this.logro.setIddocente(idDocente);
+            super.crear();
             if (super.getEnRegistro()) {
+                if (this.logro.getId() == null) {
+                    this.logro.setId(new BigDecimal(logroServicio.idLogro()).add(new BigDecimal("1")));
+                }
+                this.logro.setIddocente(idDocente);
                 this.logroServicio.crear(this.logro);
                 this.logros.add(this.logro);
                 MensajesGenericos.infoCrear("Registro Académico", this.logro.getNombre().concat(" - Creada con éxito"), Boolean.TRUE);
@@ -189,5 +187,5 @@ public class LogrosBean extends BotonesBean implements Serializable {
     public void setIdDocente(String idDocente) {
         this.idDocente = idDocente;
     }
-    
+
 }

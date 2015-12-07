@@ -7,6 +7,11 @@ package ec.edu.espe.seipa.beans;
 
 import ec.edu.espe.seipa.model.Docente;
 import ec.edu.espe.seipa.service.DocenteServicio;
+import ec.edu.espe.seipa.utils.UtilImg;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -14,6 +19,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
+import org.apache.commons.lang.SerializationUtils;
+import org.primefaces.event.FileUploadEvent;
 
 /**
  *
@@ -35,12 +42,16 @@ public class PerfilBean extends BotonesBean implements Serializable {
     private String direccion;
     
     private Docente docente;
+    
+    private String file;
 
+    
     
     @PostConstruct
     public void postConstructor() {
         this.setDocente((Docente) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Docente"));
         datosDocente();
+        docente = new Docente();
     }
     
     public void datosDocente() {
@@ -101,6 +112,17 @@ public class PerfilBean extends BotonesBean implements Serializable {
         this.docenteServicio.actualizar(this.docente);
     }
 
+    public void GuardarImagen(FileUploadEvent event) {
+
+        // Para cargar la imagen en la Entidad
+        try {
+            docente.setImagenperfil(event.getFile().getContents());
+            file = UtilImg.guardarEnFicheroTemporal(docente.getImagenperfil(),event.getFile().getFileName());
+            docenteServicio.actualizar(this.docente);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * @return the usuario
      */
@@ -205,6 +227,13 @@ public class PerfilBean extends BotonesBean implements Serializable {
 
     public void setDocente(Docente docente) {
         this.docente = docente;
+    }
+public String getFile() {
+        return file;
+    }
+
+    public void setFile(String file) {
+        this.file = file;
     }
 
 

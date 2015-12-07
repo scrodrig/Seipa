@@ -26,12 +26,14 @@
                 <p:column headerText="Título" style="width: 100px">
                     #{logro.nombre}
                 </p:column>
-                <p:commandLink update=":form:logroDetail" oncomplete="PF('logroDialog').show()" title="Ver Detalles">
-                    <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
-                    <f:setPropertyActionListener value="#{logro}" target="#{logroBean.logroSeleccionado}" />
-                </p:commandLink>
+                <p:column headerText="Descripción" style="width: 100px">
+                    <p:commandLink update=":form:logroDetail" oncomplete="PF('logroDialog').show()" title="Ver Detalles">
+                        <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
+                        <f:setPropertyActionListener value="#{logro}" target="#{logroBean.logroSeleccionado}" />
+                    </p:commandLink>
+                </p:column>
                 <f:facet name="footer">  
-                    <p:commandButton  value="Nuevo" update="@form" actionListener="#{logrosBean.nuevo(evento)}" disabled="#{logrosBean.disabledNuevo}" icon="ui-icon-document"/>  
+                    <!-- <p:commandButton  value="Nuevo" update="@form" actionListener="#{logrosBean.nuevo(evento)}" disabled="#{logrosBean.disabledNuevo}" icon="ui-icon-document"/> --> 
                     <p:commandButton value="Modificar" update="@form" actionListener="#{logrosBean.modificar(evento)}" disabled="#{logrosBean.disabledModificar}" icon="ui-icon-pencil"/>
                     <p:commandButton value="Eliminar" onclick="confirmation.show();" disabled="#{logrosBean.disabledEliminar}" icon="ui-icon-close"/>
                 </f:facet>
@@ -42,10 +44,10 @@
 
                 <h:outputText value="Título:" />
                 <p:inputText id="tituloDocente" value="#{logrosBean.logro.nombre}" label="TituloDocente" required="true" style="width:240px"/>
-                
+
                 <h:outputText value="Año Obtencion:" />
                 <p:inputText id="extencion" value="#{logrosBean.logro.extension}" label="Extencion" required="true" style="width:240px"/>
-                
+
                 <h:outputText value="Descripción:" />
                 <p:inputText id="descripcion" value="#{logrosBean.logro.url}" label="Descripcion" required="true" style="width:240px" />
 
