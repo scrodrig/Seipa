@@ -53,6 +53,7 @@ public class ArchivosFacade extends AbstractFacade<Archivos> {
         try {
             Archivos objArchivos;
             List<Archivos> lsArchivos = new ArrayList();
+            
             String sql = "SELECT a.* FROM BI.ARCHIVOS a WHERE a.idDocente=" + idDocente;
             Query qry = em.createNativeQuery(sql);
             List<Object[]> p1 = qry.getResultList();

@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -43,9 +44,9 @@ public class Docente implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "iddocente")
     private List<Horasdocente> horasdocenteList;
     @Lob
+    @Basic(fetch=FetchType.LAZY,optional=true)
     @Column(name = "IMAGENPERFIL")
-    private Serializable imagenperfil;
-    private static final long serialVersionUID = 1L;
+    private byte[] imagenperfil;
     @Id
     @Basic(optional = false)
     @NotNull
@@ -181,11 +182,11 @@ public class Docente implements Serializable {
         return "ec.edu.espe.seipa.model.Docente[ id=" + id + " ]";
     }
 
-    public Serializable getImagenperfil() {
+    public byte[] getImagenperfil() {
         return imagenperfil;
     }
 
-    public void setImagenperfil(Serializable imagenperfil) {
+    public void setImagenperfil(byte[] imagenperfil) {
         this.imagenperfil = imagenperfil;
     }
 

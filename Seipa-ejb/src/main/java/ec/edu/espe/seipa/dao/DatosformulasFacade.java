@@ -42,4 +42,14 @@ public class DatosformulasFacade extends AbstractFacade<Datosformulas> {
 
     }
     
+    public String findIdDatosFormula() {
+        try {
+            String codigoNuevo;
+            Query qry = em.createNativeQuery("select max(IDDATOSFORMULA) from BI.DATOSFORMULAS");
+            codigoNuevo = qry.getSingleResult().toString();
+            return (codigoNuevo);
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 }
